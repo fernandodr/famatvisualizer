@@ -5,6 +5,8 @@
 - Fernando Rivera
 - Francisco Rivera
 
+## Description
+
 Django project to visualize FAMAT historical results.
 
 ## Progress To Date
