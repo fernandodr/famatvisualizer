@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+ Schools 
+{% endblock %}
+
+{% block navschools %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> Schools </h1>
+
+<div class="well">
+
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th>  School </th>
+        <th> Number Competitors </th>
+    </tr>
+    </thead>
+    <tbody>
+
+{% for school in schools %}
+<tr>
+    <td> <a href="{{ school.get_absolute_url }}">{{ school }}</a> </td>
+    <td> {{school.num_mathletes}} </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+{% endblock %}
