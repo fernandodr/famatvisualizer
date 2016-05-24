@@ -23,6 +23,19 @@ def view_mathletes(request):
     return render(request, 'mathletes.html', {'has_recent':has_recent,
        'recents':r_lst, 'top':top})
 
+def view_school(request, spec_id):
+    try:
+        school = School.objects.get(id_num = spec_id)
+    except:
+        return Http404('School ID number does not exist')
+
+    mathletes = Mathlete.objects.annotate(num_tests=Count('testpaper')).filter(mao_id__startswith=str(school.id_num)).order_by('-avg_t')
+    return render(request, 'school.html', {'school': school, 'mathletes':mathletes})
+
+
+def view_schools(request):
+    schools = School.objects.order_by('name')
+    return render(request, 'schools.html', {'schools': schools})
 
 def view_mathlete_menu(request, first, last):
     lst = Mathlete.objects.filter(first_name=first, last_name=last)
@@ -65,7 +78,6 @@ def view_mathlete(request, first, last, m_id):
 
     response.set_cookie('recent_mathletes', r_mathletes)
     return response
-
 
 def redirect_competition(request, year, month, cat):
     cat = cat.title()

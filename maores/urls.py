@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/', redirect_competition),
     url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/([A-Za-z]+)/$', view_test),
     url(r'^competitions/$', view_competitions),
+    url(r'^schools/$', view_schools),
+    url(r'^school/([0-9]+)/$', view_school),
     url(r'^static/(.*)', return_static_file),
 ]

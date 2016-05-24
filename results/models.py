@@ -56,6 +56,25 @@ class Mathlete(models.Model):
 class School(models.Model):
     name = models.CharField(max_length = 60)
     region = models.IntegerField(default=0)
+    id_num = models.IntegerField(blank=True, null=True)
+    num_mathletes = models.IntegerField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return '/school/%i/' % self.id_num
+
+    def _id_num(self):
+        return int(self.testpaper_set.all()[0].mathlete.mao_id[:4])
+
+    def _num_mathletes(self):
+        tps = self.testpaper_set.all()
+        mathletes = set([tp.mathlete for tp in tps])
+        return len(mathletes)
+
+    def extra_save(self, *args, **kwargs):
+        self.id_num = self._id_num(*args, **kwargs)
+        self.num_mathletes = self._num_mathletes(*args, **kwargs)
+        super(School, self).save(*args, **kwargs)
+
     
     def __unicode__(self):
         return self.name
