@@ -1,0 +1,32 @@
+"""maores URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/1.8/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+Including another URLconf
+    1. Add an import:  from blog import urls as blog_urls
+    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
+"""
+from django.conf.urls import include, url
+from django.contrib import admin
+from views import *
+
+
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', home_page),
+    url(r'^mathletes/$', view_mathletes),
+    url(r'^mathlete/first=([A-Za-z]+)&last=([A-Za-z]+)$', view_mathlete_menu),
+    url(r'^mathlete/first=([A-Za-z]+)&last=([A-Za-z]+)&id=([0-9]+)$', view_mathlete),
+    url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/$', view_competition),
+    url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/', redirect_competition),
+    url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/([A-Za-z]+)/$', view_test),
+    url(r'^competitions/$', view_competitions),
+    url(r'^static/(.*)', return_static_file),
+]

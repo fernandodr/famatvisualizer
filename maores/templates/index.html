@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+MAO Visualizer
+{% endblock %}
+
+{% block navhome %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> FAMAT Visualizations </h1>
+
+<p> <a href="//http://famat.org/PublicPages/Home.aspx">Florida Mu Alpha Theta</a> hosts recurrent competitions for Florida "mathletes". Every one of these competitions generates a wealth of data, which can be mined for processing. This website structures visualizations of the results. </p>
+
+<div class="well">
+<h2> Competition Attendance</h2>
+It's an interesting question to ask how many people attend MAO competitions. And we can answer this for the competitions we have on record. (Hover over a dot to see the competition name and exact attendance. Use the icons on the lower-left of the figure to zoom-in, pan, and reset the figure.)
+<center> {{ fig1|safe }} </center>
+</div>
+
+<div class="well">
+<h2> Test Difficulty </h2>
+
+<center> {{ fig2|safe }} </center>
+</div>
+{% endblock %}

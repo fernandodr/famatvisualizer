@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ mathlete.mao_id }}
+{% endblock %}
+
+{% block navcompetitions %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> Competitions </h1>
+
+{% for comp in competitions %}
+
+<div class="well">
+<h2> <a href="{{ comp.get_absolute_url }}">{{ comp }}</a></h2>
+
+<ul>
+
+{% for test in comp.test_set.all %}
+
+<li> <a href="{{ test.get_absolute_url }}">{{ test.division }} Individual</a> </li>
+{% endfor %}
+</ul>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

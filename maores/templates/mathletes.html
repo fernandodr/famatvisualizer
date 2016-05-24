@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ mathlete.mao_id }}
+{% endblock %}
+
+{% block navmathletes %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> Mathletes </h1>
+
+{% if has_mathletes %}
+
+<div class="well">
+<h2> Recent </h2>
+<ul>
+{% for mathlete in recents %}
+<li> mathlete </li>
+{% endfor %}
+</ul>
+</div>
+
+{% endif %}
+
+<div class="well">
+<h2> Top Scorerers </h2>
+
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th> Name </th>
+        <th> School </th>
+        <th> Years </th>
+        <th> Average T </th>
+        <th> Num Tests </th>
+    </tr>
+    </thead>
+    <tbody>
+
+{% for mathlete in top %}
+<tr>
+    <td> <a href="{{ mathlete.get_absolute_url }}">{{ mathlete }}</a> </td>
+    <td> {{ mathlete.school }} </td>
+    <td> {{ mathlete.get_years_active_str|safe }} </td>
+    <td> {{ mathlete.avg_t|floatformat:3 }} </td>
+    <td> {{ mathlete.num_tests }} </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+{% endblock %}
