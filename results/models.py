@@ -1,4 +1,5 @@
 from django.db import models
+from results.utils import *
 import numpy as np
 
 
@@ -127,7 +128,7 @@ class Test(models.Model):
             return self.testpaper_set.order_by('-score')[24].score
 
     def get_absolute_url(self):
-        return self.competition.get_absolute_url() + self.division + '/'
+        return self.competition.get_absolute_url() + get_division_abbr(self.division) + '/'
     
     def __unicode__(self):
         division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',
