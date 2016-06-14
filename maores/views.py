@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from results.utils import *
 from results.models import *
 from results.figs import *
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -114,12 +115,13 @@ def view_competition(request, year, month, day):
         {'competition':competition,
          'tests':tests})
 
-def view_test(request, year, month, day, division):
+def view_test(request, year, month, day, abbr):
     year = int(year)
     month = int(month)
     day = int(day)
 
     try:
+    	division = get_full_division(abbr)
         competition = Competition.objects.get(date=datetime.date(year, month, day))
         test = competition.test_set.get(division=division)
     except:
