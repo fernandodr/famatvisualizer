@@ -86,8 +86,8 @@ class Competition(models.Model):
     category = models.CharField(max_length = 30)
 
     def get_absolute_url(self):
-        return '/competition/%i/%i/%i/' % (self.date.year, 
-            self.date.month, self.date.day)
+        return '/competition/%d/%s/%s/' % (self.date.year, 
+            get_name_month(int(self.date.month)).lower(), self.category.lower())
     
     def __unicode__(self):
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
