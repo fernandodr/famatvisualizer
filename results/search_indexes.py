@@ -42,7 +42,7 @@ class CompetitionIndex(indexes.SearchIndex, indexes.Indexable):
 
 class TestIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
- #   competition = indexes.ForeignKey(model_attr='competition')
+#    competition = indexes.ForeignKey(model_attr='competition')
     division = indexes.CharField(model_attr='division')
     average = indexes.FloatField(model_attr='average')
     std = indexes.FloatField(model_attr='std')
