@@ -46,6 +46,16 @@ class Mathlete(models.Model):
         strs = [form(x) for x in preform]
         return ', '.join(strs)
 
+    def _get_full_name(self):
+        return self.first_name + " " + self.last_name
+
+    def _get_description(self):
+        return "%s represented %s in %s. Throughout the span of %i competitions, %s maintained an average t-score of %.2f" % \
+            (self._get_full_name(), self.school, self.get_years_active_str(),
+                self.testpaper_set.count(), self.first_name, self._get_avg_t_score())
+
+    title = property(_get_full_name)
+    description = property(_get_description)
     school = property(_get_school)
     concatname = property(_get_concatname)
 
