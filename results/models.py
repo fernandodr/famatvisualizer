@@ -46,6 +46,16 @@ class Mathlete(models.Model):
         strs = [form(x) for x in preform]
         return ', '.join(strs)
 
+    def _get_full_name(self):
+        return self.first_name + " " + self.last_name
+
+    def _get_description(self):
+        return "%s represented %s in %s. Throughout the span of %i competitions, %s maintained an average t-score of %.2f" % \
+            (self._get_full_name(), self.school, self.get_years_active_str(),
+                self.testpaper_set.count(), self.first_name, self._get_avg_t_score())
+
+    title = property(_get_full_name)
+    description = property(_get_description)
     school = property(_get_school)
     concatname = property(_get_concatname)
 
@@ -86,8 +96,8 @@ class Competition(models.Model):
     category = models.CharField(max_length = 30)
 
     def get_absolute_url(self):
-        return '/competition/%i/%i/%i/' % (self.date.year, 
-            self.date.month, self.date.day)
+        return '/competition/%d/%s/%s/' % (self.date.year, 
+            get_month_abbr(get_name_month(int(self.date.month))), self.category.lower())
     
     def __unicode__(self):
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
@@ -128,7 +138,9 @@ class Test(models.Model):
             return self.testpaper_set.order_by('-score')[24].score
 
     def get_absolute_url(self):
-        return self.competition.get_absolute_url() + get_division_abbr(self.division) + '/'
+        return '/competition/%d/%s/%s/%s/' % (self.competition.date.year, 
+            get_month_abbr(get_name_month(int(self.competition.date.month))), 
+            self.competition.category.lower(), get_division_abbr(self.division))
     
     def __unicode__(self):
         division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',

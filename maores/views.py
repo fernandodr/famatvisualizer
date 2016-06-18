@@ -83,7 +83,7 @@ def view_mathlete(request, first, last, m_id):
 def redirect_competition(request, year, month, cat):
     cat = cat.title()
     months = {'dec':12, 'jan':1, 'feb':2, 'mar':3, 'apr':4,
-        'january':1, 'february':2, 'march':3}
+        'january':1, 'february':2, 'march':3,}
 
     try:
         year = int(year)
@@ -132,7 +132,21 @@ def view_test(request, year, month, day, abbr):
     return render(request, 'test.html',
         {'competition':competition,
         'test':test,
-        'testpapers':testpapers})
+        'testpapers':testpapers})   
+
+def redirect_view_test(request, year, month_abbr, types, category1):
+    year = int(year)
+    month = get_full_month(month_abbr)
+    cat = types.title()
+
+    try:
+        c = Competition.objects.get(date__year=year,
+            date__month=int(get_num_month(month)), category=cat)
+    except:
+        raise Http404('Could not find such a test')
+
+    return view_test(request, c.date.year, c.date.month, c.date.day, category1)
+
 
 def view_competitions(request):
     competitions = Competition.objects.all().order_by('-date')
@@ -140,6 +154,12 @@ def view_competitions(request):
     return render(request, 'competitions.html',
         {'competitions': competitions})
 
+def view_competitions_year(request, year):
+    year = int(year)
+    competitions = Competition.objects.filter(date__year = year)
+
+    return render(request, 'competitions.html',
+        {'competitions': competitions})
 
 def return_static_file(request, fname):
     try:
