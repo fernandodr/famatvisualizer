@@ -6,9 +6,15 @@ month_number = {1 : 'January', 2 : 'February', 3 : 'March', 4 : 'April', 5 : 'Ma
 				6 : 'June', 7 : 'July', 8 : 'August', 9 : 'September', 10 : 'October',
 				11 : 'November', 12 : 'December'}
 
+month_full_name = {'jan' : 'January', 'feb' : 'February', 'mar' : 'March', 'apr' : 'April', 
+					'may' : 'May', 'Jun' : 'June', 'Jul' : 'July', 'Aug' : 'August',
+					'sept' : 'September', 'oct' : 'October', 'nov' : 'November', 'dec' : 'December',}
+
 full_to_abbr_dict = {v: k for k, v in abbr_to_full_dict.items()}
 
 name_to_number_dict = {v: k for k, v in month_number.items()}
+
+full_to_abbr_month = {v: k for k, v in month_full_name.items()}
 
 def get_full_division(divName):
 	return abbr_to_full_dict[divName]
@@ -21,3 +27,9 @@ def get_name_month(monthNum):
 
 def get_num_month(monthNum):
 	return name_to_number_dict[monthNum]
+
+def get_full_month(month_abbr):
+	return month_full_name[month_abbr]
+
+def get_month_abbr(month_full):
+	return full_to_abbr_month[month_full]
