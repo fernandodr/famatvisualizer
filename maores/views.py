@@ -132,7 +132,21 @@ def view_test(request, year, month, day, abbr):
     return render(request, 'test.html',
         {'competition':competition,
         'test':test,
-        'testpapers':testpapers})    
+        'testpapers':testpapers})   
+
+def redirect_view_test(request, year, month_abbr, types, category1):
+    year = int(year)
+    month = get_full_month(month_abbr)
+    cat = types.title()
+
+    try:
+        c = Competition.objects.get(date__year=year,
+            date__month=int(get_num_month(month)), category=cat)
+    except:
+        raise Http404('Could not find such a test')
+
+    return view_test(request, c.date.year, c.date.month, c.date.day, category1)
+
 
 def view_competitions(request):
     competitions = Competition.objects.all().order_by('-date')

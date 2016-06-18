@@ -97,7 +97,7 @@ class Competition(models.Model):
 
     def get_absolute_url(self):
         return '/competition/%d/%s/%s/' % (self.date.year, 
-            get_name_month(int(self.date.month)).lower(), self.category.lower())
+            get_month_abbr(get_name_month(int(self.date.month))), self.category.lower())
     
     def __unicode__(self):
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
@@ -138,7 +138,9 @@ class Test(models.Model):
             return self.testpaper_set.order_by('-score')[24].score
 
     def get_absolute_url(self):
-        return self.competition.get_absolute_url() + get_division_abbr(self.division) + '/'
+        return '/competition/%d/%s/%s/%s/' % (self.competition.date.year, 
+            get_month_abbr(get_name_month(int(self.competition.date.month))), 
+            self.competition.category.lower(), get_division_abbr(self.division))
     
     def __unicode__(self):
         division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',

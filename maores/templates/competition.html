@@ -28,7 +28,7 @@
     <tbody>
     {% for test in tests %}
     <tr>
-        <td> <a href="{{ test.division }}/">{{ test.division }}</a> </td>
+        <td> <a href="{{ test.get_absolute_url }}">{{ test.division }}</a> </td>
         <td> {{ test.average|floatformat:2 }} </td>
         <td> {{ test.std|floatformat:2 }} </td>
         <td> {{ test.placing|floatformat:0 }} </td>
