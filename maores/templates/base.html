@@ -51,6 +51,11 @@ body{
         <li {% block navcompetitions %}{% endblock %}><a href="/competitions/">Competitions</a></li>
         <li {% block navschools %}{% endblock %}><a href="/schools/">Schools</a></li>
       </ul>
+      <form name="Search" id="Search" method="get" action="/search/" class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" name="q" class="form-control col-md-8" {% block navsearch %}placeholder="Search"{% endblock %}>
+        </div>
+      </form>
       <ul class="nav navbar-nav navbar-right">
         <li {% block navblog %}{% endblock %}><a href="/blog/">Blog</a></li>
       </ul>

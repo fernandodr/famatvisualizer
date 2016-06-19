@@ -16,16 +16,14 @@
 
         {% if query %}
             <h3>Results</h3>
-
-            {% for result in page.object_list %}
-                 <div class="well">
-                    <h5> <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h5>
-
-                    <p> {{ result.object.description|safe }} </p>
-                </div>
-            {% empty %}
-                <p>No results found.</p>
-            {% endfor %}
+            <div class="well">
+                {% for result in page.object_list %}
+                        <h5> <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h5>
+                        <p> {{ result.object.description|safe }} </p> <br />
+                {% empty %}
+                    <p>No results found.</p>
+                {% endfor %}
+            </div>
 
             {% if page.has_previous or page.has_next %}
                 <div>
