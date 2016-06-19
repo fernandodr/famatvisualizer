@@ -50,7 +50,7 @@ class Mathlete(models.Model):
         return self.first_name + " " + self.last_name
 
     def _get_description(self):
-        return "%s represented %s in %s. Throughout the span of %i competitions, %s maintained an average t-score of %.2f" % \
+        return "%s represented %s in %s. Throughout the span of %i competitions, %s maintained an average t-score of %.2f." % \
             (self._get_full_name(), self.school, self.get_years_active_str(),
                 self.testpaper_set.count(), self.first_name, self._get_avg_t_score())
 
@@ -86,7 +86,14 @@ class School(models.Model):
         self.num_mathletes = self._num_mathletes(*args, **kwargs)
         super(School, self).save(*args, **kwargs)
 
-    
+    def _get_description(self):
+        if "school" in self.name.lower():
+            return self.name + " has a MAO club of " + str(self.num_mathletes) + " mathletes."
+        else:
+            return self.name + " is a school with a MAO club of " + str(self.num_mathletes) + " mathletes."
+
+    title = property(lambda x: x.name)
+    description = property(_get_description)
     def __unicode__(self):
         return self.name
     
