@@ -161,6 +161,30 @@ def view_competitions_year(request, year):
     return render(request, 'competitions.html',
         {'competitions': competitions})
 
+def view_competition_report(request, year, month, types, id_school):
+    year = int(year)
+    month = get_full_month(month)
+    cat = types.title()
+    id_school = int(id_school)
+
+    try:
+        c = Competition.objects.get(date__year = year,
+            date__month = int(get_num_month(month)), category = cat)
+    except:
+        raise Http404('Not a valid competition')
+
+    try:
+        s = School.objects.get(id_num = id_school)
+    except:
+        raise Http404('Not a valid school ID')  
+
+    dictio = {}
+    for test in c.test_set.all():
+        dictio[test.division] = test.testpaper_set.filter(school = s)
+
+    return render(request, 'school_competition_report.html',
+                    {'dictio': dictio, 'c' : c})
+
 def return_static_file(request, fname):
     try:
         f = open(os.path.join(os.getcwd(), fname))
