@@ -3,19 +3,20 @@
 {% load staticfiles %}
 
 {% block title %}
-{{ competition }} 
+{{ c }} 
 {% endblock %}
 
 {% block navcompetitions %}class="active"{% endblock %}
 
 {% block content %}
 
-<h1> {{ c }} </h1>
+<h1 style="display:inline-block;">{{competition}} | </h1>
+<h2 style="display:inline-block;">{{school}}</h2>
 
 
 {%for division, test_papers in dictio.items%}
-<h2>{{division}}</h2>
-<div class="well", width="50%">
+<h3>{{division}}</h3>
+<div class="well">
 
 <table class="table table-striped table-hover ">
     <thead>
