@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^mathlete/first=([A-Za-z]+)&last=([A-Za-z]+)&id=([0-9]+)$', view_mathlete),
     url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/$', view_competition),
     url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/$', redirect_competition),
+    url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/([0-9]+)/$', view_competition_report),
     url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/$', redirect_view_test),
     url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/([A-Za-z]+[0-9]+)/$', view_test),
     url(r'^competitions/$', view_competitions),

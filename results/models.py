@@ -1,5 +1,6 @@
 from django.db import models
 from results.utils import *
+from django.utils.functional import cached_property
 import numpy as np
 
 
@@ -14,7 +15,7 @@ class Mathlete(models.Model):
     
     def _get_concatname(self):
         return self.last_name + self.first_name
-    
+    @cached_property
     def get_absolute_url(self):
         return '/mathlete/first=%s&last=%s&id=%s' % (self.first_name,
             self.last_name, self.mao_id)
@@ -24,10 +25,10 @@ class Mathlete(models.Model):
 
     def _get_school(self):
         return self.testpaper_set.all().order_by('-test__competition__date')[0].school
-
+    @cached_property
     def get_years_active(self):
         return sorted(list(set([t.test.competition.date.year for t in self.testpaper_set.all()])))
-
+    @cached_property
     def get_years_active_str(self):
         yrs = self.get_years_active()
         preform = [[yrs.pop(0)]]
@@ -69,7 +70,7 @@ class School(models.Model):
     region = models.IntegerField(default=0)
     id_num = models.IntegerField(blank=True, null=True)
     num_mathletes = models.IntegerField(null=True, blank=True)
-
+    @cached_property
     def get_absolute_url(self):
         return '/school/%i/' % self.id_num
 
@@ -101,7 +102,7 @@ class Competition(models.Model):
     date = models.DateField()
     name = models.CharField(max_length=60)
     category = models.CharField(max_length = 30)
-
+    @cached_property
     def get_absolute_url(self):
         return '/competition/%d/%s/%s/' % (self.date.year, 
             get_month_abbr(get_name_month(int(self.date.month))), self.category.lower())
@@ -143,7 +144,7 @@ class Test(models.Model):
                 return None
         else:
             return self.testpaper_set.order_by('-score')[24].score
-
+    @cached_property
     def get_absolute_url(self):
         return '/competition/%d/%s/%s/%s/' % (self.competition.date.year, 
             get_month_abbr(get_name_month(int(self.competition.date.month))), 
@@ -170,7 +171,7 @@ class Question(models.Model):
     num_correct = models.IntegerField(blank=True, null=True)
     num_blank = models.IntegerField(blank=True, null=True)
     num_wrong = models.IntegerField(blank=True, null=True)
-
+    @cached_property
     def save(self, *args, **kwargs):
         self.num_correct = len(self.questionanswer_set.filter(points=4))
         self.num_blank = len(self.questionanswer_set.filter(points=0))
@@ -211,7 +212,7 @@ class TestPaper(models.Model):
             return 50.0 + 10.0*(self.score - self.test.average)/(self.test.std)
         except:
             None
-
+    @cached_property
     def save(self, *args, **kwargs):
         self.score = np.sum([qa.points for qa in self.questionanswer_set.all()])
         self.right = len(self.questionanswer_set.filter(points=4))
@@ -236,21 +237,21 @@ class QuestionAnswer(models.Model):
             return 4
         else:
             return -1
-            
+    @cached_property      
     def save(self, *args, **kwargs):
         self.points = self._get_points()
         super(QuestionAnswer, self).save(*args, **kwargs)
-    
+    @cached_property
     def is_right(self):
         if self.points == 4:
             return True
         return False
-    
+    @cached_property
     def is_blank(self):
         if self.points == 0:
             return True
         return False
-    
+    @cached_property
     def is_wrong(self):
         if self.points == -1:
             return True;
