@@ -1,16 +1,21 @@
 from django.shortcuts import render
 from results.utils import *
 from results.models import *
+import datetime
 from results.figs import *
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
 
 def home_page(request):
+    start_time = datetime.datetime.now()
     fig1 = participation_over_time()
     fig2 = difficulty_overall()
-    return render(request, 'index.html', {'fig1': fig1, 'fig2':fig2})
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+    return render(request, 'index.html', {'fig1': fig1, 'fig2':fig2, 'loadtime': load_time})
 
 def view_mathletes(request):
+    start_time = datetime.datetime.now()
     if 'recent_mathletes' in request.COOKIES:
         has_recent = True
         r_mathletes = request.COOKIES['recent_mathletes']
@@ -20,25 +25,36 @@ def view_mathletes(request):
         r_lst = []
 
     top = Mathlete.objects.annotate(num_tests=Count('testpaper')).filter(num_tests__gt=5).order_by('-avg_t')[:20]
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return render(request, 'mathletes.html', {'has_recent':has_recent,
-       'recents':r_lst, 'top':top})
+       'recents':r_lst, 'top':top, 'loadtime': load_time})
 
 def view_school(request, spec_id):
+    start_time = datetime.datetime.now()
     try:
         school = School.objects.get(id_num = spec_id)
     except:
         return Http404('School ID number does not exist')
 
     mathletes = Mathlete.objects.annotate(num_tests=Count('testpaper')).filter(mao_id__startswith=str(school.id_num)).order_by('-avg_t')
-    return render(request, 'school.html', {'school': school, 'mathletes':mathletes})
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+
+    return render(request, 'school.html', {'school': school, 'mathletes':mathletes, 'loadtime': load_time})
 
 
 def view_schools(request):
+    start_time = datetime.datetime.now()
     schools = School.objects.order_by('name')
-    return render(request, 'schools.html', {'schools': schools})
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+
+    return render(request, 'schools.html', {'schools': schools, 'loadtime': load_time})
 
 def view_mathlete_menu(request, first, last):
+    start_time = datetime.datetime.now()
     lst = Mathlete.objects.filter(first_name=first, last_name=last)
     num_mathletes = len(lst)
 
@@ -48,9 +64,13 @@ def view_mathlete_menu(request, first, last):
         return HttpResponseRedirect('/mathlete/first=%s&last=%s&id=%s' \
             % (first, last, lst[0].mao_id))
     else:
-        return render(request, 'mathlete_menu.html', {'lst':lst})
+        end_time = datetime.datetime.now()
+        load_time = end_time-start_time
+
+        return render(request, 'mathlete_menu.html', {'lst':lst, 'loadtime': load_time})
 
 def view_mathlete(request, first, last, m_id):
+    start_time = datetime.datetime.now()
     try:
         mathlete = Mathlete.objects.get(\
             first_name=first, 
@@ -64,13 +84,6 @@ def view_mathlete(request, first, last, m_id):
     fig2 = handling_difficulty(mathlete)
     fig3 = histogram_of_scores(mathlete)
 
-    response = render(request, 'mathlete.html', 
-        {'mathlete': mathlete,
-        'papers':mathlete.testpaper_set.order_by('-test__competition__date'),
-        'fig1':fig1,
-        'fig2':fig2,
-        'fig3':fig3})
-
     if 'recent_mathletes' in request.COOKIES:
         r_mathletes = request.COOKIES['recent_mathletes']
         r_mathletes = str(mathlete.pk) + ' ' + r_mathletes
@@ -78,9 +91,18 @@ def view_mathlete(request, first, last, m_id):
         r_mathletes = str(mathlete.pk)
 
     response.set_cookie('recent_mathletes', r_mathletes)
-    return response
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+
+    return render(request, 'mathlete.html', 
+        {'mathlete': mathlete,
+        'papers':mathlete.testpaper_set.order_by('-test__competition__date'),
+        'fig1':fig1,
+        'fig2':fig2,
+        'fig3':fig3, 'loadtime': load_time})
 
 def redirect_competition(request, year, month, cat):
+    start_time = datetime.datetime.now()
     cat = cat.title()
     months = {'dec':12, 'jan':1, 'feb':2, 'mar':3, 'apr':4,
         'january':1, 'february':2, 'march':3,}
@@ -96,10 +118,13 @@ def redirect_competition(request, year, month, cat):
             date__month=month, category=cat)
     except:
         raise Http404('Could not find such a competition.')
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return view_competition(request, c.date.year, c.date.month, c.date.day)
 
 def view_competition(request, year, month, day):
+    start_time = datetime.datetime.now()
     year = int(year)
     month = int(month)
     day = int(day)
@@ -110,12 +135,15 @@ def view_competition(request, year, month, day):
         raise Http404("No competition on this day.")
 
     tests = competition.test_set.all()
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return render(request, 'competition.html',
         {'competition':competition,
-         'tests':tests})
+         'tests':tests, 'loadtime': load_time})
 
 def view_test(request, year, month, day, abbr):
+    start_time = datetime.datetime.now()
     year = int(year)
     month = int(month)
     day = int(day)
@@ -128,13 +156,16 @@ def view_test(request, year, month, day, abbr):
         raise Http404("This is not a valid test URL.")
 
     testpapers = test.testpaper_set.all()
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return render(request, 'test.html',
         {'competition':competition,
         'test':test,
-        'testpapers':testpapers})   
+        'testpapers':testpapers, 'loadtime': load_time})   
 
 def redirect_view_test(request, year, month_abbr, types, category1):
+    start_time = datetime.datetime.now()
     year = int(year)
     month = get_full_month(month_abbr)
     cat = types.title()
@@ -144,24 +175,33 @@ def redirect_view_test(request, year, month_abbr, types, category1):
             date__month=int(get_num_month(month)), category=cat)
     except:
         raise Http404('Could not find such a test')
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return view_test(request, c.date.year, c.date.month, c.date.day, category1)
 
 
 def view_competitions(request):
+    start_time = datetime.datetime.now()
     competitions = Competition.objects.all().order_by('-date')
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return render(request, 'competitions.html',
-        {'competitions': competitions})
+        {'competitions': competitions, 'loadtime': load_time})
 
 def view_competitions_year(request, year):
+    start_time = datetime.datetime.now()
     year = int(year)
     competitions = Competition.objects.filter(date__year = year)
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return render(request, 'competitions.html',
-        {'competitions': competitions})
+        {'competitions': competitions, 'loadtime': load_time})
 
 def view_competition_report(request, year, month, types, id_school):
+    start_time = datetime.datetime.now()
     try:
         year = int(year)
         month = get_full_month(month)
@@ -184,10 +224,12 @@ def view_competition_report(request, year, month, types, id_school):
     dictio = {}
     for test in competition.test_set.all():
         dictio[test.division] = test.testpaper_set.filter(school = school)
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
 
     return render(request, 'school_competition_report.html',
                     {'dictio': dictio, 'competition' : competition, 
-                    'school' : school})
+                    'school' : school, 'loadtime': load_time})
 
 def return_static_file(request, fname):
     try:
