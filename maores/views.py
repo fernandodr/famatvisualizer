@@ -16,20 +16,12 @@ def home_page(request):
 
 def view_mathletes(request):
     start_time = datetime.datetime.now()
-    if 'recent_mathletes' in request.COOKIES:
-        has_recent = True
-        r_mathletes = request.COOKIES['recent_mathletes']
-        r_lst = [Mathlete.objects.get(pk=int(s)) for s in r_mathletes.split()]
-    else:
-        has_recent = False
-        r_lst = []
 
     top = Mathlete.objects.annotate(num_tests=Count('testpaper')).filter(num_tests__gt=5).order_by('-avg_t')[:20]
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
 
-    return render(request, 'mathletes.html', {'has_recent':has_recent,
-       'recents':r_lst, 'top':top, 'loadtime': load_time})
+    return render(request, 'mathletes.html', {'top':top, 'loadtime': load_time})
 
 def view_school(request, spec_id):
     start_time = datetime.datetime.now()
@@ -84,13 +76,6 @@ def view_mathlete(request, first, last, m_id):
     fig2 = handling_difficulty(mathlete)
     fig3 = histogram_of_scores(mathlete)
 
-    if 'recent_mathletes' in request.COOKIES:
-        r_mathletes = request.COOKIES['recent_mathletes']
-        r_mathletes = str(mathlete.pk) + ' ' + r_mathletes
-    else:
-        r_mathletes = str(mathlete.pk)
-
-    response.set_cookie('recent_mathletes', r_mathletes)
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
 
