@@ -139,7 +139,7 @@ def handling_difficulty(mathlete):
                 paper__test__competition__date__year=year):
             q = qa.question
             pct_right = q.num_correct*1.0/(q.num_correct + q.num_blank + q.num_wrong)
-            diff_pairs.append((pct_right, int(qa.is_right())))
+            diff_pairs.append((pct_right, int(qa.is_right)))
         if len(diff_pairs) > 0:
             srtd_pairs = sorted(diff_pairs, key=lambda x : x[0])
             srtd_pairs = np.array(srtd_pairs)
