@@ -2,6 +2,7 @@ from models import *
 import matplotlib.pyplot as plt
 import seaborn as sns
 import mpld3
+from results.utils import *
 from mpld3 import plugins
 import datetime
 
@@ -28,6 +29,46 @@ def set_style():
     plt.rcParams['axes.titlesize'] = 18
     plt.rcParams['axes.labelsize'] = 14
     plt.rcParams['figure.figsize']=(9,5.5)
+
+def test_question_data(year, month_abbr, type, category1, detail):
+    year = int(year)
+    month = get_full_month(month_abbr)
+    cat = type.title()
+    div = get_full_division(category1)
+
+    N=30
+    rights=[]
+    blanks=[]
+    wrongs=[]
+    fig, ax = plt.subplots()
+    t = Test.objects.get(competition__date__year=2016, competition__date__month=int(get_num_month(month)),
+                            competition__category=cat, division = div)
+    for question in Question.objects.filter(test=t):
+        right_add = 100*(1.0*question.num_correct)/(question.num_correct+question.num_blank+question.num_wrong)
+        blank_add = 100*(1.0*question.num_blank)/(question.num_correct+question.num_blank+question.num_wrong)
+        wrong_add = 100*(1.0*question.num_wrong)/(question.num_correct+question.num_blank+question.num_wrong)
+        rights.append(right_add)
+        blanks.append(blank_add)
+        wrongs.append(wrong_add)
+
+    thing = [x+y for x,y in zip(rights, blanks)]
+    ind = np.arange(1,N+1)
+    width = 0.5
+    plt.ylim([0,32])
+    p1 = plt.barh(ind, rights, width, color='g')
+    p2 = plt.barh(ind, blanks, width, color='0.25', left=rights)
+    p3 = plt.barh(ind, wrongs, width, color='r', left=thing)
+    plt.ylabel('Questions')
+    plt.title('Question Distribution')
+    plt.yticks(ind + width/2., ["Q"+str(i) for i in range(1,31)])
+    plt.xticks(np.arange(0, 101, 10))
+    plt.legend((p1[0], p2[0],p3[0]), ('Right', 'Blank', 'Wrong'))
+    fig_html = mpld3.fig_to_html(fig)
+    plt.close()
+    return fig_html
+
+
+
 
 def participation_over_time():
     set_style()
