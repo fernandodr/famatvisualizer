@@ -14,6 +14,13 @@ def home_page(request):
     load_time = end_time-start_time
     return render(request, 'index.html', {'fig1': fig1, 'fig2':fig2, 'loadtime': load_time})
 
+def view_test_data(request, year, month_abbr, types, category1, detail):
+    start_time = datetime.datetime.now()
+    fig1 = test_question_data(year, month_abbr, types, category1, detail)
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+    return render(request, 'question_chart.html', {'fig1': fig1, 'loadtime': load_time})
+
 def view_mathletes(request):
     start_time = datetime.datetime.now()
     if 'recent_mathletes' in request.COOKIES:
