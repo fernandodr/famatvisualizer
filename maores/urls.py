@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/([a-z]+)/$', view_test_data),
     url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/([A-Za-z]+[0-9]+)/$', view_test),
     url(r'^competitions/$', view_competitions),
+    url(r'^competitions/([a-z]+)/$', view_competitions_tabbed),
     url(r'^competitions/([0-9]+)/$',view_competitions_year),
     url(r'^schools/$', view_schools),
     url(r'^school/([0-9]+)/$', view_school),

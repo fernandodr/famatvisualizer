@@ -16,7 +16,10 @@ def home_page(request):
 
 def view_test_data(request, year, month_abbr, types, category1, detail):
     start_time = datetime.datetime.now()
-    fig1 = test_question_data(year, month_abbr, types, category1, detail)
+    try:
+        fig1 = test_question_data(year, month_abbr, types, category1, detail)
+    except:
+        return Http404('Not a valid competition')
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
     return render(request, 'question_chart.html', {'fig1': fig1, 'loadtime': load_time})
@@ -196,6 +199,19 @@ def view_competitions(request):
 
     return render(request, 'competitions.html',
         {'competitions': competitions, 'loadtime': load_time})
+
+def view_competitions_tabbed(request, tabbed):
+    start_time = datetime.datetime.now()
+    years = sorted(list(set([c.date.year for c in Competition.objects.all()])))
+    dict = {}
+    for year in years:
+        dict.update({year: [Competition.objects.filter(date__year=year)]})
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+
+    return render(request, 'experimental_competitions.html',
+                    {'dict' : dict})
+
 
 def view_competitions_year(request, year):
     start_time = datetime.datetime.now()

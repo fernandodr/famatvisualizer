@@ -1,0 +1,86 @@
+ <style>
+    ul.tabs{
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        ul.tabs li{
+            background: none;
+            color: #222;
+            display: inline-block;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        ul.tabs li.current{
+            background: #ededed;
+            color: #222;
+        }
+
+        .tab-content{
+            display: none;
+            background: #ededed;
+            padding: 15px;
+        }
+
+        .tab-content.current{
+            display: inherit;
+        }
+</style>
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ mathlete.mao_id }}
+{% endblock %}
+
+{% block navmathletes %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> Yearly Competitions </h1>
+
+<div class="well">
+{% for key, value in dict.items %}
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">{{key}}</li>
+        
+    </ul>
+
+    <div id="tab-1" class="tab-content current">
+        {{value}}
+    </div>
+    <div id="tab-2" class="tab-content">
+         {{value}}
+    </div>
+    <div id="tab-3" class="tab-content">
+        {{value}}
+    </div>
+    <div id="tab-4" class="tab-content">
+        {{value}}
+    </div>
+
+</div><!-- container -->
+
+{% endfor %}
+
+{% endblock %}
+
+
+<script>
+$(document).ready(function(){
+    
+    $('ul.tabs li').click(function(){
+        var tab_id = $(this).attr('data-tab');
+
+        $('ul.tabs li').removeClass('current');
+        $('.tab-content').removeClass('current');
+
+        $(this).addClass('current');
+        $("#"+tab_id).addClass('current');
+    })
+
+})
+</script>
