@@ -43,35 +43,41 @@
 <h1> Yearly Competitions </h1>
 
 <div class="well">
-{% for key, value in dict.items %}
-    <ul class="tabs">
-        <li class="tab-link current" data-tab="tab-1">{{key}}</li>
-        
-    </ul>
-
-    <div id="tab-1" class="tab-content current">
-        {{value}}
-    </div>
-    <div id="tab-2" class="tab-content">
-         {{value}}
-    </div>
-    <div id="tab-3" class="tab-content">
-        {{value}}
-    </div>
-    <div id="tab-4" class="tab-content">
-        {{value}}
-    </div>
-
-</div><!-- container -->
-
+<ul class="tabs">
+{% for year in years %}
+    {% if forloop.first %}
+        <li class="tab-link current" data-tab="tab-{{year}}">{{year}}</li>
+    {% else %}
+        <li class="tab-link" data-tab="tab-{{year}}">{{year}}</li>
+    {% endif %}
 {% endfor %}
+    <li class="tab-link" data-tab="tab-more">More</li>
+</ul>
 
-{% endblock %}
+{% for year, competitions in dict.items %}
+    {% if forloop.first %}
+        <div id="tab-{{year}}" class="tab-content current">
+    {% else %}
+        <div id="tab-{{year}}" class="tab-content">
+    {% endif %}
 
+    {% for comp in competitions %}
+        <h2> <a href="{{ comp.get_absolute_url }}">{{ comp }}</a></h2>
+
+        <ul>
+        {% for test in comp.test_set.all %}
+            <li> <a href="{{ test.get_absolute_url }}">{{ test.division }} Individual</a> </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+    </div>
+{% endfor %}
+    <div id="tab-more" class="tab-content">
+    Unfortunately, we have only parsed as many years of Mu Alpha Theta as are publicly available online.
+</div>
 
 <script>
 $(document).ready(function(){
-    
     $('ul.tabs li').click(function(){
         var tab_id = $(this).attr('data-tab');
 
@@ -81,6 +87,6 @@ $(document).ready(function(){
         $(this).addClass('current');
         $("#"+tab_id).addClass('current');
     })
-
 })
 </script>
+{% endblock %}
