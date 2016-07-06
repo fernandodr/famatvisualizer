@@ -37,24 +37,22 @@ def test_question_data(year, month_abbr, type, category1, detail):
     div = get_full_division(category1)
 
     N=30
-    rights=[]
-    blanks=[]
-    wrongs=[]
+    rights, blanks, wrongs = [], [], []
     fig, ax = plt.subplots()
-    t = Test.objects.get(competition__date__year=2016, competition__date__month=int(get_num_month(month)),
+    t = Test.objects.get(competition__date__year=year, competition__date__month=int(get_num_month(month)),
                             competition__category=cat, division = div)
     for question in Question.objects.filter(test=t):
-        right_add = 100*(1.0*question.num_correct)/(question.num_correct+question.num_blank+question.num_wrong)
-        blank_add = 100*(1.0*question.num_blank)/(question.num_correct+question.num_blank+question.num_wrong)
-        wrong_add = 100*(1.0*question.num_wrong)/(question.num_correct+question.num_blank+question.num_wrong)
+        right_add = (100.0*question.num_correct)/(question.num_correct+question.num_blank+question.num_wrong)
+        blank_add = (100.0*question.num_blank)/(question.num_correct+question.num_blank+question.num_wrong)
+        wrong_add = (100.0*question.num_wrong)/(question.num_correct+question.num_blank+question.num_wrong)
         rights.append(right_add)
         blanks.append(blank_add)
         wrongs.append(wrong_add)
 
-    thing = [x+y for x,y in zip(rights, blanks)]
+    rights_and_blanks = [x+y for x,y in zip(rights, blanks)]
     ind = np.arange(1,N+1)
     width = 0.5
-    plt.ylim([0,32])
+    plt.ylim([0,N+2])
     p1 = plt.barh(ind, rights, width, color='g')
     p2 = plt.barh(ind, blanks, width, color='0.25', left=rights)
     p3 = plt.barh(ind, wrongs, width, color='r', left=thing)
