@@ -202,15 +202,16 @@ def view_competitions(request):
 
 def view_competitions_tabbed(request, tabbed):
     start_time = datetime.datetime.now()
-    years = sorted(list(set([c.date.year for c in Competition.objects.all()])))
+    years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
     dict = {}
     for year in years:
-        dict.update({year: [Competition.objects.filter(date__year=year)]})
+        dict[year] = list(Competition.objects.filter(date__year=year))
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
+    print years
 
     return render(request, 'experimental_competitions.html',
-                    {'dict' : dict})
+                    {'dict' : dict, 'years':years, 'loadtime': load_time})
 
 
 def view_competitions_year(request, year):
