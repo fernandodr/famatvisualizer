@@ -13,13 +13,13 @@
         }
 
         ul.tabs li.current{
-            background: #ededed;
+            background: white;
             color: #222;
         }
 
         .tab-content{
             display: none;
-            background: #ededed;
+            background: white;
             padding: 15px;
         }
 
@@ -40,9 +40,8 @@
 
 {% block content %}
 
-<h1> Yearly Competitions </h1>
+<h1> Competitions </h1>
 
-<div class="well">
 <ul class="tabs">
 {% for year in years %}
     {% if forloop.first %}
