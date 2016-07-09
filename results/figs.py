@@ -30,43 +30,40 @@ def set_style():
     plt.rcParams['axes.labelsize'] = 14
     plt.rcParams['figure.figsize']=(9,5.5)
 
-def test_question_data(year, month_abbr, type, category1, detail):
-    year = int(year)
-    month = get_full_month(month_abbr)
-    cat = type.title()
-    div = get_full_division(category1)
-
-    N=30
+def test_detail_report(test):
+    # get the necessary data
+    num_questions = test.question_set.count()
+    num_people = test.testpaper_set.count()
     rights, blanks, wrongs = [], [], []
-    fig, ax = plt.subplots()
-    t = Test.objects.get(competition__date__year=year, competition__date__month=int(get_num_month(month)),
-                            competition__category=cat, division = div)
-    for question in Question.objects.filter(test=t):
-        right_add = (100.0*question.num_correct)/(question.num_correct+question.num_blank+question.num_wrong)
-        blank_add = (100.0*question.num_blank)/(question.num_correct+question.num_blank+question.num_wrong)
-        wrong_add = (100.0*question.num_wrong)/(question.num_correct+question.num_blank+question.num_wrong)
-        rights.append(right_add)
-        blanks.append(blank_add)
-        wrongs.append(wrong_add)
-
+    for question in test.question_set.order_by('number'):
+        rights.append(100.0*question.num_correct/num_people)
+        blanks.append(100.0*question.num_blank/num_people)
+        wrongs.append(100.0*question.num_wrong/num_people)
+    print rights
+    print wrongs
+    print blanks
     rights_and_blanks = [x+y for x,y in zip(rights, blanks)]
-    ind = np.arange(1,N+1)
-    width = 0.5
-    plt.ylim([0,N+2])
-    p1 = plt.barh(ind, rights, width, color='g')
-    p2 = plt.barh(ind, blanks, width, color='0.25', left=rights)
-    p3 = plt.barh(ind, wrongs, width, color='r', left=thing)
+
+    width = 0.7
+    ind = np.arange(1,num_questions+1)-width/2.
+    
+    set_style()
+
+    fig, ax = plt.subplots(figsize=[10,22])
+    plt.ylim([0.5,num_questions+width])
+    plt.xlim([0,100])
+    p1 = plt.barh(ind, rights, width, color=sns.color_palette()[1], edgecolor='none', label='Right')
+    p2 = plt.barh(ind, blanks, width, color=sns.color_palette()[5], edgecolor='none', left=rights, label='Blank')
+    p3 = plt.barh(ind, wrongs, width, color=sns.color_palette()[2], edgecolor='none', left=rights_and_blanks,label='Wrong')
     plt.ylabel('Questions')
-    plt.title('Question Distribution')
     plt.yticks(ind + width/2., ["Q"+str(i) for i in range(1,31)])
+    ax.xaxis.tick_top()
+    ax.invert_yaxis()
     plt.xticks(np.arange(0, 101, 10))
-    plt.legend((p1[0], p2[0],p3[0]), ('Right', 'Blank', 'Wrong'))
-    fig_html = mpld3.fig_to_html(fig)
+    plt.tight_layout()
+    fig_html = mpld3.fig_to_d3(fig)
     plt.close()
-    return fig_html
-
-
-
+    return fig_html.replace("\n","\r").replace("var figwidth = 9.0 * 22","var figwidth = $(window).width()*.9;").replace("var figheight = 6.0 * 80","var figheight = $(window).height()*.9;")
 
 def participation_over_time():
     set_style()
