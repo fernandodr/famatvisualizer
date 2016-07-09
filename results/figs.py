@@ -2,6 +2,7 @@ from models import *
 import matplotlib.pyplot as plt
 import seaborn as sns
 import mpld3
+from results.utils import *
 from mpld3 import plugins
 import datetime
 
@@ -28,6 +29,41 @@ def set_style():
     plt.rcParams['axes.titlesize'] = 18
     plt.rcParams['axes.labelsize'] = 14
     plt.rcParams['figure.figsize']=(9,5.5)
+
+def test_detail_report(test):
+    # get the necessary data
+    num_questions = test.question_set.count()
+    num_people = test.testpaper_set.count()
+    rights, blanks, wrongs = [], [], []
+    for question in test.question_set.order_by('number'):
+        rights.append(100.0*question.num_correct/num_people)
+        blanks.append(100.0*question.num_blank/num_people)
+        wrongs.append(100.0*question.num_wrong/num_people)
+    print rights
+    print wrongs
+    print blanks
+    rights_and_blanks = [x+y for x,y in zip(rights, blanks)]
+
+    width = 0.7
+    ind = np.arange(1,num_questions+1)-width/2.
+    
+    set_style()
+
+    fig, ax = plt.subplots(figsize=[10,22])
+    plt.ylim([0.5,num_questions+width])
+    plt.xlim([0,100])
+    p1 = plt.barh(ind, rights, width, color=sns.color_palette()[1], edgecolor='none', label='Right')
+    p2 = plt.barh(ind, blanks, width, color=sns.color_palette()[5], edgecolor='none', left=rights, label='Blank')
+    p3 = plt.barh(ind, wrongs, width, color=sns.color_palette()[2], edgecolor='none', left=rights_and_blanks,label='Wrong')
+    plt.ylabel('Questions')
+    plt.yticks(ind + width/2., ["Q"+str(i) for i in range(1,31)])
+    ax.xaxis.tick_top()
+    ax.invert_yaxis()
+    plt.xticks(np.arange(0, 101, 10))
+    plt.tight_layout()
+    fig_html = mpld3.fig_to_d3(fig)
+    plt.close()
+    return fig_html.replace("\n","\r").replace("var figwidth = 9.0 * 22","var figwidth = $(window).width()*.9;").replace("var figheight = 6.0 * 80","var figheight = $(window).height()*.9;")
 
 def participation_over_time():
     set_style()

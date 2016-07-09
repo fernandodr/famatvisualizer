@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+MAO Visualizer
+{% endblock %}
+
+{% block navhome %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> Question Data </h1>
+
+<div class="well" width=500px>
+<h2> Chart</h2>
+This shows how questions are answered for this test.
+<center> {{ fig1|safe }} </center>
+</div>
+{% endblock %}

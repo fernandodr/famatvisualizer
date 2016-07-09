@@ -1,0 +1,91 @@
+ <style>
+    ul.tabs{
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        ul.tabs li{
+            background: none;
+            color: #222;
+            display: inline-block;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        ul.tabs li.current{
+            background: white;
+            color: #222;
+        }
+
+        .tab-content{
+            display: none;
+            background: white;
+            padding: 15px;
+        }
+
+        .tab-content.current{
+            display: inherit;
+        }
+</style>
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ mathlete.mao_id }}
+{% endblock %}
+
+{% block navmathletes %}class="active"{% endblock %}
+
+{% block content %}
+
+<h1> Competitions </h1>
+
+<ul class="tabs">
+{% for year in years %}
+    {% if forloop.first %}
+        <li class="tab-link current" data-tab="tab-{{year}}">{{year}}</li>
+    {% else %}
+        <li class="tab-link" data-tab="tab-{{year}}">{{year}}</li>
+    {% endif %}
+{% endfor %}
+    <li class="tab-link" data-tab="tab-more">More</li>
+</ul>
+
+{% for year, competitions in dict.items %}
+    {% if forloop.first %}
+        <div id="tab-{{year}}" class="tab-content current">
+    {% else %}
+        <div id="tab-{{year}}" class="tab-content">
+    {% endif %}
+
+    {% for comp in competitions %}
+        <h2> <a href="{{ comp.get_absolute_url }}">{{ comp }}</a></h2>
+
+        <ul>
+        {% for test in comp.test_set.all %}
+            <li> <a href="{{ test.get_absolute_url }}">{{ test.division }} Individual</a> </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+    </div>
+{% endfor %}
+    <div id="tab-more" class="tab-content">
+    Unfortunately, we have only parsed as many years of Mu Alpha Theta as are publicly available online.
+</div>
+
+<script>
+$(document).ready(function(){
+    $('ul.tabs li').click(function(){
+        var tab_id = $(this).attr('data-tab');
+
+        $('ul.tabs li').removeClass('current');
+        $('.tab-content').removeClass('current');
+
+        $(this).addClass('current');
+        $("#"+tab_id).addClass('current');
+    })
+})
+</script>
+{% endblock %}
