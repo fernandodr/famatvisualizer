@@ -171,7 +171,7 @@ class Question(models.Model):
     num_correct = models.IntegerField(blank=True, null=True)
     num_blank = models.IntegerField(blank=True, null=True)
     num_wrong = models.IntegerField(blank=True, null=True)
-    @cached_property
+
     def save(self, *args, **kwargs):
         self.num_correct = len(self.questionanswer_set.filter(points=4))
         self.num_blank = len(self.questionanswer_set.filter(points=0))
