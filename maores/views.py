@@ -209,12 +209,12 @@ def view_competitions(request):
     return render(request, 'competitions.html',
         {'competitions': competitions, 'loadtime': load_time})
 
-def view_competitions_tabbed(request, tabbed):
+def view_competitions_tabbed(request):
     start_time = datetime.datetime.now()
     years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
     dict = {}
     for year in years:
-        dict[year] = list(Competition.objects.filter(date__year=year))
+        dict[year] = list(Competition.objects.filter(date__year=year).order_by('-date'))
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
     print years
