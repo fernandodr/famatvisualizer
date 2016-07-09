@@ -14,12 +14,21 @@ def home_page(request):
     load_time = end_time-start_time
     return render(request, 'index.html', {'fig1': fig1, 'fig2':fig2, 'loadtime': load_time})
 
-def view_test_data(request, year, month_abbr, types, category1, detail):
+def view_test_detail_report(request, year, month_abbr, category, division_abbr):
     start_time = datetime.datetime.now()
+
+    year = int(year)
+    month = get_num_month(get_full_month(month_abbr))
+    category = category.title()
+    division = get_full_division(division_abbr)
+
     try:
-        fig1 = test_question_data(year, month_abbr, types, category1, detail)
+        test = Test.objects.get(competition__date__year=year, competition__date__month=month,
+                            competition__category=category, division = division)
     except:
         return Http404('Not a valid competition')
+
+    fig1 = test_detail_report(test)
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
     return render(request, 'question_chart.html', {'fig1': fig1, 'loadtime': load_time})
