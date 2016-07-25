@@ -1,0 +1,9 @@
+django==1.9.7
+django-allauth==0.25.2
+django-haystack==2.4.1
+DateTime==4.1.1
+BeautifulSoup==3.2.1
+matplotlib==1.5.1
+seaborn==0.7.0
+mpld3==0.2
+numpy==1.11.1
