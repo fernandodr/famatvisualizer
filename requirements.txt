@@ -1,4 +1,4 @@
-django==1.9.7
+Django==1.9.7
 django-allauth==0.25.2
 django-haystack==2.4.1
 DateTime==4.1.1
