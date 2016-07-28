@@ -6,6 +6,9 @@ from results.figs import *
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
 
+def ping_pong(request):
+    return HttpResponse('pong')
+    
 def home_page(request):
     start_time = datetime.datetime.now()
     fig1 = participation_over_time()

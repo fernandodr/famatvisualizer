@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^school/([0-9]+)/$', view_school),
     url(r'^search/', include('haystack.urls')),
     url(r'^static/(.*)', return_static_file),
+    url(r'ping/', ping_pong),
 ]
