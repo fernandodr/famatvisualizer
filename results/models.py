@@ -15,7 +15,7 @@ class Mathlete(models.Model):
     
     def _get_concatname(self):
         return self.last_name + self.first_name
-    @cached_property
+    
     def get_absolute_url(self):
         return '/mathlete/first=%s&last=%s&id=%s' % (self.first_name,
             self.last_name, self.mao_id)
@@ -25,10 +25,10 @@ class Mathlete(models.Model):
 
     def _get_school(self):
         return self.testpaper_set.all().order_by('-test__competition__date')[0].school
-    @cached_property
+    
     def get_years_active(self):
         return sorted(list(set([t.test.competition.date.year for t in self.testpaper_set.all()])))
-    @cached_property
+    
     def get_years_active_str(self):
         yrs = self.get_years_active()
         preform = [[yrs.pop(0)]]
