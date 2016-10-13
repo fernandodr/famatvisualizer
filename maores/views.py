@@ -1,4 +1,4 @@
-from django.shortcuts import render
+rr
 from results.utils import *
 from results.models import *
 import datetime
