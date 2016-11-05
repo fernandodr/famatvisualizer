@@ -25,7 +25,10 @@ SECRET_KEY = '*65q63hs*sbnwsg1zb9tjz!#xl3zv^7m^qa7vc$#bq0tt+)(9k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'famatvisualizer.com',
+    'http://django-env.pgt48jkrwg.us-west-2.elasticbeanstalk.com/'
+]
 
 
 # Application definition
