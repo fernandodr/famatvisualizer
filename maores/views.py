@@ -1,10 +1,10 @@
-rr
 from results.utils import *
 from results.models import *
 import datetime
 from results.figs import *
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
+from django.shortcuts import render
 
 def ping_pong(request):
     return HttpResponse('pong')
