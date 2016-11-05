@@ -114,7 +114,7 @@ if True:
             'NAME': 'famatviz',
             'USER': 'frivera',
             'PASSWORD': 'b-A3GYaO1S',
-            'HOST': 'famatviz.cy7xelq2fymc.us-west-2.rds.amazonaws.com:5432',
+            'HOST': 'famatviz.cy7xelq2fymc.us-west-2.rds.amazonaws.com',
             'PORT': '5432',
         }
     }
