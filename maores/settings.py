@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'maores.wsgi.application'
 
 
 
-if True:
+if False:
     # DATABASES = {
     #     'default': {
     #         'ENGINE': 'django.db.backends.postgresql',
