@@ -97,15 +97,25 @@ WSGI_APPLICATION = 'maores.wsgi.application'
 
 
 
-if 'RDS_HOSTNAME' in os.environ:
+if True:
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': os.environ['RDS_DB_NAME'],
+    #         'USER': os.environ['RDS_USERNAME'],
+    #         'PASSWORD': os.environ['RDS_PASSWORD'],
+    #         'HOST': os.environ['RDS_HOSTNAME'],
+    #         'PORT': os.environ['RDS_PORT'],
+    #     }
+    # }
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
+            'NAME': 'famatviz',
+            'USER': 'frivera',
+            'PASSWORD': 'b-A3GYaO1S',
+            'HOST': 'famatviz.cy7xelq2fymc.us-west-2.rds.amazonaws.com:5432',
+            'PORT': '5432',
         }
     }
 else:
