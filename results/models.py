@@ -219,8 +219,12 @@ class TestPaper(models.Model):
         self.blank = len(self.questionanswer_set.filter(points=0))
         self.wrong = len(self.questionanswer_set.filter(points=-1))
         self.first_wrong = self._first_wrong(*args, **kwargs)
+        super(TestPaper, self).save(*args, **kwargs)
+
+    def save_post_test(self, *args, **kwargs):
         self.t_score = self._get_t_score(*args, **kwargs)
         super(TestPaper, self).save(*args, **kwargs)
+
 
 class QuestionAnswer(models.Model):
     paper = models.ForeignKey(TestPaper)

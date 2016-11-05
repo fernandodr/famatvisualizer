@@ -108,9 +108,12 @@ def import_detail_report(comp_name, date, name, category, divs=None, region=None
                         for j, answer in enumerate(cells):
                             qa = QuestionAnswer(paper=paper, question=questions[j], givenanswer=answer.strip('&nbsp;'))
                             qa.save()
+                        paper.save()
                     except:
                         num_failures += 1
                 test.save()
+                for paper in TestPaper.objects.filter(test=test):
+                    paper.save_post_test()
                 print "%s (%i)" % (division, num_failures)
                     
            except:
