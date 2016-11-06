@@ -162,7 +162,7 @@ def view_test(request, year, month, day, abbr):
     except:
         raise Http404("This is not a valid test URL.")
 
-    testpapers = test.testpaper_set.all()
+    testpapers = test.testpaper_set.all().order_by('place')
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
 
