@@ -11,11 +11,9 @@ def ping_pong(request):
     
 def home_page(request):
     start_time = datetime.datetime.now()
-    fig1 = participation_over_time()
-    fig2 = difficulty_overall()
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
-    return render(request, 'index.html', {'fig1': fig1, 'fig2':fig2, 'loadtime': load_time})
+    return render(request, 'index.html', {'loadtime': load_time})
 
 def view_test_detail_report(request, year, month_abbr, category, division_abbr):
     start_time = datetime.datetime.now()
