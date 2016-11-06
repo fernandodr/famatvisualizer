@@ -20,7 +20,7 @@ class Mathlete(models.Model):
             self.last_name, self.mao_id)
 
     def _get_avg_t_score(self):
-        return np.average([x.t_score for x in self.testpaper_set.all()])
+        return np.average([x.t_score for x in self.testpaper_set.all() if x.t_score is not None])
 
     def _get_school(self):
         return self.testpaper_set.all().order_by('-test__competition__date')[0].school
