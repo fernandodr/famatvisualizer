@@ -3,7 +3,6 @@ from results.utils import *
 from django.utils.functional import cached_property
 import numpy as np
 
-
 class Mathlete(models.Model):
     first_name = models.CharField(max_length = 30)
     last_name = models.CharField(max_length = 30)
