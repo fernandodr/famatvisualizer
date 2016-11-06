@@ -1,6 +1,7 @@
 *.pyc
 *.sqlite3
 results/migrations/
+www/static
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
