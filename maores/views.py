@@ -66,32 +66,26 @@ def view_schools(request):
     return render(request, 'schools.html', {'schools': schools, 'loadtime': load_time})
 
 def view_mathlete_menu(request, first, last):
-    start_time = datetime.datetime.now()
     lst = Mathlete.objects.filter(first_name=first, last_name=last)
     num_mathletes = len(lst)
 
     if num_mathletes == 0:
         raise Http404(first + ' ' + last + ' does not appear in the MAO database.')
     elif num_mathletes == 1:
-        return HttpResponseRedirect('/mathlete/first=%s&last=%s&id=%s' \
-            % (first, last, lst[0].mao_id))
+        return HttpResponseRedirect('/mathlete/%i' \
+            % lst[0].pk)
     else:
         end_time = datetime.datetime.now()
         load_time = end_time-start_time
 
         return render(request, 'mathlete_menu.html', {'lst':lst, 'loadtime': load_time})
 
-def view_mathlete(request, first, last, m_id):
+def view_mathlete_from_id(request, id):
     start_time = datetime.datetime.now()
     try:
-        mathlete = Mathlete.objects.get(\
-            first_name=first, 
-            last_name=last, 
-            mao_id=m_id)
+        mathlete = Mathlete.objects.get(pk=int(id))
     except:
-        return HttpResponseRedirect('/mathlete/first=%s&last=%s' \
-            % (first,last))
-
+        return Http404('No such mathlete exists.')
     fig1 = scores_over_time(mathlete)
     fig2 = handling_difficulty(mathlete)
     fig3 = histogram_of_scores(mathlete)
@@ -105,6 +99,32 @@ def view_mathlete(request, first, last, m_id):
         'fig1':fig1,
         'fig2':fig2,
         'fig3':fig3, 'loadtime': load_time})
+
+def view_mathlete(request, first, last, m_id):
+    start_time = datetime.datetime.now()
+    try:
+        mathlete = Mathlete.objects.get(\
+            first_name=first, 
+            last_name=last, 
+            mao_id=m_id)
+    except:
+        return HttpResponseRedirect('/mathlete/first=%s&last=%s' \
+            % (first,last))
+
+    return view_mathlete_from_id(request, str(mathlete.pk))
+
+def mathlete_scores_csv(request, id):
+    try:
+        mathlete = Mathlete.objects.get(pk=id)
+    except:
+        return Http404("No such mathlete exists.")
+
+    s = 'competition,tscore'
+    for paper in mathlete.testpaper_set.order_by('test__competition__date'):
+        s += '\n%s,%.3f' % (str(paper.test.competition) + ' (' + str(paper.test.division) + ')', 
+            paper.t_score)
+
+    return HttpResponse(s)
 
 def redirect_competition(request, year, month, cat):
     start_time = datetime.datetime.now()
