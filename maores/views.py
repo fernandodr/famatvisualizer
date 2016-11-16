@@ -200,7 +200,7 @@ def view_competitions_tabbed(request):
     years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
     dict = {}
     for year in years:
-        dict[year] = list(Competition.objects.filter(date__year=year).order_by('-date'))
+        dict[year] = list(Competition.objects.filter(date__year=year).order_by('date'))
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
     print years
