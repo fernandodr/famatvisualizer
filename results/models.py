@@ -16,8 +16,7 @@ class Mathlete(models.Model):
         return self.last_name + self.first_name
     
     def get_absolute_url(self):
-        return '/mathlete/first=%s&last=%s&id=%s' % (self.first_name,
-            self.last_name, self.mao_id)
+        return '/mathlete/%i' % self.pk
 
     def _get_avg_t_score(self):
         return np.average([x.t_score for x in self.testpaper_set.all() if x.t_score is not None])
