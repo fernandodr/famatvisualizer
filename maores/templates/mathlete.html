@@ -10,7 +10,8 @@
 
 {% block content %}
 
-<h1> {{ mathlete.first_name }} {{ mathlete.last_name }} ({{ mathlete.school }}) </h1>
+<h1> {{ mathlete.first_name }} {{ mathlete.last_name }} </h1>
+<h2> {{ mathlete.school }} {{mathlete.get_years_active_str|safe}} </h2>
 
 <div class="well">
 <h2> Results List </h2>
