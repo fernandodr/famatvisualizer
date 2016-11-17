@@ -32,6 +32,9 @@
         <th class='un'> Wrong </th>
         <th class='un'> Blank </th>
         <th class='un'> T-Score </th>
+        {% if request.user.is_authenticated and "@ahschool.com" in request.user.email %}
+        <th class='un'> S-Score </th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -45,6 +48,9 @@
         <td class='un'> {{ paper.wrong }} </td>
         <td class='un'> {{ paper.blank }} </td>
         <td class='un'> {{ paper.t_score|floatformat:3 }} </td>
+        {% if request.user.is_authenticated and "@ahschool.com" in request.user.email %}
+        <td class='un'> {{ paper.s_score|floatformat:3 }} </td>
+        {% endif %}
     </tr>
     {% endfor %}
     </tbody>
