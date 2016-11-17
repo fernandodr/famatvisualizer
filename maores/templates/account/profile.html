@@ -8,8 +8,8 @@
 
 {% block content %}
 
-<h1> {{ request.user }} </h1>
+<h1> {{ request.user.first_name }} {{ request.user.last_name }} </h1>
 
-Here is a description of your profile.
+{{ request.user.e_mail }}
 
 {% endblock %}
