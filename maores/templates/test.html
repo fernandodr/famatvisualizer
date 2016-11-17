@@ -104,6 +104,10 @@
                 <td>T-Score</td>
                 <td>{{ paper.t_score|floatformat:3 }}</td>
               </tr>
+              {% if request.user.is_authenticated and "@ahschool.com" in request.user.email %}<tr>
+                <td>S-Score</td>
+                <td>{{ paper.s_score|floatformat:3 }}</td>
+              </tr>{% endif %}
             </tbody>
             </table>
             </p>
