@@ -47,3 +47,11 @@
   top: 100%;
   left: 0;
 }
+
+/* shortening tables */
+
+@media (max-width:480px) {
+.un{
+   visibility:hidden;
+}
+}
