@@ -16,6 +16,11 @@
 
 <h2>Results</h2>
 
+<div class="form-group label-floating">
+  <label class="control-label" for="searchtable">Search by name or school.</label>
+  <input class="form-control" id="searchtable" type="text">
+</div>
+
 <table class="table table-striped table-hover ">
     <thead>
     <tr>
@@ -46,4 +51,24 @@
 </table>
 </div>
 
+<!-- <script>
+$(document).ready(function(){
+    $("#searchtable").keyup(function(event){
+        var fil = $('searchtable').value.toUpperCase();
+        $('tr').filter(function() {
+            return $(this).innerHtml.toUpperCase.indexOf(fil) > -1;
+        }).hide();
+    });
+});
+</script> -->
+<script>
+$(document).ready(function(){
+    $('table').filterTable({
+        inputSelector : '#searchtable',
+        callback: function(term, table) {
+        table.find('tr').removeClass('striped').filter(':visible:even').addClass('striped');
+    }
+    });
+});
+</script>
 {% endblock %}
