@@ -10,6 +10,19 @@
 
 <h1> {{ request.user.first_name }} {{ request.user.last_name }} </h1>
 
-{{ request.user.e_mail }}
+{% if "@ahschool.com" in request.user.email %}
+
+<div class="well">
+<h2> AHS Special Functionality </h2>
+
+<p> By logging in with your Heritage email, you unlock special website functionality. Among this functionality is the </p>
+
+<ul>
+    <li> Ability to view S-Scores directly on results pages. Simply access them while logged in. </li>
+</ul>
+</div>
+
+
+{% endif %}
 
 {% endblock %}

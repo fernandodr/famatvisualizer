@@ -188,6 +188,7 @@ class TestPaper(models.Model):
     wrong = models.IntegerField(blank=True)
     first_wrong = models.IntegerField(blank=True, null=True)
     t_score = models.FloatField(blank=True, null=True)
+    s_score = models.FloatField(blank=True, null=True)
     
     def __unicode__(self):
         return str(self.mathlete)
@@ -209,7 +210,16 @@ class TestPaper(models.Model):
         try:
             return 50.0 + 10.0*(self.score - self.test.average)/(self.test.std)
         except:
-            None
+            return None
+
+    def _get_s_score(self):
+        twenty_fifth = TestPaper.objects.get(test=self.test, place=25).score
+        tenth = TestPaper.objects.get(test=self.test, place=10).score
+        numerator = self.score - twenty_fifth
+        denominator = tenth - twenty_fifth
+        if denominator < 1: denominator = 1
+        return 5.0*numerator/denominator + 70
+
     
     def save(self, *args, **kwargs):
         self.score = np.sum([qa.points for qa in self.questionanswer_set.all()])
@@ -220,6 +230,7 @@ class TestPaper(models.Model):
         super(TestPaper, self).save(*args, **kwargs)
 
     def save_post_test(self, *args, **kwargs):
+        self.s_score = self._get_s_score(*args, **kwargs)
         self.t_score = self._get_t_score(*args, **kwargs)
         super(TestPaper, self).save(*args, **kwargs)
 
