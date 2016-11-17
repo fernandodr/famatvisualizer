@@ -5,6 +5,7 @@ from results.figs import *
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 def ping_pong(request):
     return HttpResponse('pong')
@@ -269,6 +270,10 @@ def view_competition_report(request, year, month, types, id_school):
     return render(request, 'school_competition_report.html',
                     {'dictio': dictio, 'competition' : competition, 
                     'school' : school, 'loadtime': load_time})
+
+@login_required
+def view_profile(request):
+    return render(request, 'account/profile.html', {'request': request})
 
 def return_static_file(request, fname):
     try:
