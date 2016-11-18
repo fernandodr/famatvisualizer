@@ -1,6 +1,7 @@
 from django.db import models
 from results.utils import *
 from django.utils.functional import cached_property
+from django.contrib.auth.models import User
 import numpy as np
 
 class Mathlete(models.Model):
@@ -170,6 +171,9 @@ class Question(models.Model):
     num_blank = models.IntegerField(blank=True, null=True)
     num_wrong = models.IntegerField(blank=True, null=True)
 
+    def __unicode__(self):
+        return '%s: Question #%i' % (self.test, self.number)
+
     def save(self, *args, **kwargs):
         self.num_correct = len(self.questionanswer_set.filter(points=4))
         self.num_blank = len(self.questionanswer_set.filter(points=0))
@@ -275,4 +279,9 @@ class Team(models.Model):
     mathletes = models.ManyToManyField(Mathlete)
     division = models.CharField(max_length = 30)
     
+class MathleteImpression(models.Model):
+    mathlete = models.ForeignKey(Mathlete)
+    user = models.ForeignKey(User)
+    datetime = models.DateTimeField(auto_now_add=True)
+
     

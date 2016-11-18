@@ -91,6 +91,10 @@ def view_mathlete_from_id(request, id):
     fig2 = handling_difficulty(mathlete)
     fig3 = histogram_of_scores(mathlete)
 
+    if request.user.is_authenticated():
+        impression = MathleteImpression(mathlete=mathlete, user=request.user)
+        impression.save()
+
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
 

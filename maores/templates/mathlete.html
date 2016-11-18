@@ -23,10 +23,13 @@
         <th> Division </th>
         <th> Place </th>
         <th> Score </th>
-        <th> T-Score </th>
-        <th> Right </th>
-        <th> Wrong </th>
-        <th> Blank </th>
+        <th class='un'> T-Score </th>
+        {% if request.user.is_authenticated and "@ahschool.com" in request.user.email %}
+        <th class='un'> S-Score </th>
+        {% endif %}
+        <th class='un'> Right </th>
+        <th class='un'> Wrong </th>
+        <th class='un'> Blank </th>
     </tr>
     </thead>
     <tbody>
@@ -36,10 +39,13 @@
         <td> {{ paper.test.division }} </td>
         <td> {{ paper.place }} </td>
         <td> {{ paper.score }} </td>
-        <td> {{ paper.t_score|floatformat:3 }} </td>
-        <td> {{ paper.right }} </td>
-        <td> {{ paper.wrong }} </td>
-        <td> {{ paper.blank }} </td>
+        <td class='un'> {{ paper.t_score|floatformat:3 }} </td>
+        {% if request.user.is_authenticated and "@ahschool.com" in request.user.email %}
+        <td class='un'> {{ paper.s_score|floatformat:3 }} </td>
+        {% endif %}
+        <td class='un'> {{ paper.right }} </td>
+        <td class='un'> {{ paper.wrong }} </td>
+        <td class='un'> {{ paper.blank }} </td>
     </tr>
     {% endfor %}
     </tbody>
