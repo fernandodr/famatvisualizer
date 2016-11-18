@@ -22,9 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*65q63hs*sbnwsg1zb9tjz!#xl3zv^7m^qa7vc$#bq0tt+)(9k'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = [
     'famatvisualizer.com',
     'http://django-env.pgt48jkrwg.us-west-2.elasticbeanstalk.com/'
@@ -108,16 +105,6 @@ SOCIALACCOUNT_PROVIDERS = \
           'AUTH_PARAMS': { 'access_type': 'online' } }}
 
 if True:
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.postgresql',
-    #         'NAME': os.environ['RDS_DB_NAME'],
-    #         'USER': os.environ['RDS_USERNAME'],
-    #         'PASSWORD': os.environ['RDS_PASSWORD'],
-    #         'HOST': os.environ['RDS_HOSTNAME'],
-    #         'PORT': os.environ['RDS_PORT'],
-    #     }
-    # }
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -128,6 +115,7 @@ if True:
             'PORT': '5432',
         }
     }
+    DEBUG = False
 else:
     DATABASES = {
         'default': {
@@ -135,6 +123,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    DEBUG = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
