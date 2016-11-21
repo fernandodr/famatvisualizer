@@ -71,7 +71,7 @@ class School(models.Model):
     num_mathletes = models.IntegerField(null=True, blank=True)
     
     def get_absolute_url(self):
-        return '/school/%i/' % self.id_num
+        return '/schools/%i/' % self.id_num
 
     def _id_num(self):
         return int(self.testpaper_set.all()[0].mathlete.mao_id[:4])
@@ -103,7 +103,7 @@ class Competition(models.Model):
     category = models.CharField(max_length = 30)
     
     def get_absolute_url(self):
-        return '/competition/%d/%s/%s/' % (self.date.year, 
+        return '/competitions/%d/%s/%s/' % (self.date.year, 
             get_month_abbr(get_name_month(int(self.date.month))), self.category.lower())
     
     def __unicode__(self):

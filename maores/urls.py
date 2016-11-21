@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from views import *
+from ahs.views import *
+from haystack.generic_views import SearchView
 
 
 urlpatterns = [
@@ -26,18 +28,21 @@ urlpatterns = [
     url(r'^mathlete/first=([A-Za-z]+)&last=([A-Za-z]+)&id=([0-9]+)$', view_mathlete),
     url(r'^mathlete/([0-9]+)/$', view_mathlete_from_id),
     url(r'^mathlete/([0-9]+)/competition_scores.csv', mathlete_scores_csv),
-    url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/$', view_competition),
-    url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/$', redirect_competition),
-    url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/([0-9]+)/$', view_competition_report),
-    url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/$', redirect_view_test),
-    url(r'^competition/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/detail/$', view_test_detail_report),
-    url(r'^competition/([0-9]+)/([0-9]+)/([0-9]+)/([A-Za-z]+[0-9]+)/$', view_test),
+    url(r'^competitions/([0-9]+)/([0-9]+)/([0-9]+)/$', view_competition),
+    url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/$', redirect_competition),
+    url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([0-9]+)/$', view_competition_report),
+    url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/$', redirect_view_test),
+    url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/detail/$', view_test_detail_report),
+    url(r'^competitions/([0-9]+)/([0-9]+)/([0-9]+)/([A-Za-z]+[0-9]+)/$', view_test),
     url(r'^competitions/$', view_competitions_tabbed),
     url(r'^competitions/all/$', view_competitions),
     url(r'^competitions/([0-9]+)/$',view_competitions_year),
     url(r'^schools/$', view_schools),
-    url(r'^school/([0-9]+)/$', view_school),
+    url(r'^schools/([0-9]{4})/$', view_school),
+    url(r'^schools/([0-9]{4})/firstpoints/$', first_points_default),
+    url(r'^schools/([0-9]{4})/firstpoints/([0-9]{4})/$', first_points),
     url(r'^search/', include('haystack.urls')),
+    #url(r'^search/$', SearchView(), name='haystack_search'),
     url(r'^static/(.*)', return_static_file),
     url(r'ping/', ping_pong),
     url(r'^accounts/', include('allauth.urls')),

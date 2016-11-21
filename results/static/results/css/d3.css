@@ -51,7 +51,7 @@
 /* shortening tables */
 
 @media (max-width:480px) {
-.un{
-   visibility:hidden;
-}
+  .un{
+     visibility:hidden;
+  }
 }
