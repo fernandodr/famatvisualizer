@@ -19,7 +19,7 @@
 <table class="table table-striped table-hover ">
     <thead>
     <tr>
-        <th> Competition </th>
+        <th>Competition</th>
         <th> Division </th>
         <th> Place </th>
         <th> Score </th>
@@ -56,11 +56,11 @@
 <center>
 <h2> T-Scores </h2> 
 
-<svg width="960" height="800"></svg>
+<svg width="100%" height="800" id="tscoresbar"></svg>
 
 <script>
 var margin = {top: 40, right: 20, bottom: 220, left: 40},
-    width = 960 - margin.left - margin.right,
+    width = 700 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
@@ -84,7 +84,7 @@ var tip = d3.tip()
     return "T-Score: " + d.tscore;
   })
 
-var svg = d3.select("svg")
+var svg = d3.select("#tscoresbar")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -136,6 +136,7 @@ function type(d) {
 </script>
 </center>
 </div>
+
 
 
 {% endblock %}

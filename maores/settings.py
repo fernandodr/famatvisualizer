@@ -24,7 +24,8 @@ SECRET_KEY = '*65q63hs*sbnwsg1zb9tjz!#xl3zv^7m^qa7vc$#bq0tt+)(9k'
 
 ALLOWED_HOSTS = [
     'famatvisualizer.com',
-    'http://django-env.pgt48jkrwg.us-west-2.elasticbeanstalk.com/'
+    'http://django-env.pgt48jkrwg.us-west-2.elasticbeanstalk.com/',
+    'localhost'
 ]
 
 
@@ -43,25 +44,24 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'results',
+    'ahs',
     'haystack'
 )
 
 SITE_ID = 1
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
-    },
-}
-
 # HAYSTACK_CONNECTIONS = {
 #     'default': {
-#         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-#         'URL': 'http://127.0.0.1:8983/solr'
-#         # ...or for multicore...
-#         # 'URL': 'http://127.0.0.1:8983/solr/results_search',
+#         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
 #     },
 # }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 
 MIDDLEWARE_CLASSES = (
@@ -80,7 +80,8 @@ ROOT_URLCONF = 'maores.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'maores/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'maores/templates'),
+                 os.path.join(BASE_DIR, 'ahs/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
