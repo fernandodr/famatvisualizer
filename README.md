@@ -7,7 +7,7 @@
 
 ## Description
 
-Django project to visualize FAMAT historical results.
+Django project to aggregate and visualize FAMAT historical results. Find the hosted version at [http://famatvisualizer.com](http://famatvisualizer.com).
 
 ## Progress To Date
 

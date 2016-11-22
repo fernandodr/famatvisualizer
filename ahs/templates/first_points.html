@@ -10,30 +10,75 @@
 
 {% block content %}
 
-<h1> First=First Points </h1>
+<h1> {{ school }} </h1>
 
-<div class="well well-sm">
+<h1> {{ year }} First=Food Points </h1>
 
-<h2>First Places</h2>
+{% if papers %}
 
-<table class="table table-striped table-hover ">
-    <thead>
-    <tr>
-        <th> Name </th>
-        <th> Competition </th>
-        <th> Division </th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for paper in papers %}
-    <tr>
-        <td> <a href="{{ paper.mathlete.get_absolute_url }}">{{ paper.mathlete }}</a> </td>
-        <td> {{ paper.test.competition }} </td>
-        <td> {{ paper.test.division }} </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="well">
+        <h2>First Places</h2>
+
+        <table class="table table-striped table-hover ">
+            <thead>
+            <tr>
+                <th> Name </th>
+                <th> Competition </th>
+                <th> Division </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for paper in papers %}
+            <tr>
+                <td> <a href="{{ paper.mathlete.get_absolute_url }}">{{ paper.mathlete }}</a> </td>
+                <td> {{ paper.test.competition }} </td>
+                <td> {{ paper.test.division }} </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="well">
+        <h2>Mathletes</h2>
+
+        <table class="table table-striped table-hover ">
+            <thead>
+            <tr>
+                <th> Name </th>
+                <th> 1st Places </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for mathlete in mathletes %}
+            <tr>
+                <td> <a href="{{ mathlete.0.get_absolute_url }}">{{ mathlete.0 }}</a> </td>
+                <td> {{ mathlete.1 }} </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
 </div>
+
+{% else %}
+
+<div class="well">
+<p> Aww, looks like there aren't any first places this year.</p>
+</div>
+
+{% endif %}
+
+<ul class="pager">
+  <li class="previous"><a href="/schools/{{school.id_num}}/firstpoints/{{year|add:'-1'}}">← {{year|add:'-1'}}</a></li>
+  <li class="next"><a class="withripple" href="/schools/{{school.id_num}}/firstpoints/{{year|add:'1'}}">{{year|add:'1'}} →</a></li>
+</ul>
 
 {% endblock %}
