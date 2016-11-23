@@ -1,7 +1,9 @@
-from results.models import *
 import datetime
 import urllib2
 import BeautifulSoup
+import re
+
+from results.models import *
 
 def convert_answer_str(answer):
     formatted_answer = ''
@@ -20,6 +22,9 @@ def convert_answer_str(answer):
     return formatted_answer
 
 def wipe():
+    """
+    Purges the database.
+    """
     Competition.objects.all().delete()
     Mathlete.objects.all().delete()
     Test.objects.all().delete()
@@ -28,100 +33,175 @@ def wipe():
     QuestionAnswer.objects.all().delete()
     School.objects.all().delete()
 
-def import_detail_report(comp_name, date, name, category, divs=None, region=None):
-        # if user does not provide divisions, use default
-        if divs==None:
-            divisions = ['Calculus', 'Statistics', 'Precalculus', 
-                         'Algebra 2', 'Geometry', 'Algebra 1', 
-                         'Theta', 'Alpha', 'Calculus 1', 'Calculus 2']
-        else:
-            divisions = divs
-            
-        assert type(date) == datetime.date
-        assert Competition.objects.filter(date=date).count() == 0
-        competition = Competition(date=date, name=name, category=category)
-        competition.save()
+def import_detail_report(
+        comp_name, 
+        date, 
+        name, 
+        category, 
+        divs=None, 
+        region=None):
+    """
+    Downloads the results from an indiv detail report.
 
-        print '\n%s' % comp_name
+    Parameters
+    ----------
+    comp_name : str
+        Name of the competition as found in a famat.org URL. For example, 
+        http://famat.org/Downloadable/Results/Combined02132016/Calculus_Detail.html
+        would have comp_name = 'Combined02132016' 
+    date : datetime.date
+        The day that the competition was held on.
+    name : str
+        Name for internal tracking of the competition. 
+        A couple of conventions to use:
+        - for a regional, follow 'Jan Regional', 'Feb Regional', 
+          or 'March Regional'
+        - for an invite, the name of the school that hosted it
+        - for State Convention, TODO: determine convention
+    category : str
+        One of "Regional", "Invite", or "States"
+    divs : (list of str) or None
+        A list of the names of the divisions at the competition.
+        If None, will default to a master list of common divisions.
+    region : int or None
+        If you are downloading a regional competition, say so.
+    """
+
+    # if user does not provide divisions, use default
+    if divs==None:
+        divisions = ['Calculus', 'Statistics', 'Precalculus', 
+                     'Algebra 2', 'Geometry', 'Algebra 1', 
+                     'Theta', 'Alpha', 'Calculus 1', 'Calculus 2']
+    else:
+        divisions = divs
+    
+    # fail loudly if this competition is already in the database    
+    assert type(date) == datetime.date
+    assert Competition.objects.filter(date=date).count() == 0
+    competition = Competition(date=date, name=name, category=category)
+    competition.save()
+
+    print '\n%s' % comp_name
+    
+    for division in divisions:
+        try:
+            url = ('http://famat.org/Downloadable/Results/' + 
+                   comp_name + "/" + division + "_Detail.html").replace(' ', '%20')
+            raw_page = urllib2.urlopen(url)
+            soup = BeautifulSoup.BeautifulSoup(raw_page)
+            
+            url = ('http://famat.org/Downloadable/Results/' + 
+                   comp_name + "/" + division + "_Indv.html").replace(' ', '%20')
+            raw_page = urllib2.urlopen(url)
+            other_soup = BeautifulSoup.BeautifulSoup(raw_page)
+        except:
+            print '\t\t\t%s' % division
+            continue
+            
+        test = Test(competition=competition, division=division)
+        test.save()
         
-        for division in divisions:
-           try:
-                url = ('http://famat.org/Downloadable/Results/' + 
-                       comp_name + "/" + division + "_Detail.html").replace(' ', '%20')
-                raw_page = urllib2.urlopen(url)
-                soup = BeautifulSoup.BeautifulSoup(raw_page)
-                
-                url = ('http://famat.org/Downloadable/Results/' + 
-                       comp_name + "/" + division + "_Indv.html").replace(' ', '%20')
-                raw_page = urllib2.urlopen(url)
-                other_soup = BeautifulSoup.BeautifulSoup(raw_page)
-                
-                test = Test(competition=competition, division=division)
-                test.save()
-                
-                questions = []
-                answers = [convert_answer_str(a.text) for a in soup.findAll(attrs={"class":"theanswer"})]
-                for i, answer in enumerate(answers):
-                    q = Question(test=test, number=i+1, answer=answer)
-                    questions.append(q)
-                    q.save()
-                
-                table_of_results = soup.findAll('table')[-1]
-                rows = table_of_results.findChildren(['th', 'tr'])
-                other_table = other_soup.findAll('table')[0]
-                other_rows = other_table.findChildren(['th', 'tr'])
-                
-                header = rows.pop(0)
-                other_header = other_rows.pop(0)
-            
-                num_failures = 0
-                for i,row in enumerate(rows):
-                    try:
-                        cells = row.findChildren('td')
-                        cells = [cell.text for cell in cells]
-                        mao_id = other_rows[i].findChildren('td')[4].text[0:7]
-                        try:
-                            mathlete = Mathlete.objects.get(first_name=cells[3].title().split(' ')[0],
-                                                            last_name =cells[3].title().split(' ')[1],
-                                                            mao_id = mao_id)
-                        except:
-                            mathlete = Mathlete(first_name=cells[3].title().split(' ')[0],
-                                                last_name=cells[3].title().split(' ')[1],
-                                                mao_id = mao_id)
-                            mathlete.save()
-                        
-                        try:
-                            school = School.objects.get(name=cells[2])
-                        except:
-                            school = School(name=cells[2])
-                            school.save()
-                        
-                        if region != None:
-                            if school.region != region:
-                                school.region = region
-                                school.save()
-                                                
-                        paper = TestPaper(mathlete=mathlete, school=school, test=test, place=i+1)
-                        paper.save()
-                        
-                        cells = cells[4:]
-                        for j, answer in enumerate(cells):
-                            qa = QuestionAnswer(paper=paper, question=questions[j], givenanswer=answer.strip('&nbsp;'))
-                            qa.save()
-                        paper.save()
-                    except:
-                        num_failures += 1
-                test.save()
-                for paper in TestPaper.objects.filter(test=test):
-                    paper.save_post_test()
-                print "%s (%i)" % (division, num_failures)
-                    
-           except:
-                print '\t\t\t%s' % division
+        questions = []
+        answers = [convert_answer_str(a.text) for a in soup.findAll(attrs={"class":"theanswer"})]
+        for i, answer in enumerate(answers):
+            q = Question(test=test, number=i+1, answer=answer)
+            questions.append(q)
+            q.save()
+        
+        table_of_results = soup.findAll('table')[-1]
+        rows = table_of_results.findChildren(['th', 'tr'])
+        other_table = other_soup.findAll('table')[0]
+        other_rows = other_table.findChildren(['th', 'tr'])
+        
+        header = rows.pop(0)
+        other_header = other_rows.pop(0)
+    
+        num_failures = 0
+        for i,row in enumerate(rows):
+            try:
+                cells = row.findChildren('td')
+                cells = [cell.text for cell in cells]
+                mao_id = other_rows[i].findChildren('td')[4].text[0:7]
 
-        competition.save()
-   
-wipe()
+                names = cells[3].title().split(' ')
+                if len(names) > 1:
+                    first, last = names[0], names[-1]
+                elif len(names) == 1:
+                    first, last = "", names[0]
+                else:
+                    first, last = "", ""
+                try:
+                    mathlete = Mathlete.objects.get(first_name=first,
+                                                    last_name =last,
+                                                    mao_id = mao_id)
+                except:
+                    mathlete = Mathlete(first_name=first,
+                                        last_name=last,
+                                        mao_id = mao_id)
+                    mathlete.save()
+                
+                try:
+                    school = School.objects.get(name=cells[2])
+                except:
+                    school = School(name=cells[2])
+                    school.save()
+                
+                if region != None:
+                    if school.region != region:
+                        school.region = region
+                        school.save()
+                                        
+                paper = TestPaper(mathlete=mathlete, school=school, test=test, place=i+1)
+                paper.save()
+                
+                cells = cells[4:]
+                for j, answer in enumerate(cells):
+                    qa = QuestionAnswer(paper=paper, 
+                        question=questions[j], 
+                        givenanswer=answer.strip('&nbsp;'))
+                    qa.save()
+                paper.save()
+            except:
+                num_failures += 1
+                print row
+        test.save()
+        for paper in TestPaper.objects.filter(test=test):
+            paper.save_post_test()
+        print "%s (%i)" % (division, num_failures)
+
+        try:
+            url = ('http://famat.org/Downloadable/Results/' + 
+                   comp_name + "/" + division + "_Bowl.html").replace(' ', '%20')
+            raw_page = urllib2.urlopen(url)
+            team_soup = BeautifulSoup.BeautifulSoup(raw_page)
+        except:
+            continue
+
+        bowl_test = BowlTest(competition=competition, division=division)
+        bowl_test.save()
+
+        ids = [row.findChildren('td')[4].text for row in other_soup.table.findChildren('tr')[1:]]
+        for row in team_soup.table.findChildren('tr')[1:]:
+            cells = row.findChildren('td')
+
+            score = int(cells[9].text)
+            school_id = cells[3].text
+
+            team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}1' % school_id, id)]
+            indivs = [TestPaper.objects.get(test=test, mathlete__mao_id=id) \
+                for id in team_member_ids]
+
+            school = indivs[0].school
+
+            team = Team(school=school, 
+                test=bowl_test,
+                score=score)
+            team.save()
+            team.indivs.add(*list(indivs))
+        bowl_test.save()
+
+    competition.save()
+
 
 # 2016 competitions -- without states
 

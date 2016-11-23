@@ -273,11 +273,61 @@ class QuestionAnswer(models.Model):
         if self.points == -1:
             return True;
         return False
+
+class BowlTest(models.Model):
+    competition = models.ForeignKey(Competition)
+    division = models.CharField(max_length = 30)
+    average = models.FloatField(blank=True, null=True)
+    std = models.FloatField(blank=True, null=True)
     
+    def _get_average(self):
+        scores = [team.total_score for team in self.team_set.all()]
+        if len(scores) > 0:
+            return np.mean(scores)
+        else:
+            return None
+        
+    def _get_std(self):
+        scores = [team.total_score for team in self.team_set.all()]
+        if len(scores) > 0:
+            return np.std(scores)
+        else:
+            return None
+    
+    def get_absolute_url(self):
+        return '/competitions/%d/%s/%s/%s/' % (self.competition.date.year, 
+            get_month_abbr(get_name_month(int(self.competition.date.month))), 
+            self.competition.category.lower(), get_division_abbr(self.division))
+    
+    def __unicode__(self):
+        division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',
+                        'Algebra 2': 'Alg 2', 'Geometry': 'Geo'}
+        return str(self.competition) + ': ' + division_abbr.get(self.division,self.division) + ' Team'
+
+    def save(self, *args, **kwargs):
+        self.average = self._get_average()
+        self.std = self._get_std()
+        super(BowlTest, self).save(*args, **kwargs)
+
 class Team(models.Model):
     school = models.ForeignKey(School)
-    mathletes = models.ManyToManyField(Mathlete)
-    division = models.CharField(max_length = 30)
+    indivs = models.ManyToManyField(TestPaper)
+    test = models.ForeignKey(BowlTest)
+    score = models.IntegerField()
+    total_score = models.IntegerField(null=True, blank=True)
+
+    def _get_total_score(self):
+        return self.score + sum([indiv.score for indiv in self.indivs.all()])
+
+    def _get_mathletes(self):
+        return [indiv.mathlete for indiv in self.indivs.all()]
+
+    def save(self, *args, **kwargs):
+        self.total_score = self._get_total_score()
+        super(Team, self).save(*args, **kwargs)
+
+    mathletes = property(_get_mathletes)
+
     
 class MathleteImpression(models.Model):
     mathlete = models.ForeignKey(Mathlete)
