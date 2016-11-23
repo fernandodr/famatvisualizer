@@ -172,6 +172,30 @@ def view_competition(request, year, month, day):
         {'competition':competition,
          'tests':tests, 'loadtime': load_time})
 
+def view_bowl(request, year, month_abbr, category, division_abbr):
+    start_time = datetime.datetime.now()
+
+    year = int(year)
+    month = get_num_month(get_full_month(month_abbr))
+    category = category.title()
+    division = get_full_division(division_abbr)
+
+    try:
+        competition = Competition.objects.get(date__year=year, date__month=month, category=category)
+        bowl = competition.bowltest_set.get(division=division)
+    except:
+        return Http404('Not a valid competition')
+
+    teams = bowl.team_set.all().order_by('-total_score')
+
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+    return render(request, 'bowl.html', {
+        'competition': competition,
+        'bowl': bowl,
+        'teams': teams,
+        'loadtime': load_time})
+
 def view_test(request, year, month, day, abbr):
     start_time = datetime.datetime.now()
     year = int(year)
@@ -192,7 +216,8 @@ def view_test(request, year, month, day, abbr):
     return render(request, 'test.html',
         {'competition':competition,
         'test':test,
-        'testpapers':testpapers, 'loadtime': load_time})   
+        'testpapers':testpapers, 
+        'loadtime': load_time})   
 
 def redirect_view_test(request, year, month_abbr, types, category1):
     start_time = datetime.datetime.now()
