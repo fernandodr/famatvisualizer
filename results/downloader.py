@@ -2,6 +2,7 @@ import datetime
 import urllib2
 import BeautifulSoup
 import re
+import numpy as np
 
 from results.models import *
 
@@ -163,7 +164,7 @@ def import_detail_report(
                 paper.save()
             except:
                 num_failures += 1
-                print row
+                #print row
         test.save()
         for paper in TestPaper.objects.filter(test=test):
             paper.save_post_test()
@@ -181,24 +182,47 @@ def import_detail_report(
         bowl_test.save()
 
         ids = [row.findChildren('td')[4].text for row in other_soup.table.findChildren('tr')[1:]]
-        for row in team_soup.table.findChildren('tr')[1:]:
+        for i, row in enumerate(team_soup.table.findChildren('tr')[1:]):
             cells = row.findChildren('td')
 
             score = int(cells[9].text)
             school_id = cells[3].text
 
-            team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}1' % school_id, id)]
+            differences = [10000,]
+            for team_number in range(1,5):
+                team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
+                indivs = [TestPaper.objects.get(test=test, mathlete__mao_id=id) \
+                    for id in team_member_ids]
+
+                if team_number == 1:
+                    school = indivs[0].school
+
+                scores = [paper.score for paper in indivs]
+                empirical_scores = [int(cells[j].text) for j in range(5,9) if cells[j].text != '']
+
+                if len(scores) != len(empirical_scores):
+                    differences.append(10000)
+                else:
+                    differences.append(np.abs(sum(scores) - sum(empirical_scores)))
+
+            team_number = np.argmin(differences)
+            team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
             indivs = [TestPaper.objects.get(test=test, mathlete__mao_id=id) \
                 for id in team_member_ids]
 
-            school = indivs[0].school
 
-            team = Team(school=school, 
+            team = Team(
+                school=school, 
+                number=team_number,
+                place=i+1,
                 test=bowl_test,
                 score=score)
-            team.save()
+            team.pre_save()
             team.indivs.add(*list(indivs))
+            team.save()
         bowl_test.save()
+        for team in Team.objects.filter(test=bowl_test):
+            team.save_post_test()
 
     competition.save()
 

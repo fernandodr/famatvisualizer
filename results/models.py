@@ -30,6 +30,8 @@ class Mathlete(models.Model):
     
     def get_years_active_str(self):
         yrs = self.get_years_active()
+        if len(yrs) == 0:
+            return ""
         preform = [[yrs.pop(0)]]
         for yr in yrs:
             if yr == preform[-1][-1]+1:
@@ -311,19 +313,38 @@ class BowlTest(models.Model):
 
 class Team(models.Model):
     school = models.ForeignKey(School)
+    number = models.IntegerField()
     indivs = models.ManyToManyField(TestPaper)
     test = models.ForeignKey(BowlTest)
     score = models.IntegerField()
+    place = models.IntegerField()
     total_score = models.IntegerField(null=True, blank=True)
+    t_score = models.FloatField(blank=True, null=True)
 
     def _get_total_score(self):
-        return self.score + sum([indiv.score for indiv in self.indivs.all()])
+        if self.indivs.all().exists():
+            return self.score + sum([indiv.score for indiv in self.indivs.all()])
+        else:
+            return self.score
 
     def _get_mathletes(self):
         return [indiv.mathlete for indiv in self.indivs.all()]
 
+    def _get_t_score(self):
+        try:
+            return 50.0 + 10.0*(self.total_score - self.test.average)/(self.test.std)
+        except:
+            return None
+
+    def pre_save(self, *args, **kwargs):
+        super(Team, self).save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
         self.total_score = self._get_total_score()
+        super(Team, self).save(*args, **kwargs)
+
+    def save_post_test(self, *args, **kwargs):
+        self.t_score = self._get_t_score()
         super(Team, self).save(*args, **kwargs)
 
     mathletes = property(_get_mathletes)
