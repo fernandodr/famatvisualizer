@@ -186,7 +186,7 @@ def view_bowl(request, year, month_abbr, category, division_abbr):
     except:
         return Http404('Not a valid competition')
 
-    teams = bowl.team_set.all().order_by('-total_score')
+    teams = bowl.team_set.all().order_by('place')
 
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
