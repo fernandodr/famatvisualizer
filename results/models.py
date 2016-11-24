@@ -258,7 +258,8 @@ class QuestionAnswer(models.Model):
             return -1
       
     def save(self, *args, **kwargs):
-        self.points = self._get_points()
+        if len(self.question.answer) >= 1:
+            self.points = self._get_points()
         super(QuestionAnswer, self).save(*args, **kwargs)
     
     def is_right(self):

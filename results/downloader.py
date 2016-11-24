@@ -121,10 +121,9 @@ def import_detail_report(
         for i,row in enumerate(rows):
             try:
                 cells = row.findChildren('td')
-                cells = [cell.text for cell in cells]
                 mao_id = other_rows[i].findChildren('td')[4].text[0:7]
 
-                names = cells[3].title().split(' ')
+                names = cells[3].text.title().split(' ')
                 if len(names) > 1:
                     first, last = names[0], names[-1]
                 elif len(names) == 1:
@@ -157,9 +156,17 @@ def import_detail_report(
                 
                 cells = cells[4:]
                 for j, answer in enumerate(cells):
+                    a_class = dict(answer.attrs).get('class', '')
+                    if 'R' in a_class:
+                        points = 4
+                    elif 'B' in a_class:
+                        points = 0
+                    else:
+                        points = -1
                     qa = QuestionAnswer(paper=paper, 
                         question=questions[j], 
-                        givenanswer=answer.strip('&nbsp;'))
+                        givenanswer=answer.text.strip('&nbsp;'),
+                        points=points)
                     qa.save()
                 paper.save()
             except:
