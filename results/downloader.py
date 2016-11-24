@@ -198,7 +198,7 @@ def import_detail_report(
                     school = indivs[0].school
 
                 scores = [paper.score for paper in indivs]
-                empirical_scores = [int(cells[j].text) for j in range(5,9) if cells[j].text != '']
+                empirical_scores = [int(cells[j].text) for j in range(5,9) if re.match('^[0-9]{1,3}$', cells[j].text) is not None]
 
                 if len(scores) != len(empirical_scores):
                     differences.append(10000)
