@@ -204,10 +204,9 @@ def import_detail_report(
                     differences.append(10000)
                 else:
                     differences.append(np.abs(sum(scores) - sum(empirical_scores)))
-
             team_number = np.argmin(differences)
             team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
-            indivs = [TestPaper.objects.get(test=test, mathlete__mao_id=id) \
+            indivs = [TestPaper.objects.filter(test=test, mathlete__mao_id=id)[0] \
                 for id in team_member_ids]
 
 
