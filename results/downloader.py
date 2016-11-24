@@ -187,18 +187,13 @@ def import_detail_report(
             score = int(cells[9].text)
             school_id = cells[3].text
 
+            school = test.testpaper_set.filter(mathlete__mao_id__startswith=school_id)[0].school
+
             differences = [10000,]
             for team_number in range(1,5):
                 team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
                 indivs = [TestPaper.objects.filter(test=test, mathlete__mao_id=id)[0] \
                     for id in team_member_ids]
-
-                if team_number == 1:
-                    if len(indivs) > 0:
-                        school = indivs[0].school
-                    else:
-                        print "School with ID %s doesn't have indivs?" % school_id
-                        school = School.objects.get(id_num=school_id)
 
                 scores = [paper.score for paper in indivs]
                 empirical_scores = [int(cells[j].text) for j in range(5,9) if re.match('[0-9]{1,3}', cells[j].text) is not None]
