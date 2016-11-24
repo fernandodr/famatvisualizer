@@ -194,7 +194,7 @@ def import_detail_report(
                     for id in team_member_ids]
 
                 if team_number == 1:
-                    if len(indivs) > 0
+                    if len(indivs) > 0:
                         school = indivs[0].school
                     else:
                         print "School with ID %i doesn't have indivs?" % school_id
