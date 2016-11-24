@@ -227,100 +227,99 @@ def import_detail_report(
     competition.save()
 
 
-# 2016 competitions -- without states
+if __name__ == "__main__":
+    # 2016 competitions -- without states
+    import_detail_report('Palmetto Ridge Statewide March 2016',
+        date=datetime.date(2016, 3, 19),
+        name='Palmetto Ridge',
+        category='Invite')
 
-import_detail_report('Palmetto Ridge Statewide March 2016',
-    date=datetime.date(2016, 3, 19),
-    name='Palmetto Ridge',
-    category='Invite')
+    import_detail_report('Combined03122016',
+        date=datetime.date(2016,3,12),
+        name='March Regional',
+        category='Regional')
 
-import_detail_report('Combined03122016',
-    date=datetime.date(2016,3,12),
-    name='March Regional',
-    category='Regional')
+    import_detail_report('Sickles Statewide Feb 2016',
+        date=datetime.date(2016, 2, 27),
+        name='Sickles',
+        category='Invite')
 
-import_detail_report('Sickles Statewide Feb 2016',
-    date=datetime.date(2016, 2, 27),
-    name='Sickles',
-    category='Invite')
+    import_detail_report('Combined02132016',
+        date=datetime.date(2016, 2, 13),
+        name='Feb Regional',
+        category='Regional')
 
-import_detail_report('Combined02132016',
-    date=datetime.date(2016, 2, 13),
-    name='Feb Regional',
-    category='Regional')
+    import_detail_report('Combined01292016',
+        date=datetime.date(2016, 1, 29),
+        name='Jan Regional',
+        category='Regional')
 
-import_detail_report('Combined01292016',
-    date=datetime.date(2016, 1, 29),
-    name='Jan Regional',
-    category='Regional')
+    import_detail_report('Vero Beach Statewide 2016',
+        date=datetime.date(2016, 1, 16),
+        name='Vero Beach',
+        category='Invite')
 
-import_detail_report('Vero Beach Statewide 2016',
-    date=datetime.date(2016, 1, 16),
-    name='Vero Beach',
-    category='Invite')
+    # 2015 competitions -- without states
 
-# 2015 competitions -- without states
+    import_detail_report('Cypress Bay Statewide', 
+        date=datetime.date(2015,3,21), 
+        name='Cypress Bay', 
+        category='Invite')
 
-import_detail_report('Cypress Bay Statewide', 
-    date=datetime.date(2015,3,21), 
-    name='Cypress Bay', 
-    category='Invite')
+    import_detail_report('Combined03062015',
+        date=datetime.date(2015, 3, 6),
+        name='March Regional',
+        category='Regional')
 
-import_detail_report('Combined03062015',
-    date=datetime.date(2015, 3, 6),
-    name='March Regional',
-    category='Regional')
+    import_detail_report('King High Statewide February 2015',
+        date=datetime.date(2015, 2, 28),
+        name='King',
+        category='Invite')
 
-import_detail_report('King High Statewide February 2015',
-    date=datetime.date(2015, 2, 28),
-    name='King',
-    category='Invite')
+    import_detail_report('Combined02142015',
+        date=datetime.date(2015,2,14),
+        name='Feb Regional',
+        category='Regional')
 
-import_detail_report('Combined02142015',
-    date=datetime.date(2015,2,14),
-    name='Feb Regional',
-    category='Regional')
+    import_detail_report('Combined01312015',
+        date=datetime.date(2015,1,31),
+        name='Jan Regional',
+        category='Regional')
 
-import_detail_report('Combined01312015',
-    date=datetime.date(2015,1,31),
-    name='Jan Regional',
-    category='Regional')
+    import_detail_report('Vero Beach Statewide Jan 2015',
+        date=datetime.date(2015, 1, 17),
+        name='Vero Beach',
+        category='Invite')
 
-import_detail_report('Vero Beach Statewide Jan 2015',
-    date=datetime.date(2015, 1, 17),
-    name='Vero Beach',
-    category='Invite')
+    # 2014 competitions -- without states
 
-# 2014 competitions -- without states
+    import_detail_report('Buchholz Invitational 3 15 14',
+        date=datetime.date(2014, 3, 14),
+        name='Buchholz',
+        category='Invite')
 
-import_detail_report('Buchholz Invitational 3 15 14',
-    date=datetime.date(2014, 3, 14),
-    name='Buchholz',
-    category='Invite')
+    import_detail_report('Combined03012014',
+        date=datetime.date(2014, 3, 1),
+        name='March Regional',
+        category='Regional')
 
-import_detail_report('Combined03012014',
-    date=datetime.date(2014, 3, 1),
-    name='March Regional',
-    category='Regional')
+    import_detail_report('February Statewide at Coral Glades HS',
+        date=datetime.date(2014, 2, 15),
+        name='Coral Glades',
+        category='Invite')
 
-import_detail_report('February Statewide at Coral Glades HS',
-    date=datetime.date(2014, 2, 15),
-    name='Coral Glades',
-    category='Invite')
+    import_detail_report('Combined02012014',
+        date=datetime.date(2014, 2, 1),
+        name='Feb Regional',
+        category='Regional')
 
-import_detail_report('Combined02012014',
-    date=datetime.date(2014, 2, 1),
-    name='Feb Regional',
-    category='Regional')
+    import_detail_report('Combined01182014',
+        date=datetime.date(2014, 1, 18),
+        name='Jan Regional',
+        category='Regional')
 
-import_detail_report('Combined01182014',
-    date=datetime.date(2014, 1, 18),
-    name='Jan Regional',
-    category='Regional')
-
-import_detail_report('Tampa Bay Tech January Statewide 2014',
-    date=datetime.date(2014, 1, 11),
-    name='Tampa Bay Tech',
-    category='Invite')
-
+    import_detail_report('Tampa Bay Tech January Statewide 2014',
+        date=datetime.date(2014, 1, 11),
+        name='Tampa Bay Tech',
+        category='Invite')
 
