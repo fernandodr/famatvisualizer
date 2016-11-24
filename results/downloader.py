@@ -197,7 +197,7 @@ def import_detail_report(
                     if len(indivs) > 0:
                         school = indivs[0].school
                     else:
-                        print "School with ID %i doesn't have indivs?" % school_id
+                        print "School with ID %s doesn't have indivs?" % school_id
                         school = School.objects.get(id_num=school_id)
 
                 scores = [paper.score for paper in indivs]
