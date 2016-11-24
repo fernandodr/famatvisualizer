@@ -194,7 +194,11 @@ def import_detail_report(
                     for id in team_member_ids]
 
                 if team_number == 1:
-                    school = indivs[0].school
+                    if len(indivs) > 0
+                        school = indivs[0].school
+                    else:
+                        print "School with ID %i doesn't have indivs?" % school_id
+                        school = School.objects.get(id_num=school_id)
 
                 scores = [paper.score for paper in indivs]
                 empirical_scores = [int(cells[j].text) for j in range(5,9) if re.match('[0-9]{1,3}', cells[j].text) is not None]
