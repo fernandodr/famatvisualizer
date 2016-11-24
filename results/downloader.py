@@ -164,11 +164,10 @@ def import_detail_report(
                 paper.save()
             except:
                 num_failures += 1
-                #print row
         test.save()
         for paper in TestPaper.objects.filter(test=test):
             paper.save_post_test()
-        print "%s (%i)" % (division, num_failures)
+        print "%s indiv data retrieved (%i failures)" % (division, num_failures)
 
         try:
             url = ('http://famat.org/Downloadable/Results/' + 
@@ -191,7 +190,7 @@ def import_detail_report(
             differences = [10000,]
             for team_number in range(1,5):
                 team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
-                indivs = [TestPaper.objects.get(test=test, mathlete__mao_id=id) \
+                indivs = [TestPaper.objects.filter(test=test, mathlete__mao_id=id)[0] \
                     for id in team_member_ids]
 
                 if team_number == 1:
@@ -210,6 +209,14 @@ def import_detail_report(
                 for id in team_member_ids]
 
 
+            # in case of corrupted data, cap the size of a team
+            # at four people
+            if len(indivs) > 4:
+                print "%s (team %i) tried to recruit more than 4 team members." \
+                    % (school, team_number)
+                indivs = indivs[:4]
+
+
             team = Team(
                 school=school, 
                 number=team_number,
@@ -222,6 +229,8 @@ def import_detail_report(
         bowl_test.save()
         for team in Team.objects.filter(test=bowl_test):
             team.save_post_test()
+
+        print "%s team data retrieved."
 
     competition.save()
 
