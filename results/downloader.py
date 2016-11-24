@@ -197,13 +197,19 @@ def import_detail_report(
                     school = indivs[0].school
 
                 scores = [paper.score for paper in indivs]
-                empirical_scores = [int(cells[j].text) for j in range(5,9) if re.match('^[0-9]{1,3}$', cells[j].text) is not None]
+                empirical_scores = [int(cells[j].text) for j in range(5,9) if re.match('[0-9]{1,3}', cells[j].text) is not None]
 
                 if len(scores) != len(empirical_scores):
-                    differences.append(10000)
+                    differences.append(9999)
                 else:
                     differences.append(np.abs(sum(scores) - sum(empirical_scores)))
+
             team_number = np.argmin(differences)
+            if team_number == 0:
+                team_number = 1
+                print "%s (bowl score %i) appears to have no good fits." \
+                    % (school, score)
+
             team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
             indivs = [TestPaper.objects.filter(test=test, mathlete__mao_id=id)[0] \
                 for id in team_member_ids]
