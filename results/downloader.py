@@ -187,7 +187,10 @@ def import_detail_report(
             score = int(cells[9].text)
             school_id = cells[3].text
 
-            school = test.testpaper_set.filter(mathlete__mao_id__startswith=school_id)[0].school
+            try:
+                school = test.testpaper_set.filter(mathlete__mao_id__startswith=school_id)[0].school
+            except:
+                school = School.objects.filter(id_num=int(school_id))[0]
 
             differences = [10000,]
             for team_number in range(1,5):
@@ -235,7 +238,7 @@ def import_detail_report(
         for team in Team.objects.filter(test=bowl_test):
             team.save_post_test()
 
-        print "%s team data retrieved."
+        print "%s team data retrieved." % division
 
     competition.save()
 
