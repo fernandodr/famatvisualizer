@@ -24,15 +24,35 @@
 <table class="table table-striped table-hover ">
     <thead>
     <tr>
+        <th> Rank </th>
         <th> School </th>
         <th> Total Score </th>
+        <th> T-Score </th>
+        <th> Indiv1</th>
+        <th> Indiv2</th>
+        <th> Indiv3</th>
+        <th> Indiv4</th>
+        <th> Bowl </th>
     </tr>
     </thead>
     <tbody>
     {% for team in teams %}
     <tr>
-        <td> {{ team.school }} </td>
+        <td> {{ team.place }} </td>
+        <td> {{ team.school }} {% if team.number != 1 %} (Team {{ team.number }} ){% endif %} </td>
         <td> {{ team.total_score }} </td>
+        <td> {{ team.t_score|floatformat:3 }} </td>
+        {% for paper in team.indivs.all %}
+        <td> {{ paper.score }} </td>
+        {% endfor %}
+        {% if team.indivs.all|length_is:"1"%}
+        <td></td><td></td><td></td>
+        {% elif team.indivs.all|length_is:"2" %}
+        <td></td><td></td>
+        {% elif team.indivs.all|length_is:"3" %}
+        <td></td>
+        {% endif %}
+        <td> {{ team.score }} </td>
     </tr>
     {% endfor %}
     </tbody>

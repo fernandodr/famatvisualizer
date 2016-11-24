@@ -1,6 +1,7 @@
 *.pyc
 *.sqlite3
 www/static
+maores/whoosh_index/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
