@@ -76,7 +76,10 @@ class School(models.Model):
         return '/schools/%i/' % self.id_num
 
     def _id_num(self):
-        return int(self.testpaper_set.all()[0].mathlete.mao_id[:4])
+        try:
+            return int(self.testpaper_set.all()[0].mathlete.mao_id[:4])
+        except:
+            return None
 
     def _num_mathletes(self):
         tps = self.testpaper_set.all()
@@ -258,8 +261,8 @@ class QuestionAnswer(models.Model):
             return -1
       
     def save(self, *args, **kwargs):
-        if len(self.question.answer) >= 1:
-            self.points = self._get_points()
+        # if len(self.question.answer) >= 1:
+        #     self.points = self._get_points()
         super(QuestionAnswer, self).save(*args, **kwargs)
     
     def is_right(self):

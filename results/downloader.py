@@ -119,7 +119,7 @@ def import_detail_report(
     
         num_failures = 0
         for i,row in enumerate(rows):
-            try:
+            # try:
                 cells = row.findChildren('td')
                 mao_id = other_rows[i].findChildren('td')[4].text[0:7]
 
@@ -141,17 +141,18 @@ def import_detail_report(
                     mathlete.save()
                 
                 try:
-                    school = School.objects.get(name=cells[2])
+                    school = School.objects.get(name=cells[2].text)
                 except:
-                    school = School(name=cells[2])
+                    school = School(name=cells[2].text)
                     school.save()
                 
                 if region != None:
                     if school.region != region:
                         school.region = region
                         school.save()
-                                        
-                paper = TestPaper(mathlete=mathlete, school=school, test=test, place=i+1)
+                
+                place = int(re.match('([0-9]{1,4})', other_rows[i].findChildren('td')[0].text).groups(0)[0])                        
+                paper = TestPaper(mathlete=mathlete, school=school, test=test, place=place)
                 paper.save()
                 
                 cells = cells[4:]
@@ -165,12 +166,12 @@ def import_detail_report(
                         points = -1
                     qa = QuestionAnswer(paper=paper, 
                         question=questions[j], 
-                        givenanswer=answer.text.strip('&nbsp;'),
+                        givenanswer=answer.text.strip('&nbsp;').upper(),
                         points=points)
                     qa.save()
                 paper.save()
-            except:
-                num_failures += 1
+            # except:
+            #     num_failures += 1
         test.save()
         for paper in TestPaper.objects.filter(test=test):
             paper.save_post_test()
