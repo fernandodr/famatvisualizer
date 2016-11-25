@@ -204,7 +204,7 @@ def import_detail_report(
             differences = [10000,]
             for team_number in range(1,5):
                 team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
-                indivs = list(itertools.chain([TestPaper.objects.filter(test=test, mathlete__mao_id=id) \
+                indivs = list(itertools.chain(*[TestPaper.objects.filter(test=test, mathlete__mao_id=id) \
                     for id in team_member_ids]))
                 indivs =  sorted(indivs, key=lambda x : x.score, reverse=True)
 
