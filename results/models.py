@@ -303,7 +303,7 @@ class BowlTest(models.Model):
             return None
     
     def get_absolute_url(self):
-        return '/competitions/%d/%s/%s/%s/' % (self.competition.date.year, 
+        return '/competitions/%d/%s/%s/%s/bowl' % (self.competition.date.year, 
             get_month_abbr(get_name_month(int(self.competition.date.month))), 
             self.competition.category.lower(), get_division_abbr(self.division))
     

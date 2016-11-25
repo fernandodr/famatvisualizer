@@ -206,13 +206,15 @@ def import_detail_report(
                 indivs = [TestPaper.objects.filter(test=test, mathlete__mao_id=id)[0] \
                     for id in team_member_ids]
 
-                scores = [paper.score for paper in indivs]
-                empirical_scores = [int(cells[j].text) for j in range(5,9) if re.match('[0-9]{1,3}', cells[j].text) is not None]
+                scores = sorted([paper.score for paper in indivs], reverse=True)
+                empirical_scores = [int(cells[j].text) for j in range(5,9) \
+                    if re.match('[-]{0,1}[0-9]{1,3}', cells[j].text) is not None]
 
                 if len(scores) != len(empirical_scores):
                     differences.append(9999)
                 else:
-                    differences.append(np.abs(sum(scores) - sum(empirical_scores)))
+                    diff = np.linalg.norm(np.array(scores) - np.array(empirical_scores))
+                    differences.append(diff)
 
             team_number = np.argmin(differences)
             if team_number == 0:
