@@ -239,7 +239,7 @@ def import_detail_report(
             if len(indivs) > 4:
                 print "%s (team %i) tried to field more than 4 team members." \
                     % (school, team_number)
-                coarse_attempt = indivs[:4]
+                coarse_attempt = indivs[-4:]
                 try:
                     fine_attempt = []
                     while len(empirical_scores) > 0:
