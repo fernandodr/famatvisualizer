@@ -245,6 +245,9 @@ class TestPaper(models.Model):
         self.t_score = self._get_t_score(*args, **kwargs)
         super(TestPaper, self).save(*args, **kwargs)
 
+    class Meta:
+        ordering = ['place']
+
 
 class QuestionAnswer(models.Model):
     paper = models.ForeignKey(TestPaper)
