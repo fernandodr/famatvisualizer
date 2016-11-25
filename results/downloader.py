@@ -211,7 +211,7 @@ def import_detail_report(
                 if len(indivs) > 4:
                     indivs = indivs[:4]
 
-                scores = sorted([paper.score for paper in indivs], reverse=True)
+                scores = [paper.score for paper in indivs]
                 empirical_scores = [int(cells[j].text) for j in range(5,9) \
                     if re.match('[-]{0,1}[0-9]{1,3}', cells[j].text) is not None]
 
@@ -230,6 +230,8 @@ def import_detail_report(
             team_member_ids = [id[:7] for id in ids if re.match('%s[0-9]{4}%i' % (school_id, team_number), id)]
             indivs = list(itertools.chain(*[test.testpaper_set.filter(mathlete__mao_id=id) \
                     for id in team_member_ids]))
+            indivs =  sorted(indivs, key=lambda x : x.score, reverse=True)
+            scores = [paper.score for paper in indivs]
 
 
             # in case of corrupted data, cap the size of a team
@@ -237,8 +239,18 @@ def import_detail_report(
             if len(indivs) > 4:
                 print "%s (team %i) tried to recruit more than 4 team members." \
                     % (school, team_number)
-                indivs = indivs[:4]
-
+                coarse_attempt = indivs[:4]
+                try:
+                    fine_attempt = []
+                    while len(empirical_scores) > 0:
+                        e_score = empirical_scores.pop(0)
+                        j = scores.find(e_score)
+                        fine_attempt.append(indivs.pop(j))
+                    indivs = fine_attempt
+                    print "Succeeded in matching scores."
+                except:
+                    indivs = coarse_attempt
+                    print "Failed in matching scores."
 
             team = Team(
                 school=school, 
