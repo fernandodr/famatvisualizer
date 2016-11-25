@@ -222,8 +222,8 @@ class TestPaper(models.Model):
             return None
 
     def _get_s_score(self):
-        twenty_fifth = self.test.testpaper_set.order_by('rank')[24].score
-        tenth = self.test.testpaper_set.order_by('rank')[9].score
+        twenty_fifth = self.test.testpaper_set.order_by('place')[24].score
+        tenth = self.test.testpaper_set.order_by('place')[9].score
 
         numerator = self.score - twenty_fifth
         denominator = tenth - twenty_fifth
