@@ -45,7 +45,9 @@
         {% for paper in team.indivs.all %}
         <td> {{ paper.score }} </td>
         {% endfor %}
-        {% if team.indivs.all|length_is:"1"%}
+        {% if team.indivs.all|length_is:"0"%}
+        <td></td><td></td><td></td><td></td>
+        {% elif team.indivs.all|length_is:"1"%}
         <td></td><td></td><td></td>
         {% elif team.indivs.all|length_is:"2" %}
         <td></td><td></td>
