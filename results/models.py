@@ -327,6 +327,13 @@ class Team(models.Model):
     total_score = models.IntegerField(null=True, blank=True)
     t_score = models.FloatField(blank=True, null=True)
 
+    def __unicode__(self):
+        division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',
+                        'Algebra 2': 'Alg 2', 'Geometry': 'Geo'}
+        return "%s's %s %s Team %i" (self.school, self.competition, 
+            division_abbr.get(self.division,self.division),
+            self.number)
+
     def _get_total_score(self):
         if self.indivs.all().exists():
             return self.score + sum([indiv.score for indiv in self.indivs.all()])
