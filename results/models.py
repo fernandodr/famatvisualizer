@@ -222,11 +222,13 @@ class TestPaper(models.Model):
             return None
 
     def _get_s_score(self):
-        twenty_fifth = TestPaper.objects.get(test=self.test, place=25).score
-        tenth = TestPaper.objects.get(test=self.test, place=10).score
+        twenty_fifth = self.test.testpaper_set.order_by('rank')[24].score
+        tenth = self.test.testpaper_set.order_by('rank')[9].score
+
         numerator = self.score - twenty_fifth
         denominator = tenth - twenty_fifth
         if denominator < 1: denominator = 1
+
         return 5.0*numerator/denominator + 70
 
     
