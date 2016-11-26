@@ -250,6 +250,7 @@ def import_detail_report(
                     while len(empirical_scores) > 0:
                         e_score = empirical_scores.pop(0)
                         j = scores.find(e_score)
+                        scores.pop(j)
                         fine_attempt.append(indivs.pop(j))
                     indivs = fine_attempt
                     print "Succeeded in matching scores."
