@@ -249,7 +249,7 @@ def import_detail_report(
                     fine_attempt = []
                     while len(empirical_scores) > 0:
                         e_score = empirical_scores.pop(0)
-                        j = scores.find(e_score)
+                        j = scores.index(e_score)
                         scores.pop(j)
                         fine_attempt.append(indivs.pop(j))
                     indivs = fine_attempt
