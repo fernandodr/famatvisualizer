@@ -203,7 +203,7 @@ def import_detail_report(
                     school = School.objects.filter(id_num=int(school_id))[0]
                 except:
                     user_input = raw_input('School with id %s is not found. Enter school name: ' % school_id)
-                    school = School(name = user_input, num_id = int(school_id))
+                    school = School(name = user_input, id_num = int(school_id))
                     school.save()
 
             differences = [10000,]
