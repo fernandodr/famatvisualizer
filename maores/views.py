@@ -158,9 +158,10 @@ def view_competition(request, year, month, day):
     year = int(year)
     month = int(month)
     day = int(day)
+    date = datetime.date(year, month, day)
 
     try:
-        competition = Competition.objects.get(date=datetime.date(year, month, day))
+        competition = Competition.objects.get(date=date)
     except:
         raise Http404("No competition on this day.")
 
@@ -181,7 +182,10 @@ def view_bowl(request, year, month_abbr, category, division_abbr):
     division = get_full_division(division_abbr)
 
     try:
-        competition = Competition.objects.get(date__year=year, date__month=month, category=category)
+        competition = Competition.objects.get(
+            date__year=year, 
+            date__month=month, 
+            category=category)
         bowl = competition.bowltest_set.get(division=division)
     except:
         return Http404('Not a valid competition')
@@ -202,9 +206,11 @@ def view_test(request, year, month, day, abbr):
     month = int(month)
     day = int(day)
 
+    date = datetime.date(year, month, day)
+
     try:
     	division = get_full_division(abbr)
-        competition = Competition.objects.get(date=datetime.date(year, month, day))
+        competition = Competition.objects.get(date=date)
         test = competition.test_set.get(division=division)
     except:
         raise Http404("This is not a valid test URL.")
