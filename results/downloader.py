@@ -199,7 +199,12 @@ def import_detail_report(
             try:
                 school = test.testpaper_set.filter(mathlete__mao_id__startswith=school_id)[0].school
             except:
-                school = School.objects.filter(id_num=int(school_id))[0]
+                try:
+                    school = School.objects.filter(id_num=int(school_id))[0]
+                except:
+                    user_input = raw_input('School with id %s is not found. Enter school name: ' % school_id)
+                    school = School(name = user_input, num_id = int(school_id))
+                    school.save()
 
             differences = [10000,]
             for team_number in range(1,5):
