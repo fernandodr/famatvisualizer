@@ -105,7 +105,7 @@ SOCIALACCOUNT_PROVIDERS = \
         { 'SCOPE': ['profile', 'email'],
           'AUTH_PARAMS': { 'access_type': 'online' } }}
 
-if True:
+if False:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
