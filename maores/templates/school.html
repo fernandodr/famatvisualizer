@@ -10,32 +10,33 @@
 
 {% block content %}
 
-<h1> {{ school }} </h1>
+<div class="container">
+    <h1 class="light"> {{ school }} </h1>
+    <div class="divider"></div>
 
-<div class="well">
-<h2> Mathletes </h2>
+    <h2> Mathletes </h2>
 
-<table class="table table-striped table-hover ">
-    <thead>
+    <table class="bordered highlight">
+        <thead>
+        <tr>
+            <th> Name </th>
+            <th> Years </th>
+            <th> Average T </th>
+            <th> Num Tests </th>
+        </tr>
+        </thead>
+        <tbody>
+
+    {% for mathlete in mathletes %}
     <tr>
-        <th> Name </th>
-        <th> Years </th>
-        <th> Average T </th>
-        <th> Num Tests </th>
+        <td> <a href="{{ mathlete.get_absolute_url }}" class="teal-text">{{ mathlete }}</a> </td>
+        <td> {{ mathlete.get_years_active_str|safe }} </td>
+        <td> {{ mathlete.avg_t|floatformat:3 }} </td>
+        <td> {{ mathlete.num_tests }} </td>
     </tr>
-    </thead>
-    <tbody>
-
-{% for mathlete in mathletes %}
-<tr>
-    <td> <a href="{{ mathlete.get_absolute_url }}">{{ mathlete }}</a> </td>
-    <td> {{ mathlete.get_years_active_str|safe }} </td>
-    <td> {{ mathlete.avg_t|floatformat:3 }} </td>
-    <td> {{ mathlete.num_tests }} </td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
+    {% endfor %}
+    </tbody>
+    </table>
 </div>
 
 {% endblock %}

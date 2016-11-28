@@ -61,10 +61,14 @@ def view_school(request, spec_id):
 def view_schools(request):
     start_time = datetime.datetime.now()
     schools = School.objects.order_by('name')
+    important_schools = School.objects.order_by('-num_mathletes')
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
 
-    return render(request, 'schools.html', {'schools': schools, 'loadtime': load_time})
+    return render(request, 'schools.html', {
+        'schools': schools, 
+        'important_schools': important_schools,
+        'loadtime': load_time})
 
 def view_mathlete_menu(request, first, last):
     lst = Mathlete.objects.filter(first_name=first, last_name=last)

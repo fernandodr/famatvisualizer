@@ -3,27 +3,46 @@
 {% load staticfiles %}
 
 {% block title %}
-MAO Visualizer
+FAMAT Visualizer
 {% endblock %}
 
 {% block navhome %}class="active"{% endblock %}
 
 {% block content %}
 
-<h1> FAMAT Visualizations </h1>
+<div class="container">
+<h1 class="light"> FAMAT Visualizer </h1>
+<div class="divider"></div>
 
-<p> <a href="//http://famat.org/PublicPages/Home.aspx">Florida Mu Alpha Theta</a> hosts recurrent competitions for Florida "mathletes". Every one of these competitions generates a wealth of data, which can be mined for processing. This website structures visualizations of the results. </p>
-
-<div class="well">
-<h2> Competition Attendance</h2>
-It's an interesting question to ask how many people attend MAO competitions. And we can answer this for the competitions we have on record. (Hover over a dot to see the competition name and exact attendance. Use the icons on the lower-left of the figure to zoom-in, pan, and reset the figure.)
-<center> {% include "figs/competition_attendance.html" %}</center>
+<div class="section">
+<div class="row">
+    <a href="/competitions"><div class="col l4 m4 s12 center-align">
+        <i class="large teal-text material-icons">today</i>
+        <h5 class="teal-text">Competitions</h5>
+        <p class="black-text"> View results&mdash;team, individual, and sweepstakes&mdash;by competition for the past ten years</p>
+    </div></a>
+    <a href="/mathletes"><div class="col l4 m4 s12 center-align">
+        <i class="large teal-text material-icons">people</i>
+        <h5 class="teal-text">Mathletes</h5>
+        <p class="black-text"> Track an individual's progress over time, or compare competitors' aggregate performances</p>
+    </div></a>
+    <a href="/schools"><div class="col l4 m4 s12 center-align">
+        <i class="large teal-text material-icons">business</i>
+        <h5 class="teal-text">Schools</h5>
+        <p class="black-text"> View historical results by school and see each school's top competitors</p>
+    </div></a>
+</div>
 </div>
 
-<div class="well">
+<!--
+<h2> Competition Attendance</h2>
+It's an interesting question to ask how many people attend MAO competitions. And we can answer this for the competitions we have on record. (Hover over a dot to see the competition name and exact attendance. Use the icons on the lower-left of the figure to zoom-in, pan, and reset the figure.)
+
+<center> {% include "figs/competition_attendance.html" %} </center>
+
 <h2> Test Difficulty </h2>
 
-<center> {% include "figs/test_difficulty.html" %}</center></div> </center>
+<center> {% include "figs/test_difficulty.html" %}</center> -->
 </div>
 
 {% endblock %}
