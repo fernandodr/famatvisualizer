@@ -1,33 +1,3 @@
- <style>
-    ul.tabs{
-            margin: 0px;
-            padding: 0px;
-            list-style: none;
-        }
-        ul.tabs li{
-            background: none;
-            color: #222;
-            display: inline-block;
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-
-        ul.tabs li.current{
-            background: white;
-            color: #222;
-        }
-
-        .tab-content{
-            display: none;
-            background: white;
-            padding: 15px;
-        }
-
-        .tab-content.current{
-            display: inherit;
-        }
-</style>
-
 {% extends "base.html" %}
 
 {% load staticfiles %}
@@ -39,63 +9,84 @@ Competitions
 {% block navcompetitions %}class="active"{% endblock %}
 
 {% block content %}
+<div class="container">
 
-<h1> Competitions </h1>
+<div class="row">
+  <div class="col l9 m9 s12">
+    <h1 class="light hide-on-small-only"> Competitions </h1>
+    <h3 class="light hide-on-med-and-up"> Competitions </h3>
+    <div class="divider"></div>
 
-<ul class="tabs">
-{% for year in years %}
-    {% if forloop.first %}
-        <li class="tab-link current" data-tab="tab-{{year}}">{{year}}</li>
-    {% else %}
-        <li class="tab-link" data-tab="tab-{{year}}">{{year}}</li>
-    {% endif %}
-{% endfor %}
-    <li class="tab-link" data-tab="tab-more">More</li>
-</ul>
+    {% for year, competitions in dict.items %}
+    <div id="{{year}}" class="section scrollspy">
+        <h2 class="hide-on-small-only"> {{ year }} </h2>
+        <h4 class="hide-on-med-and-up"> {{ year }} </h2>
 
-{% for year, competitions in dict.items %}
-    {% if forloop.first %}
-        <div id="tab-{{year}}" class="tab-content current">
-    {% else %}
-        <div id="tab-{{year}}" class="tab-content">
-    {% endif %}
-
-    {% for comp in competitions %}
-        <h2> <a href="{{ comp.get_absolute_url }}">{{ comp }}</a></h2>
-        <div class="row">
-            <div class="col-sm-6">
-                <ul>
+    <ul class="collapsible popout" data-collapsible="accordion">
+      {% for comp in competitions %}
+        <li>
+          <div class="collapsible-header">{{ comp }}</div>
+          <div class="collapsible-body">
+            <div class="row">
+              <div class="col s12 m4 l4 center-align">
+                <i class="large teal-text material-icons">person</i>
+                <h5 class="teal-text">Indivs</h5>
+                <div class="collection">
                 {% for test in comp.test_set.all %}
-                    <li> <a href="{{ test.get_absolute_url }}">{{ test.division }} Individual</a> </li>
+                  <a href="{{ test.get_absolute_url }}" target="_blank" class="collection-item black-text">{{ test.division }}</a>
                 {% endfor %}
-                </ul>
+                </div>
+              </div>
+              <div class="col s12 m4 l4  center-align">
+                <i class="large teal-text material-icons">people</i>
+                <h5 class="teal-text">Teams</h5>
+                <div class="collection">
+                  {% for bowl in comp.bowltest_set.all %}
+                    <a href="{{bowl.get_absolute_url}}" target="_blank" class="collection-item black-text">{{ bowl.division }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col s12 m4 l4 center-align">
+                <i class="large teal-text material-icons">pie_chart</i>
+                <h5 class="teal-text">Detail Reports</h5>
+                <div class="collection">
+                  {% for test in comp.test_set.all %}
+                    <a href="{{test.get_absolute_url}}/detail" target="_blank" class="collection-item black-text">{{ test.division }}</a>
+                  {% endfor %}
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6">
-                <ul>
-                {% for test in comp.bowltest_set.all %}
-                <li> <a href="{{ test.get_absolute_url }}"> {{ test.division }} Bowl</a></li>
-                {% endfor %}
-                </ul>
-            </div>
-        </div>
-    {% endfor %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
     </div>
-{% endfor %}
-    <div id="tab-more" class="tab-content">
-    Unfortunately, we have only parsed as many years of Mu Alpha Theta as are publicly available online.
+    {% endfor %}
+  </div>
+
+  <div class="col hide-on-small-only m3 l3">
+    <div class="toc-wrapper">
+      <div style="height: 1px;">
+        <ul class="section table-of-contents">
+          {% for year, competitions in dict.items %}
+            <li><a href="#{{year}}">{{year}} Competitions</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <script>
 $(document).ready(function(){
-    $('ul.tabs li').click(function(){
-        var tab_id = $(this).attr('data-tab');
-
-        $('ul.tabs li').removeClass('current');
-        $('.tab-content').removeClass('current');
-
-        $(this).addClass('current');
-        $("#"+tab_id).addClass('current');
-    })
-})
+    $('.toc-wrapper').pushpin({
+      top: 0,
+      bottom: 10000,
+      offset: 60
+    });
+    $('.scrollspy').scrollSpy();
+  });
 </script>
 {% endblock %}
