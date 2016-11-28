@@ -404,6 +404,47 @@ if __name__ == "__main__":
         name='Vero Beach',
         category='Invite')
 
+    # 2012 competitions -- without states
+
+    import_detail_report('Buchholz Statewide March 2012',
+        date=datetime.date(2012, 3, 17),
+        name='Buchholz',
+        category='Invite')
+
+    import_detail_report('Combined03022012',
+        date=datetime.date(2012, 3, 3),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('TBT 2012 Statewide',
+        date=datetime.date(2012, 2, 18),
+        name='Tampa Bay Tech',
+        category='Invite')
+
+    import_detail_report('Combined02032012',
+        date=datetime.date(2012, 2, 4),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined01202012',
+        date=datetime.date(2012, 1, 21),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Vero Beach Statewide - January 2012',
+        date=datetime.date(2012, 1, 7),
+        name='Vero Beach',
+        category='Invite')
+
+
+
+
+
+
+
+
+
+
 
 
 
