@@ -7,7 +7,7 @@ from django.db.models import Count
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-NUM_PAPERS_RENDER_IMMEDIATELY = 50
+NUM_PAPERS_RENDER_IMMEDIATELY = 25
 
 def ping_pong(request):
     return HttpResponse('pong')
