@@ -78,7 +78,7 @@ class School(models.Model):
     num_mathletes = models.IntegerField(null=True, blank=True)
     
     def get_absolute_url(self):
-        return '/schools/%i/' % self.id_num
+        return '/schools/%s/' % self.id_num
 
     def _id_num(self):
         try:
@@ -92,7 +92,8 @@ class School(models.Model):
         return len(mathletes)
 
     def extra_save(self, *args, **kwargs):
-        self.id_num = self._id_num(*args, **kwargs)
+        if self.id_num is None:
+            self.id_num = self._id_num(*args, **kwargs)
         self.num_mathletes = self._num_mathletes(*args, **kwargs)
         super(School, self).save(*args, **kwargs)
 
