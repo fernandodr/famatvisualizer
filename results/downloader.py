@@ -4,6 +4,7 @@ import BeautifulSoup
 import re
 import numpy as np
 import itertools
+from tqdm import tqdm
 
 from results.models import *
 
@@ -275,6 +276,34 @@ def import_detail_report(
 
     competition.save()
 
+def resolve_school_by_name(name):
+    schools = list(School.objects.filter(name=name))
+    if len(schools) > 1:
+        'Resolving %s' % name
+        ids = set([s.id_num for s in schools if s.id_num is not None])
+        if len(ids) > 0:
+            one_id =  list(ids)[0]
+            new_s = School(name=name, id_num=one_id)
+        else:
+            new_s = School(name=name)
+
+        new_s.save()
+
+        for paper in TestPaper.objects.filter(school__in=schools):
+            paper.school = new_s
+            paper.save()
+
+        for team in Team.objects.filter(school__in=schools):
+            team.school = new_s
+            team.save()
+
+        for school in schools:
+            school.delete()
+        print 'Successfully resolved.'
+
+def resolve_schools():
+    for name in tqdm([s.name for s in School.objects.all()]):
+        resolve_school_by_name(name)
 
 if __name__ == "__main__":
     # 2016 competitions -- without states
