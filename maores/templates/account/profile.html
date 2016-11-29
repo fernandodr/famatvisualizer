@@ -10,9 +10,9 @@
 
 <div class="container">
   <h1 class="light"> {{ request.user.first_name }} {{ request.user.last_name }} </h1>
-  <div class="divider"></div>
 
   {% if "@ahschool.com" in request.user.email %}
+  <div class="divider"></div>
 
   <div class="section flow-text">
     <h2> AHS Special Functionality </h2>
@@ -25,6 +25,8 @@
         <li> The top sum of S-Scores for this season.</li>
     </ul>
   </div>
+
+  {% endif %}
 
   {% if mathletes|length > 1 %}
   <div class="divider"></div>
@@ -66,7 +68,5 @@
   {% endif %}
 
 </div>
-
-{% endif %}
 
 {% endblock %}

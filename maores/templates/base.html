@@ -78,7 +78,7 @@ input[type="search"] {
         {% if request.user.is_authenticated %}
           <li><a class="dropdown-button hide-on-small-and-down" href="#!" data-activates="userdropdown">{{ request.user.first_name }}<i class="material-icons right">arrow_drop_down</i></a></li>
         {% else %}
-          <li class="hide-on-small-and-down"><a href="/accounts/login/">Login</a></li>
+          <li class="hide-on-small-and-down"><a href="/accounts/google/login/?process=login">Login</a></li>
         {% endif %}
       </ul>
       <ul class="side-nav" id="mobile">
