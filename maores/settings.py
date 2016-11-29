@@ -116,7 +116,7 @@ if True:
             'PORT': '5432',
         }
     }
-    DEBUG = False
+    DEBUG = True
 else:
     DATABASES = {
         'default': {

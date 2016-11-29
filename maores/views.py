@@ -204,22 +204,45 @@ def view_bowl(request, year, month_abbr, category, division_abbr):
         'teams': teams,
         'loadtime': load_time})
 
-def view_test(request, year, month, day, abbr):
+def view_test_extra_rows(request, year, month_abbr, types, abbr):
     start_time = datetime.datetime.now()
     year = int(year)
-    month = int(month)
-    day = int(day)
-
-    date = datetime.date(year, month, day)
+    month = get_full_month(month_abbr)
+    cat = types.title()
+    division = get_full_division(abbr)
 
     try:
-    	division = get_full_division(abbr)
-        competition = Competition.objects.get(date=date)
+        competition = Competition.objects.get(date__year=year,
+            date__month=int(get_num_month(month)), category=cat)
         test = competition.test_set.get(division=division)
     except:
-        raise Http404("This is not a valid test URL.")
+        raise Http404('Could not find such a test')
 
-    testpapers = test.testpaper_set.all().order_by('place')
+    testpapers = test.testpaper_set.all().order_by('place')[10:]
+
+    end_time = datetime.datetime.now()
+    load_time = end_time-start_time
+
+    return render(request, 'test_rows.html',
+        {'testpapers':testpapers})  
+
+
+def view_test(request, year, month_abbr, types, abbr):
+    start_time = datetime.datetime.now()
+    year = int(year)
+    month = get_full_month(month_abbr)
+    cat = types.title()
+    division = get_full_division(abbr)
+
+    try:
+        competition = Competition.objects.get(date__year=year,
+            date__month=int(get_num_month(month)), category=cat)
+        test = competition.test_set.get(division=division)
+    except:
+        raise Http404('Could not find such a test')
+
+    testpapers = test.testpaper_set.all().order_by('place')[:10]
+
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
 
@@ -228,22 +251,6 @@ def view_test(request, year, month, day, abbr):
         'test':test,
         'testpapers':testpapers, 
         'loadtime': load_time})   
-
-def redirect_view_test(request, year, month_abbr, types, category1):
-    start_time = datetime.datetime.now()
-    year = int(year)
-    month = get_full_month(month_abbr)
-    cat = types.title()
-
-    try:
-        c = Competition.objects.get(date__year=year,
-            date__month=int(get_num_month(month)), category=cat)
-    except:
-        raise Http404('Could not find such a test')
-    end_time = datetime.datetime.now()
-    load_time = end_time-start_time
-
-    return view_test(request, c.date.year, c.date.month, c.date.day, category1)
 
 
 def view_competitions(request):

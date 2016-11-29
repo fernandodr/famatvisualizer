@@ -1,0 +1,15 @@
+{% for paper in testpapers %}
+<tr>
+    <td class="rank-item"><a name="{{paper.mathlete.mao_id}}"></a>{{ paper.place }}</td>
+    <td class="school-item"> {{ paper.school }} </td>
+    <td class="name-item"> <a href="{{ paper.mathlete.get_absolute_url }}" class="teal-text">{{ paper.mathlete.first_name }} {{ paper.mathlete.last_name }}</a> </td>
+    <td class="score-item"> {{ paper.score }} </td>
+    <td class='right-item'> {{ paper.right }} </td>
+    <td class='wrong-item'> {{ paper.wrong }} </td>
+    <td class='blank-item'> {{ paper.blank }} </td>
+    <td class='tscore-item'> {{ paper.t_score|floatformat:3 }} </td>
+    {% if request.user.is_authenticated and "@ahschool.com" in request.user.email %}
+    <td class='sscore-item'> {{ paper.s_score|floatformat:3 }} </td>
+    {% endif %}
+</tr>
+{% endfor %}
