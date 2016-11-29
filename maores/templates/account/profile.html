@@ -8,21 +8,64 @@
 
 {% block content %}
 
-<h1> {{ request.user.first_name }} {{ request.user.last_name }} </h1>
+<div class="container">
+  <h1 class="light"> {{ request.user.first_name }} {{ request.user.last_name }} </h1>
+  <div class="divider"></div>
 
-{% if "@ahschool.com" in request.user.email %}
+  {% if "@ahschool.com" in request.user.email %}
 
-<div class="well">
-<h2> AHS Special Functionality </h2>
+  <div class="section flow-text">
+    <h2> AHS Special Functionality </h2>
 
-<p> By logging in with your Heritage email, you unlock special website functionality. Check out&hellip; </p>
+    <p> By logging in with your Heritage email, you unlock special website functionality. Check out&hellip; </p>
 
-<ul>
-    <li> S-Scores directly on results pages. Simply access them while logged in. </li>
-    <li> the current tally of First=Food points <a href="/schools/5060/firstpoints">here.</a></li>
-</ul>
+    <ul class="browser-default">
+        <li> S-Scores directly on results pages. Simply access them while logged in. </li>
+        <li> The current tally of First=Food points <a href="/schools/5060/firstpoints" class="teal-text">here.</a></li>
+        <li> The top sum of S-Scores for this season.</li>
+    </ul>
+  </div>
+
+  {% if mathletes|length > 1 %}
+  <div class="divider"></div>
+  <div class="section">
+    <h2> Mathletes </h2>
+    <div class="row">
+
+      {% for mathlete in mathletes %}
+      <div class="col l6 m6 s12">
+        <div class="card-panel">
+          <h5> {{ mathlete }} ({{mathlete.get_years_active_str|safe}})</h5>
+          {{ mathlete.school }} 
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+  {% elif mathletes|length == 1 %}
+  <div class="divider"></div>
+  <div class="section">
+    <h2> The Numbers </h2>
+    <div class="row">
+      <div class="col l4 m4 s12 center-align">
+        <h1 class='thin'> {{ mathletes.0.avg_t|floatformat:0}} </h1>
+        <h5 class='light'> Average T-Score</h5>
+      </div>
+      <div class="col l4 m4 s12 center-align">
+        <h1 class="thin"> {{ mathletes.0.testpaper_set.all|length }}</h1>
+        <h5 class='light'> Indivs Taken </h5>
+      </div>
+      <div class="col l4 m4 s12 center-align">
+      <h1 class="thin"> {{ mathletes.0.avg_place|floatformat:0}} </h1>
+      <h5 class="light"> Average Place </h5>
+      </div>
+    </div>
+    <p class="flow-text"> Check out your complete list of performances <a href="{{ mathletes.0.get_absolute_url}}" class="teal-text">here</a>.</p>
+  </div>
+  {% endif %}
+
 </div>
-
 
 {% endif %}
 
