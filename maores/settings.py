@@ -105,7 +105,7 @@ SOCIALACCOUNT_PROVIDERS = \
         { 'SCOPE': ['profile', 'email'],
           'AUTH_PARAMS': { 'access_type': 'online' } }}
 
-if False:
+if True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -116,7 +116,7 @@ if False:
             'PORT': '5432',
         }
     }
-    DEBUG = True
+    DEBUG = False
 else:
     DATABASES = {
         'default': {
