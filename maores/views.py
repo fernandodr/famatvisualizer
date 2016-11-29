@@ -7,6 +7,8 @@ from django.db.models import Count
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+NUM_PAPERS_RENDER_IMMEDIATELY = 50
+
 def ping_pong(request):
     return HttpResponse('pong')
     
@@ -218,7 +220,10 @@ def view_test_extra_rows(request, year, month_abbr, types, abbr):
     except:
         raise Http404('Could not find such a test')
 
-    testpapers = test.testpaper_set.all().order_by('place')[10:]
+    if test.testpaper_set.count() > NUM_PAPERS_RENDER_IMMEDIATELY:
+        testpapers = test.testpaper_set.all()[NUM_PAPERS_RENDER_IMMEDIATELY:]
+    else:
+        testpapers = []
 
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
@@ -241,7 +246,10 @@ def view_test(request, year, month_abbr, types, abbr):
     except:
         raise Http404('Could not find such a test')
 
-    testpapers = test.testpaper_set.all().order_by('place')[:10]
+    if test.testpaper_set.count() > NUM_PAPERS_RENDER_IMMEDIATELY:
+        testpapers = test.testpaper_set.all()[:NUM_PAPERS_RENDER_IMMEDIATELY]
+    else:
+        testpapers = test.testpaper_set.all()
 
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
