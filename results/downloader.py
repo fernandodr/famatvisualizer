@@ -400,4 +400,82 @@ if __name__ == "__main__":
         date=datetime.date(2014, 1, 11),
         name='Tampa Bay Tech',
         category='Invite')
+ 
+    # 2013 competitions -- without states
+
+    import_detail_report('Hagerty Student Delegate March Statewide',
+        date=datetime.date(2013, 3, 16),
+        name='Hagerty',
+        category='Invite')
+
+    import_detail_report('Combined03022013',
+        date=datetime.date(2013, 3, 2),
+        name='March Regional',
+        category='Regional')
+    
+    import_detail_report('Tampa Bay Tech Statewide Feb 2013',
+        date=datetime.date(2013, 2, 16),
+        name='Tampa Bay Tech',
+        category='Invite')
+
+    import_detail_report('Combined02012013',
+        date=datetime.date(2013, 2, 2),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined01182013',
+        date=datetime.date(2013, 1, 19),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Vero Beach January 2013',
+        date=datetime.date(2013, 1, 12),
+        name='Vero Beach',
+        category='Invite')
+
+    # 2012 competitions -- without states
+
+    import_detail_report('Buchholz Statewide March 2012',
+        date=datetime.date(2012, 3, 17),
+        name='Buchholz',
+        category='Invite')
+
+    import_detail_report('Combined03022012',
+        date=datetime.date(2012, 3, 3),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('TBT 2012 Statewide',
+        date=datetime.date(2012, 2, 18),
+        name='Tampa Bay Tech',
+        category='Invite')
+
+    import_detail_report('Combined02032012',
+        date=datetime.date(2012, 2, 4),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined01202012',
+        date=datetime.date(2012, 1, 21),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Vero Beach Statewide - January 2012',
+        date=datetime.date(2012, 1, 7),
+        name='Vero Beach',
+        category='Invite')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
