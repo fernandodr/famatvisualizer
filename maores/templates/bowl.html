@@ -8,20 +8,33 @@
 
 {% block navcompetitions %}class="active"{% endblock %}
 
+{% block navbar %}
+<div class="navbar-fixed">
+  <nav>
+    <div class="row teal">
+      <div class="col s12">
+        <a href="/competitions" class="breadcrumb">Competitions</a>
+        <a href="/competitions/#{{ competition.date.year }}" class="breadcrumb">{{ competition.date.year }}</a>
+        <a href="{{ competition.get_absolute_url }}" class="breadcrumb">{{ competition.name }}</a>
+        <a href="#!" class="breadcrumb">{{ bowl.division}} Bowl</a>
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}
+
 {% block content %}
 
-<h1> <a href="{{ competition.get_absolute_url }}">{{ competition }}</a>: {{ bowl.division }} Bowl  </h1>
+<div class="container">
+<h1 class="light"> {{ competition }} {{ bowl.division }} Bowl  </h1>
 
-<div class="well">
 
-<h2>Results</h2>
-
-<div class="form-group label-floating">
-  <label class="control-label" for="searchtable">Search by name or school.</label>
-  <input class="form-control" id="searchtable" type="text">
+<div class="input-field col s12 m8 l6">
+  <input id="searchtable" type="text">
+  <label for="searchtable">Filter by school</label>
 </div>
 
-<table class="table table-striped table-hover ">
+<table class="bordered highlight">
     <thead>
     <tr>
         <th> Rank </th>
@@ -59,7 +72,6 @@
     {% endfor %}
     </tbody>
 </table>
-</div>
 
 
 <script>
@@ -72,4 +84,5 @@ $(document).ready(function(){
     });
 });
 </script>
+</div>
 {% endblock %}

@@ -17,7 +17,7 @@ Competitions
     <h3 class="light hide-on-med-and-up"> Competitions </h3>
     <div class="divider"></div>
 
-    {% for year, competitions in dict.items %}
+    {% for year, competitions in seasons %}
     <div id="{{year}}" class="section scrollspy">
         <h2 class="hide-on-small-only"> {{ year }} </h2>
         <h4 class="hide-on-med-and-up"> {{ year }} </h2>
@@ -51,7 +51,7 @@ Competitions
                 <h5 class="teal-text">Detail Reports</h5>
                 <div class="collection">
                   {% for test in comp.test_set.all %}
-                    <a href="{{test.get_absolute_url}}/detail" target="_blank" class="collection-item black-text">{{ test.division }}</a>
+                    <a href="{{test.get_absolute_url}}detail" target="_blank" class="collection-item black-text">{{ test.division }}</a>
                   {% endfor %}
                 </div>
               </div>
@@ -68,7 +68,7 @@ Competitions
     <div class="toc-wrapper">
       <div style="height: 1px;">
         <ul class="section table-of-contents">
-          {% for year, competitions in dict.items %}
+          {% for year in years %}
             <li><a href="#{{year}}">{{year}} Competitions</a></li>
           {% endfor %}
         </ul>

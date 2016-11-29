@@ -258,15 +258,14 @@ def view_competitions(request):
 def view_competitions_tabbed(request):
     start_time = datetime.datetime.now()
     years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
-    dict = {}
+    seasons = []
     for year in years:
-        dict[year] = list(Competition.objects.filter(date__year=year).order_by('date'))
+        seasons.append((year, list(Competition.objects.filter(date__year=year).order_by('date'))))
     end_time = datetime.datetime.now()
     load_time = end_time-start_time
-    print years
 
     return render(request, 'experimental_competitions.html',
-                    {'dict' : dict, 'years':years, 'loadtime': load_time})
+                    {'seasons' : seasons, 'years' : years, 'loadtime': load_time})
 
 
 def view_competitions_year(request, year):
@@ -312,7 +311,20 @@ def view_competition_report(request, year, month, types, id_school):
 
 @login_required
 def view_profile(request):
-    return render(request, 'account/profile.html', {'request': request})
+    start_time = datetime.datetime.now()
+    if request.user.first_name and request.user.last_name:
+        mathletes = Mathlete.objects.filter(
+            first_name=request.user.first_name,
+            last_name=request.user.last_name)
+    else:
+        mathletes = []
+
+    end_time = datetime.datetime.now()
+    load_time = end_time - start_time
+    return render(request, 'account/profile.html', {
+        'request': request,
+        'mathletes': mathletes,
+        'loadtime': load_time})
 
 def return_static_file(request, fname):
     try:

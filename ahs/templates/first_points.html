@@ -10,18 +10,18 @@
 
 {% block content %}
 
-<h1> {{ school }} </h1>
+<div class="container">
+<h1 class="light"> {{ school }} </h1>
 
-<h1> {{ year }} First=Food Points </h1>
+<h2 class="thin"> {{ year }} First=Food Points </h1>
 
 {% if papers %}
 
 <div class="row">
-    <div class="col-sm-6">
-        <div class="well">
-        <h2>First Places</h2>
+    <div class="col l6 m6 s12">
+        <h3>First Places</h3>
 
-        <table class="table table-striped table-hover ">
+        <table class="bordered highlight">
             <thead>
             <tr>
                 <th> Name </th>
@@ -33,21 +33,20 @@
             <tbody>
             {% for paper in papers %}
             <tr>
-                <td> <a href="{{ paper.mathlete.get_absolute_url }}">{{ paper.mathlete }}</a> </td>
+                <td> <a href="{{ paper.mathlete.get_absolute_url }}" class="teal-text">{{ paper.mathlete }}</a> </td>
                 <td> {{ paper.test.competition }} </td>
                 <td> {{ paper.test.division }} </td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
-        </div>
     </div>
 
-    <div class="col-sm-6">
-        <div class="well">
-        <h2>Mathletes</h2>
+    <div class="col l6 m6 s12">
+        <div class="container">
+        <h3>Mathletes</h3>
 
-        <table class="table table-striped table-hover ">
+        <table class="bordered highlight">
             <thead>
             <tr>
                 <th> Name </th>
@@ -58,7 +57,7 @@
             <tbody>
             {% for mathlete in mathletes %}
             <tr>
-                <td> <a href="{{ mathlete.0.get_absolute_url }}">{{ mathlete.0 }}</a> </td>
+                <td> <a href="{{ mathlete.0.get_absolute_url }}" class="teal-text">{{ mathlete.0 }}</a> </td>
                 <td> {{ mathlete.1 }} </td>
             </tr>
             {% endfor %}
@@ -76,9 +75,13 @@
 
 {% endif %}
 
-<ul class="pager">
-  <li class="previous"><a href="/schools/{{school.id_num}}/firstpoints/{{year|add:'-1'}}">← {{year|add:'-1'}}</a></li>
-  <li class="next"><a class="withripple" href="/schools/{{school.id_num}}/firstpoints/{{year|add:'1'}}">{{year|add:'1'}} →</a></li>
-</ul>
+  <ul class="pagination center-align">
+    <li class="waves-effect"><a href="/schools/{{school.id_num}}/firstpoints/{{year|add:'-1'}}"><i class="material-icons">chevron_left</i></a></li>
+    {% for y in years %}
+    <li {% if y == year %}class="active teal waves-effect"{% else %}class="waves-effect"{% endif %}><a href="/schools/{{school.id_num}}/firstpoints/{{y}}">{{ y }}</a></li>
+    {% endfor %}
+    <li class="waves-effect"><a href="/schools/{{school.id_num}}/firstpoints/{{year|add:'1'}}"><i class="material-icons">chevron_right</i></a></li>
+  </ul>
+</div>
 
 {% endblock %}

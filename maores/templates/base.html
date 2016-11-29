@@ -34,46 +34,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-<!-- <script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'results/css/d3.css'%}">
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+<style>
+input[type="search"] {
+  height: 64px !important; /* or height of nav */
+}
+</style>
 
 </head>
 
 <body>
 
-
 <header>
 {% block navbar %}
 <div class="navbar-fixed">
-  <nav class="nav-extended teal">
-    <div class="nav-wrapper">
+  <nav>
+    <div class="nav-wrapper teal">
       <a href="#" data-activates="mobile" class="button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
-      <a href="/" class="brand-logo center valign"><img src="{% static 'results/img/logo_white.png'%}" style="height:50px"></a>
+      <!--<a href="/" class="brand-logo center hide-on-small-only"><img src="{% static 'results/img/logo_white.png'%}" style="height:50px"></a>-->
       <ul id="userdropdown" class="dropdown-content">
         <li><a href="/accounts/profile/">Profile</a></li>
         <li><a href="/accounts/logout/">Log Out?</a></li>
       </ul>
       <ul class="left hide-on-small-and-down">
+        <li {% block navhome %}{% endblock %}><a href="/">Home</a></li>
         <li {% block navmathletes %}{% endblock %}><a href="/mathletes">Mathletes</a></li>
         <li {% block navcompetitions %}{% endblock %}><a href="/competitions">Competitions</a></li>
         <li {% block navschools %}{% endblock %}><a href="/schools">Schools</a></li>
+        <li> 
+          <form method="get" action="/search/">
+            <div class="input-field">
+              <input id="search" name="q" type="search">
+              <label for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            </div>
+          </form> 
+        </li>
       </ul>
       <ul class="right">
-        <li class="hide-on-med-and-down">
-          <div class="nav-wrapper">
-            <form name="Search" id="Search" method="get" action="/search/">
-              <div class="input-field">
-                <input id="q" type="text" required>
-                <label for="q"><i class="material-icons">search</i></label>
-              </div>
-            </form>
-          </div>
-        </li>
         {% if request.user.is_authenticated %}
           <li><a class="dropdown-button hide-on-small-and-down" href="#!" data-activates="userdropdown">{{ request.user.first_name }}<i class="material-icons right">arrow_drop_down</i></a></li>
         {% else %}
-          <li class="hide-on-small-and-down"><a href="/accounts/login/">Login</a>
+          <li class="hide-on-small-and-down"><a href="/accounts/login/">Login</a></li>
         {% endif %}
       </ul>
       <ul class="side-nav" id="mobile">
@@ -96,21 +101,23 @@ Here goes the content
 
 
 <footer class="page-footer teal">
+  {% block foot %}
   <div class="container">
     <div class="row">
       <div class="col l4 m4 s12">
         <h5 class="white-text">Spot a Mistake?</h5>
-        <p class="grey-text text-lighten-4">Unfortunately, data published on <a href="http://famat.org/" class="pink-text text-lighten-3">famat.org</a> is not perfect. Since we mirror that data, all the hiccups carry over. However, if you spot a discrepancy in a result, a typo, or something you think isn't the way it should be, please let us know about it <a href="/report" class="pink-text text-lighten-3">here</a></p>
+        <p class="grey-text text-lighten-4">Unfortunately, data published on <a href="http://famat.org/" class="pink-text text-lighten-3">famat.org</a> is not perfect. Since we mirror that data, all the hiccups carry over. However, if you spot a discrepancy in a result, a typo, or something you think isn't the way it should be, please let us know about it <a href="/report" class="pink-text text-lighten-3">here</a>.</p>
       </div>
       <div class="col l4 m4 s12">
         <h5 class="white-text">Have an Idea?</h5>
-        <p class="grey-text text-lighten-4">We hope you've found this website useful and the data well-presented. We're always looking to improve, so <a class="pink-text text-lighten-3" href="/ideas">let us know</a> if you have any ideas for charts, figures, statistics, or anything else that could be a helpful addition to this website</p>
+        <p class="grey-text text-lighten-4">We hope you've found this website useful and the data well-presented. We're always looking to improve, so <a class="pink-text text-lighten-3" href="/ideas">let us know</a> if you have any ideas for charts, figures, statistics, or anything else that could be a helpful addition to this website.</p>
       </div>
       <div class="col l4 m4 s12">
         <h5 class="white-text">Want Raw Data?</h5>
-        <p class="grey-text text-lighten-4">In order to present this website, we compiled FAMAT results into a curated database. If this sounds helpful to something you're interested in doing, please get in touch</p>
+        <p class="grey-text text-lighten-4">In order to present this website, we compiled FAMAT results into a curated database. If this sounds helpful to something you're interested in doing, feel free to get in touch.</p>
       </div>
     </div>
+    {% endblock %}
   </div>
   <div class="footer-copyright teal darken-2">
     <div class="container">
@@ -123,6 +130,7 @@ Here goes the content
 <script> 
 $(document).ready(function(){
   $(".button-collapse").sideNav();
+  $('.navbar-fixed').css('height', $('.nav-extended').height());
 })
 </script>
 </body>

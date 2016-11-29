@@ -9,6 +9,7 @@ class Mathlete(models.Model):
     last_name = models.CharField(max_length = 30)
     mao_id = models.CharField(max_length=10)
     avg_t = models.FloatField(blank=True, null=True)
+    avg_place = models.FloatField(blank=True, null=True)
     
     def __unicode__(self):
         return self.last_name + ', ' + self.first_name
@@ -21,6 +22,9 @@ class Mathlete(models.Model):
 
     def _get_avg_t_score(self):
         return np.average([x.t_score for x in self.testpaper_set.all() if x.t_score is not None])
+
+    def _get_avg_place(self):
+        return np.average([x.place for x in self.testpaper_set.all() if x.t_score is not None])
 
     def _get_school(self):
         return self.testpaper_set.all().order_by('-test__competition__date')[0].school
@@ -63,6 +67,7 @@ class Mathlete(models.Model):
 
     def extra_save(self, *args, **kwargs):
         self.avg_t = self._get_avg_t_score(*args, **kwargs)
+        self.avg_place = self._get_avg_place(*args, **kwargs)
         super(Mathlete, self).save(*args, **kwargs)
 
 

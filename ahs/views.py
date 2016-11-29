@@ -24,11 +24,15 @@ def first_points(request, school_id, year):
         .annotate(num_wins=Count('test')) \
         .order_by('-num_wins')
     mathletes = [(Mathlete.objects.get(pk=m['mathlete']), m['num_wins']) for m in mathletes]
+
+    years = sorted(list(set([c.date.year for c in Competition.objects.all()])))
+
     end_time = datetime.datetime.now()
     load_time = end_time - start_time
     return render(request, 'first_points.html', {
         'school': school, 
         'year' : year,
+        'years': years,
         'papers': papers, 
         'mathletes': mathletes, 
         'loadtime': load_time})

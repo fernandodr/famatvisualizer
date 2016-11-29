@@ -9,16 +9,18 @@
 {% block navcompetitions %}class="active"{% endblock %}
 
 {% block navbar %}
-<nav>
-<div class="row">
-  <div class="col s12 teal ligten-2">
-    <a href="/competitions" class="breadcrumb">Competitions</a>
-    <a href="/competitions/{{ competition.date.year }}" class="breadcrumb">{{ competition.date.year }}</a>
-    <a href="{{ competition.get_absolute_url }}" class="breadcrumb">{{ competition.name }}</a>
-    <a href="#!" class="breadcrumb">{{ test.division}} Indiv</a>
-  </div>
+<div class="navbar-fixed">
+  <nav>
+    <div class="row teal">
+      <div class="col s12">
+        <a href="/competitions" class="breadcrumb">Competitions</a>
+        <a href="/competitions/#{{ competition.date.year }}" class="breadcrumb">{{ competition.date.year }}</a>
+        <a href="{{ competition.get_absolute_url }}" class="breadcrumb">{{ competition.name }}</a>
+        <a href="#!" class="breadcrumb">{{ test.division}} Indiv</a>
+      </div>
+    </div>
+  </nav>
 </div>
-</nav>
 {% endblock %}
 
 {% block content %}
@@ -26,7 +28,7 @@
 <div class="row">
   <div class="col s12 m12 l9">
   <div class="container">
-    <h3 class="light"> {{ competition }} {{ test.division }}</h3>
+    <h3 class="light"> {{ competition }} {{ test.division }} Indiv</h3>
     <div class="row">
       <div class="input-field col s12 m8 l6">
           <input id="searchtable" type="text">
@@ -52,7 +54,7 @@
         <tbody>
         {% for paper in testpapers %}
         <tr>
-            <td class="rank-item">{{ paper.place }}</td>
+            <td class="rank-item"><a name="{{paper.mathlete.mao_id}}"></a>{{ paper.place }}</td>
             <td class="school-item"> {{ paper.school }} </td>
             <td class="name-item"> <a href="{{ paper.mathlete.get_absolute_url }}" class="teal-text">{{ paper.mathlete.first_name }} {{ paper.mathlete.last_name }}</a> </td>
             <td class="score-item"> {{ paper.score }} </td>
