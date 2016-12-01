@@ -36,10 +36,10 @@
 
       {% for mathlete in mathletes %}
       <div class="col l6 m6 s12">
-        <div class="card-panel">
+        <a href="{{mathlete.get_absolute_url}}"><div class="card-panel">
           <h5> {{ mathlete }} ({{mathlete.get_years_active_str|safe}})</h5>
           {{ mathlete.school }} 
-        </div>
+        </div></a>
       </div>
       {% endfor %}
 
