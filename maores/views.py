@@ -180,7 +180,7 @@ def view_sweepstakes(request, year, month, cat):
 
     def school_to_res(school):
         lst = [school]
-        for test in competition.bowltest_set.all():
+        for test in competition.bowltest_set.exclude(division='Algebra 1'):
             if test.team_set.filter(school=school, number=1).exists():
                 lst.append(test.team_set.filter(school=school, number=1)[0].t_score)
             else:
