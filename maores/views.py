@@ -175,7 +175,8 @@ def view_sweepstakes(request, year, month, cat):
         raise Http404('Could not find such a competition.')
 
     schools = set([team.school for bt in competition.bowltest_set.all() for team in bt.team_set.all()])
-    divisions = ['Total T-Score'] + [test.division for test in competition.bowltest_set.all()]
+    divisions = ['Total T-Score'] + [test.division for test in 
+        competition.bowltest_set.exclude(division='Algebra 1')]
 
     def school_to_res(school):
         lst = [school]
