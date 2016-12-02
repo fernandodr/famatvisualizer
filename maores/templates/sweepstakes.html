@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ competition }} Sweepstakes {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h2 class="light">{{ competition }} Sweepstakes </h2>
+
+    <table class="bordered highlight">
+    <thead>
+      <tr>
+        <td> Rank </td>
+        <td>School</td>
+        {% for div in divisions %} <td> {{ div }} </td> {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for res in results %}
+        <tr>
+          <td> {{ forloop.counter }} </td>
+          {% for cell in res %}
+            {% if forloop.first %}
+            <td> {{ cell }} </td>
+            {% else %}
+            <td> {{ cell|floatformat:4 }} </td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -339,8 +339,8 @@ class Team(models.Model):
     def __unicode__(self):
         division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',
                         'Algebra 2': 'Alg 2', 'Geometry': 'Geo'}
-        return "%s's %s %s Team %i" (self.school, self.competition, 
-            division_abbr.get(self.division,self.division),
+        return "%s's %s %s Team %i" % (self.school, self.test.competition, 
+            division_abbr.get(self.test.division,self.test.division),
             self.number)
 
     def _get_total_score(self):
