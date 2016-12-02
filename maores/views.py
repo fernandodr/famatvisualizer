@@ -1,11 +1,15 @@
-from results.utils import *
-from results.models import *
 import datetime
-from results.figs import *
+
+from itertools import chain
+
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from results.utils import *
+from results.models import *
+from results.figs import *
 
 NUM_PAPERS_RENDER_IMMEDIATELY = 25
 
@@ -130,7 +134,7 @@ def mathlete_scores_csv(request, id):
 
     return HttpResponse(s)
 
-def redirect_competition(request, year, month, cat):
+def view_competition(request, year, month, cat):
     cat = cat.title()
     months = {'dec':12, 'jan':1, 'feb':2, 'mar':3, 'apr':4,
         'january':1, 'february':2, 'march':3,}
@@ -142,31 +146,55 @@ def redirect_competition(request, year, month, cat):
         raise Http404("Could not parse month/year.")
 
     try:
-        c = Competition.objects.get(date__year=year,
+        competition = Competition.objects.get(date__year=year,
             date__month=month, category=cat)
     except:
         raise Http404('Could not find such a competition.')
 
-
-    return view_competition(request, c.date.year, c.date.month, c.date.day)
-
-def view_competition(request, year, month, day):
-    year = int(year)
-    month = int(month)
-    day = int(day)
-    date = datetime.date(year, month, day)
-
-    try:
-        competition = Competition.objects.get(date=date)
-    except:
-        raise Http404("No competition on this day.")
-
     tests = competition.test_set.all()
-
 
     return render(request, 'competition.html',
         {'competition':competition,
          'tests':tests})
+
+def view_sweepstakes(request, year, month, cat):
+    cat = cat.title()
+    months = {'dec':12, 'jan':1, 'feb':2, 'mar':3, 'apr':4,
+        'january':1, 'february':2, 'march':3,}
+
+    try:
+        year = int(year)
+        month = months[month.lower()]
+    except:
+        raise Http404("Could not parse month/year.")
+
+    try:
+        competition = Competition.objects.get(date__year=year,
+            date__month=month, category=cat)
+    except:
+        raise Http404('Could not find such a competition.')
+
+    schools = set([team.school for bt in competition.bowltest_set.all() for team in bt.team_set.all()])
+    divisions = ['Total T-Score'] + [test.division for test in competition.bowltest_set.all()]
+
+    def school_to_res(school):
+        lst = [school]
+        for test in competition.bowltest_set.all():
+            if test.team_set.filter(school=school, number=1).exists():
+                lst.append(test.team_set.filter(school=school, number=1)[0].t_score)
+            else:
+                lst.append(0)
+        lst.insert(1, sum(lst[1:]) - min(lst[1:]))
+        return lst
+
+    results = map(school_to_res, schools)
+    results = sorted(results, key=lambda x : -x[1])
+
+    return render(request, 'sweepstakes.html',{
+        'competition': competition,
+        'schools': schools,
+        'divisions' : divisions,
+        'results': results})
 
 def view_bowl(request, year, month_abbr, category, division_abbr):
 
@@ -190,8 +218,7 @@ def view_bowl(request, year, month_abbr, category, division_abbr):
     return render(request, 'bowl.html', {
         'competition': competition,
         'bowl': bowl,
-        'teams': teams,
-        'loadtime': load_time})
+        'teams': teams})
 
 def view_test_extra_rows(request, year, month_abbr, types, abbr):
     year = int(year)
@@ -240,8 +267,7 @@ def view_test(request, year, month_abbr, types, abbr):
     return render(request, 'test.html',
         {'competition':competition,
         'test':test,
-        'testpapers':testpapers, 
-        'loadtime': load_time})   
+        'testpapers':testpapers})   
 
 
 def view_competitions(request):
@@ -311,8 +337,7 @@ def view_profile(request):
 
     return render(request, 'account/profile.html', {
         'request': request,
-        'mathletes': mathletes,
-        'loadtime': load_time})
+        'mathletes': mathletes})
 
 def return_static_file(request, fname):
     try:
