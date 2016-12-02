@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <h2 class="light"> About </h1>
+  <div class="divider"></div>
+
+  <h3> FAMAT </h3>
+
+  <p>Mu Alpha Theta describes their purpose on their <a href="http://www.mualphatheta.org/index.php?about-us" class="teal-text">website</a>,</p>
+
+  <blockquote>
+    Mu Alpha Theta is the National High School and Two-Year College Mathematics Honor Society with over 113,500 student members in June 2016 in more than 2300 schools. We are dedicated to inspiring keen interest in mathematics, developing strong scholarship in the subject, and promoting the enjoyment of mathematics in high school and two-year college students. 
+  </blockquote>
+
+  <p>The Florida Association of Mu Alpha Theta (FAMAT) hosts multiple regional and invite competitions to further the goals of Mu Alpha Theta.</p>
+
+  <h3> FAMAT Visualizer </h3>
+
+  This project was born out of the desire to better aggregate and visualize the results of FAMAT competitions.
+
+  <h3> The Team </h3>
+
+  <div class="row">
+    <div class="col s8 m4 l3 center-on-small-only">
+      <div class="image-container">
+        <img src="{% static 'img/fernando1.png' %}" style="width:100%">
+      </div>
+    </div>
+    <div class="col s12 m8 l9">
+      <h4>Fernando Rivera</h4>
+      <p>Fernando is a junior at American Heritage Plantation where he participates in Mu Alpha Theta and Science Bowl. His favorite field of study is primarily in Computer Science along with Chemistry and Earth Science. He also enjoy playing Ultimate and tennis in his spare time.</p>
+    </div>
+  </div>
+
+  <h3> Thanks To </h3>
+
+  <ul class="browser-default">
+    <li> Francisco Rivera for his technical advice and guidance.</li>
+  </ul>
+
+</div>
+{% endblock %}

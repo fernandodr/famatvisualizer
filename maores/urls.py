@@ -44,8 +44,8 @@ urlpatterns = [
     url(r'^schools/([0-9]{4})/firstpoints/([0-9]{4})/$', first_points),
     url(r'^search/', include('haystack.urls')),
     #url(r'^search/$', SearchView(), name='haystack_search'),
-    url(r'^static/(.*)', return_static_file),
-    url(r'ping/', ping_pong),
+    url(r'^about.html', display_about),
+    url(r'^ping/$', ping_pong),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/$', view_profile),
 ]
