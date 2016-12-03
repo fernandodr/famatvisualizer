@@ -24,6 +24,35 @@ def convert_answer_str(answer):
         formatted_answer += 'E'
     return formatted_answer
 
+def add_sweepstakes(competition):
+    competition.sweeps_set.all().delete()
+    schools = set([team.school for 
+        bt in competition.bowltest_set.all() 
+        for team in bt.team_set.all()])
+    divisions = [test.division for test in 
+        competition.bowltest_set.exclude(division='Algebra 1')]
+
+    def school_to_res(school):
+        lst = [school]
+        for test in competition.bowltest_set.exclude(division='Algebra 1'):
+            if test.team_set.filter(school=school).exists():
+                lst.append(test.team_set.filter(school=school)[0].t_score)
+            else:
+                lst.append(0)
+        lst.insert(1, sum(lst[1:]) - min(lst[1:]))
+        return lst
+
+    results = map(school_to_res, schools)
+    results = sorted(results, key=lambda x : -x[1])
+
+    for i, result in enumerate(results):
+        sweep = Sweeps(
+            school=result[0],
+            competition=competition,
+            rank=i+1,
+            total_t= result[1])
+        sweep.save()
+
 def wipe():
     """
     Purges the database.
