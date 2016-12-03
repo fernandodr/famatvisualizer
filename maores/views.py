@@ -174,26 +174,23 @@ def view_sweepstakes(request, year, month, cat):
     except:
         raise Http404('Could not find such a competition.')
 
-    schools = set([team.school for bt in competition.bowltest_set.all() for team in bt.team_set.all()])
     divisions = ['Total T-Score'] + [test.division for test in 
         competition.bowltest_set.exclude(division='Algebra 1')]
 
-    def school_to_res(school):
-        lst = [school]
+    def sweeps_to_res(sweeps):
+        lst = [sweeps.school, sweeps.total_t]
         for test in competition.bowltest_set.exclude(division='Algebra 1'):
-            if test.team_set.filter(school=school).exists():
-                lst.append(test.team_set.filter(school=school)[0].t_score)
+            if test.team_set.filter(school=sweeps.school).exists():
+                lst.append(test.team_set.filter(school=sweeps.school)[0].t_score)
             else:
                 lst.append(0)
-        lst.insert(1, sum(lst[1:]) - min(lst[1:]))
         return lst
 
-    results = map(school_to_res, schools)
-    results = sorted(results, key=lambda x : -x[1])
+    sweeps = competition.sweeps_set.all()
+    results = map(sweeps_to_res, sweeps)
 
     return render(request, 'sweepstakes.html',{
         'competition': competition,
-        'schools': schools,
         'divisions' : divisions,
         'results': results})
 

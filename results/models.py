@@ -374,6 +374,20 @@ class Team(models.Model):
 
     mathletes = property(_get_mathletes)
 
+class Sweeps(models.Model):
+    school = models.ForeignKey(School)
+    competition = models.ForeignKey(Competition)
+    rank = models.IntegerField()
+    total_t = models.FloatField()
+
+    def __unicode__(self):
+        return '%s: %s (%ist place)' % (
+            self.competition,
+            self.school,
+            self.rank)
+
+    class Meta:
+        ordering = ['rank']
     
 class MathleteImpression(models.Model):
     mathlete = models.ForeignKey(Mathlete)

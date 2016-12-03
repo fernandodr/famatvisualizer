@@ -3,6 +3,22 @@
 
 {% block title %}{{ competition }} Sweepstakes {% endblock %}
 
+{% block navbar %}
+<div class="navbar-fixed">
+  <nav>
+    <div class="row teal">
+      <div class="col s12">
+        <a href="/competitions" class="breadcrumb">Competitions</a>
+        <a href="/competitions/#{{ competition.date.year }}" class="breadcrumb">{{ competition.date.year }}</a>
+        <a href="{{ competition.get_absolute_url }}" class="breadcrumb">{{ competition.name }}</a>
+        <a href="{{ competition.get_absolute_url }}sweepstakes.html" class="breadcrumb"> Sweepstakes </a>
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}
+
+
 {% block content %}
 
 <div class="container">

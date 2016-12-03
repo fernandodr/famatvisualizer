@@ -27,10 +27,12 @@ Competitions
         <li>
           <div class="collapsible-header">{{ comp }}</div>
           <div class="collapsible-body">
-              <div class="container center-align">
-              <p class="flow-text"> Check out the <a href="{{comp.get_absolute_url}}sweepstakes.html" class="teal-text">Sweepstakes</a>.</p>
-              </div>
-            <div class="divider"></div>
+              {% if comp.bowltest_set.all %}
+                <div class="container center-align">
+                  <p class="flow-text"> Check out the <a href="{{comp.get_absolute_url}}sweepstakes.html" class="teal-text">Sweepstakes</a>.</p>
+                </div>
+                <div class="divider"></div>
+              {% endif %}
             <div class="row">
               <div class="col s12 m4 l4 center-align">
                 <i class="large teal-text material-icons">person</i>
@@ -44,11 +46,15 @@ Competitions
               <div class="col s12 m4 l4  center-align">
                 <i class="large teal-text material-icons">people</i>
                 <h5 class="teal-text">Teams</h5>
+                {% if comp.bowltest_set.all %}
                 <div class="collection">
                   {% for bowl in comp.bowltest_set.all %}
                     <a href="{{bowl.get_absolute_url}}" target="_blank" class="collection-item black-text">{{ bowl.division }}</a>
                   {% endfor %}
                 </div>
+                {% else %}
+                <p> Unfortunately, it looks like we had trouble parsing the team results. </p>
+                {% endif %}
               </div>
               <div class="col s12 m4 l4 center-align">
                 <i class="large teal-text material-icons">pie_chart</i>
