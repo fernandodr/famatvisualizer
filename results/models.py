@@ -336,6 +336,9 @@ class Team(models.Model):
     total_score = models.IntegerField(null=True, blank=True)
     t_score = models.FloatField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['place']
+
     def __unicode__(self):
         division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',
                         'Algebra 2': 'Alg 2', 'Geometry': 'Geo'}
