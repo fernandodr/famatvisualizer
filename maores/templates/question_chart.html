@@ -10,11 +10,59 @@ MAO Visualizer
 
 {% block content %}
 
-<h1> Question Data </h1>
-
-<div class="well" width=500px>
-<h2> Chart</h2>
-This shows how questions are answered for this test.
-<center> {{ fig1|safe }} </center>
+<div class="container">
+<h3 class="light"> {{ test.competition }} {{ test.division }} Detail</h3>
+<div id="detailchart"></div>
 </div>
+
+<script>
+var chart = c3.generate({
+    bindto: '#detailchart',
+    data: {
+        url : "question_breakdown.csv",
+        x : 'Question Number',
+        type: "bar",
+        groups : [
+            ['Right', 'Wrong', 'Blank']
+        ],
+        order: null
+    },
+    size: {
+        height: .9*$(window).height()
+    },
+    color: {
+        pattern: ['#388E3C', '#9E9E9E', '#D32F2F']
+    },
+    legend : {
+        position: 'above'
+    },
+    axis : {
+        rotated: true,
+        x : {
+            type: 'category',
+        },
+        y: {
+            max: 100,
+            min: 0,
+            padding: {bottom: 0, top: 0},
+            label : {
+                text: "Percentage",
+                position: "outer-center"
+            }
+        },
+        y2: {
+            max: 100,
+            min: 0,
+            show: true,
+            label : {
+                text: "Proportion",
+                position: "outer-center"
+            }
+        }
+    },
+    tooltip: {
+        grouped: false
+    }
+})
+</script>
 {% endblock %}

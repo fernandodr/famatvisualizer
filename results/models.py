@@ -182,6 +182,9 @@ class Question(models.Model):
     num_blank = models.IntegerField(blank=True, null=True)
     num_wrong = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['number']
+
     def __unicode__(self):
         return '%s: Question #%i' % (self.test, self.number)
 
