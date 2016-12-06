@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+404 Error
+{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="container">
+    <h2> 404 Error </h2>
+    <p class="flow-text"> Sometimes things just don't exist. For example&hellip;</p>
+
+    <ul class="browser-default flow-text">
+        <li> \( \displaystyle \lim_{x \to 0} \sqrt{x}. \) </li>
+        <li> A proof of Euclid's parallel postulate. </li>
+        <li> This page. </li>
+    </ul>
+
+    <p class="flow-text"> If you arrived to this page by mistake, consider checking out the <a class="teal-text" href="/">home page</a> or any other main landing page from the navbar. If you believe you're getting this error by mistake, please help us fix it by reporting it <a href="/report" class="teal-text">here</a>.
+
+</div>
+{% endblock %}
