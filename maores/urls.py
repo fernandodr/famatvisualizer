@@ -48,4 +48,5 @@ urlpatterns = [
     url(r'^ping/$', ping_pong),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/$', view_profile),
+    url(r'^google1b28fba45037c690.html$', google_confirmation),
 ]
