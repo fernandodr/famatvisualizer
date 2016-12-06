@@ -1,6 +1,7 @@
 import datetime
 
 from itertools import chain
+import csv
 
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
@@ -44,9 +45,44 @@ def view_test_detail_report(
             division = division)
     except:
         return Http404('Not a valid competition')
+    return render(request, 'question_chart.html', {'test': test})
 
-    fig1 = test_detail_report(test)
-    return render(request, 'question_chart.html', {'fig1': fig1})
+def test_question_breakdown_csv(
+        request, 
+        year, 
+        month_abbr, 
+        category, 
+        division_abbr):
+    year = int(year)
+    month = get_num_month(get_full_month(month_abbr))
+    category = category.title()
+    division = get_full_division(division_abbr)
+
+    try:
+        test = Test.objects.get(
+            competition__date__year=year, 
+            competition__date__month=month,
+            competition__category=category, 
+            division = division)
+    except:
+        return Http404('Not a valid competition')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="question_breakdown.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Question Number', 'Right', 'Blank', 'Wrong'])
+    for q in test.question_set.all():
+        r, w, b = q.num_correct, q.num_wrong, q.num_blank
+        t = r + w + b
+        writer.writerow([
+            'Question #%i' % q.number,
+            100.0*r / t,
+            100.0*b / t,
+            100.0*w / t])
+
+    return response
+
 
 def view_mathletes(request):
     top = Mathlete.objects.annotate(num_tests=Count('testpaper')) \
@@ -130,7 +166,7 @@ def mathlete_scores_csv(request, id):
     except:
         return Http404("No such mathlete exists.")
 
-    s = 'competition,tscore'
+    s = 'competition,T-Score'
     for paper in mathlete.testpaper_set.order_by('test__competition__date'):
         s += '\n%s,%.3f' % (str(paper.test.competition) + ' (' + str(paper.test.division) + ')', 
             paper.t_score)

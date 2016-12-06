@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/$', view_test),
     url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/extra_rows$', view_test_extra_rows),
     url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/detail/$', view_test_detail_report),
+    url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/detail/question_breakdown.csv$', test_question_breakdown_csv),
     url(r'^competitions/([0-9]+)/([a-z]+)/([a-z]+)/([A-Za-z0-9]+)/bowl/$', view_bowl),
     url(r'^competitions/$', view_competitions_tabbed),
     url(r'^competitions/all/$', view_competitions),
