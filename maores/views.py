@@ -18,6 +18,9 @@ def display_about(request):
 
 def ping_pong(request):
     return HttpResponse('pong')
+
+def google_confirmation(request):
+    return render(request, 'google.html', {})
     
 def home_page(request):
     return render(request, 'index.html', {})
