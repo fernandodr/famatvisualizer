@@ -304,6 +304,7 @@ def import_detail_report(
         print "%s team data retrieved." % division
 
     competition.save()
+    add_sweepstakes(competition)
 
 def resolve_school_by_name(name):
     schools = list(School.objects.filter(name=name))
