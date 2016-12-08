@@ -312,7 +312,8 @@ def import_detail_report(
     add_sweepstakes(competition)
 
 def resolve_school_by_name(name):
-    schools = list(School.objects.filter(name=name))
+    name = name.lower()
+    schools = list(School.objects.filter(name__lower=name))
     if len(schools) > 1:
         'Resolving %s' % name
         ids = set([s.id_num for s in schools if s.id_num is not None])
@@ -445,36 +446,31 @@ if __name__ == "__main__":
         is_150_scale=True)
 
     import_detail_report('Combined03022013',
-        date=datetime.date(2013, 3, 2,
-            is_150_scale=True),
+        date=datetime.date(2013, 3, 2),
         name='March Regional',
         category='Regional',
         is_150_scale=True)
     
     import_detail_report('Tampa Bay Tech Statewide Feb  2013',
-        date=datetime.date(2013, 2, 16,
-            is_150_scale=True),
+        date=datetime.date(2013, 2, 16),
         name='Tampa Bay Tech',
         category='Invite',
         is_150_scale=True)
 
     import_detail_report('Combined02012013',
-        date=datetime.date(2013, 2, 2,
-            is_150_scale=True),
+        date=datetime.date(2013, 2, 2),
         name='Feb Regional',
         category='Regional',
         is_150_scale=True)
 
     import_detail_report('Combined01182013',
-        date=datetime.date(2013, 1, 19,
-            is_150_scale=True),
+        date=datetime.date(2013, 1, 19),
         name='Jan Regional',
         category='Regional',
         is_150_scale=True)
 
     import_detail_report('Vero Beach January 2013',
-        date=datetime.date(2013, 1, 12,
-            is_150_scale=True),
+        date=datetime.date(2013, 1, 12),
         name='Vero Beach',
         category='Invite',
         is_150_scale=True)
