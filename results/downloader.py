@@ -312,8 +312,7 @@ def import_detail_report(
     add_sweepstakes(competition)
 
 def resolve_school_by_name(name):
-    name = name.lower()
-    schools = list(School.objects.filter(name__lower=name))
+    schools = list(School.objects.filter(name__iexact=name))
     if len(schools) > 1:
         'Resolving %s' % name
         ids = set([s.id_num for s in schools if s.id_num is not None])
