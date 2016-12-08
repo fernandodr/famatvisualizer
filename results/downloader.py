@@ -71,7 +71,8 @@ def import_detail_report(
         name, 
         category, 
         divs=None, 
-        region=None):
+        region=None,
+        is_150_scale=False):
     """
     Downloads the results from an indiv detail report.
 
@@ -97,6 +98,8 @@ def import_detail_report(
         If None, will default to a master list of common divisions.
     region : int or None
         If you are downloading a regional competition, say so.
+    is_150_scale : bool
+        True if scores are being measured with the 150 scale.
     """
 
     # if user does not provide divisions, use default
@@ -249,6 +252,8 @@ def import_detail_report(
                 scores = [paper.score for paper in indivs]
                 empirical_scores = [int(cells[j].text) for j in range(5,9) \
                     if re.match('[-]{0,1}[0-9]{1,3}', cells[j].text) is not None]
+                if is_150_scale:
+                    empirical_scores = [s-30 for s in empirical_scores]
 
                 if len(scores) != len(empirical_scores):
                     differences.append(9999)
@@ -436,32 +441,43 @@ if __name__ == "__main__":
     import_detail_report('Hagerty Student Delegate March Statewide',
         date=datetime.date(2013, 3, 16),
         name='Hagerty',
-        category='Invite')
+        category='Invite',
+        is_150_scale=True)
 
     import_detail_report('Combined03022013',
-        date=datetime.date(2013, 3, 2),
+        date=datetime.date(2013, 3, 2,
+            is_150_scale=True),
         name='March Regional',
-        category='Regional')
+        category='Regional',
+        is_150_scale=True)
     
-    import_detail_report('Tampa Bay Tech Statewide Feb 2013',
-        date=datetime.date(2013, 2, 16),
+    import_detail_report('Tampa Bay Tech Statewide Feb  2013',
+        date=datetime.date(2013, 2, 16,
+            is_150_scale=True),
         name='Tampa Bay Tech',
-        category='Invite')
+        category='Invite',
+        is_150_scale=True)
 
     import_detail_report('Combined02012013',
-        date=datetime.date(2013, 2, 2),
+        date=datetime.date(2013, 2, 2,
+            is_150_scale=True),
         name='Feb Regional',
-        category='Regional')
+        category='Regional',
+        is_150_scale=True)
 
     import_detail_report('Combined01182013',
-        date=datetime.date(2013, 1, 19),
+        date=datetime.date(2013, 1, 19,
+            is_150_scale=True),
         name='Jan Regional',
-        category='Regional')
+        category='Regional',
+        is_150_scale=True)
 
     import_detail_report('Vero Beach January 2013',
-        date=datetime.date(2013, 1, 12),
+        date=datetime.date(2013, 1, 12,
+            is_150_scale=True),
         name='Vero Beach',
-        category='Invite')
+        category='Invite',
+        is_150_scale=True)
 
     # 2012 competitions -- without states
 
