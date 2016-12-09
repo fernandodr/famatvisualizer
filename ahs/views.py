@@ -44,7 +44,6 @@ def first_points_default(request, school_id):
 
 @login_required
 def top_s_scores(request, school_id, year):
-    import pandas as pd
     if not request.user.email.endswith("@ahschool.com"):
         return Http404("You do not have access to this page.")
         
