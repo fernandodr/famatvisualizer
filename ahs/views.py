@@ -1,15 +1,20 @@
 import datetime
+import pandas as pd
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
 from results.models import *
 
 # Create your views here.
 
+@login_required
 def first_points(request, school_id, year):
-    start_time = datetime.datetime.now()
+    if not request.user.email.endswith("@ahschool.com"):
+        return Http404("You do not have access to this page.")
+
     school_id, year = int(school_id), int(year)
 
     try:
@@ -27,15 +32,60 @@ def first_points(request, school_id, year):
 
     years = sorted(list(set([c.date.year for c in Competition.objects.all()])))
 
-    end_time = datetime.datetime.now()
-    load_time = end_time - start_time
     return render(request, 'first_points.html', {
         'school': school, 
         'year' : year,
         'years': years,
         'papers': papers, 
-        'mathletes': mathletes, 
-        'loadtime': load_time})
+        'mathletes': mathletes})
 
 def first_points_default(request, school_id):
     return first_points(request, school_id, datetime.datetime.now().year)
+
+@login_required
+def top_s_scores(request, school_id, year):
+    if not request.user.email.endswith("@ahschool.com"):
+        return Http404("You do not have access to this page.")
+        
+    school_id, year = int(school_id), int(year)
+
+    try:
+        school = School.objects.get(id_num=school_id)
+    except:
+        return Http404('No school with that id number exists.')
+
+    competitions = Competition.objects.filter(date__year=year) \
+        .order_by('date')[:5]
+
+    threshold = min(
+        competitions.count() / 2, 
+        competitions.count() - 1)
+
+    keys = [
+        'mathlete__first_name', 
+        'mathlete__last_name', 
+        'test__division', 
+        'test__competition__name' ]
+
+    attrs = keys + ['s_score']
+
+    papers_query = school.testpaper_set.filter(
+            test__competition__in=competitions) \
+        .values(*attrs)
+
+    papers = pd.DataFrame(list(papers_query)) \
+        .drop_duplicates(subset=keys) \
+        .set_index(keys) \
+        .unstack() \
+        .dropna(thresh=threshold)
+
+    papers['Top 3'] = papers.apply(lambda row : row.nlargest(3).sum(), axis=1)
+    papers.sort_values(by='Top 3', ascending=False, inplace=True)
+
+    years = sorted(list(set([c.date.year for c in Competition.objects.all()])))
+    
+    return render(request, 'top_s_scores.html', {
+        'year': year, 
+        'years' : years,
+        'school': school,
+        'papers': papers})

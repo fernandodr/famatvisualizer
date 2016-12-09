@@ -16,24 +16,24 @@ FAMAT Visualizer
 
 <div class="section">
 <div class="row">
-    <a href="/competitions"><div class="col l4 m4 s12 center-align">
+    <a href="/competitions"><div class="col l4 m4 s12 center-align waves-effect clickcard">
         <i class="large teal-text material-icons">today</i>
         <h5 class="teal-text">Competitions</h5>
         <p class="black-text"> View results&mdash;team, individual, and sweepstakes&mdash;by competition for the past ten years</p>
     </div></a>
-    <a href="/mathletes"><div class="col l4 m4 s12 center-align">
+    <a href="/mathletes"><div class="col l4 m4 s12 center-align waves-effect clickcard">
         <i class="large teal-text material-icons">people</i>
         <h5 class="teal-text">Mathletes</h5>
         <p class="black-text"> Track an individual's progress over time, or compare competitors' aggregate performances</p>
     </div></a>
-    <a href="/schools"><div class="col l4 m4 s12 center-align">
+    <a href="/schools"><div class="col l4 m4 s12 center-align waves-effect clickcard">
         <i class="large teal-text material-icons">business</i>
         <h5 class="teal-text">Schools</h5>
         <p class="black-text"> View historical results by school and see each school's top competitors</p>
     </div></a>
 </div>
 <div class="row">
-    <a href="/accounts/google/login/?process=login"><div class="col l4 m4 s12 center-align">
+    <a href="/accounts/google/login/?process=login"><div class="col l4 m4 s12 center-align waves-effect clickcard">
         <i class="large teal-text material-icons">lock_open</i>
         <h5 class="teal-text">Log In</h5>
         <p class="black-text"> Login with an @ahschool.com email to unlock special functionality, or use any Google account to see your profile</p>
@@ -61,5 +61,16 @@ It's an interesting question to ask how many people attend MAO competitions. And
 
 <center> {% include "figs/test_difficulty.html" %}</center> -->
 </div>
+
+<script>
+$(document).ready(function(){
+    $('.clickcard').hover(function(){
+        $(this).addClass('grey lighten-4');
+    },
+    function() {
+        $(this).removeClass('grey lighten-4');
+    })
+})
+</script>
 
 {% endblock %}

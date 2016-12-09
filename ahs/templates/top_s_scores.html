@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ competition }} 
+{% endblock %}
+
+{% block navschools %}class="active"{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <h1 class="light"> {{ school }} </h1>
+
+  <h2 class="thin"> {{ year }} Top S-Scores </h2>
+
+  <table class="bordered highlight">
+      <thead>
+          <tr>
+              <td> Name </td>
+              <td> Division </td>
+              {% for col in papers.columns %}
+              <td> {% firstof col.1 col.0 %} </td>
+              {% endfor %}
+          </tr>
+      </thead>
+
+      <tbody>
+          {% for headers, vals in papers.iterrows %}
+          <tr>
+              <td> {{ headers.0 }} {{ headers.1 }} </td>
+              <td> {{ headers.2 }} </td>
+              {% for num in vals %}
+                  <td> {% if num == num %} {{ num|floatformat:1 }} {% endif %}</td>
+              {% endfor %}
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+  <ul class="pagination center-align">
+    <li class="waves-effect"><a href="/schools/{{school.id_num}}/top-s-scores/{{year|add:'-1'}}"><i class="material-icons">chevron_left</i></a></li>
+    {% for y in years %}
+    <li {% if y == year %}class="active teal waves-effect"{% else %}class="waves-effect"{% endif %}><a href="/schools/{{school.id_num}}/top-s-scores/{{y}}">{{ y }}</a></li>
+    {% endfor %}
+    <li class="waves-effect"><a href="/schools/{{school.id_num}}/top-s-scores/{{year|add:'1'}}"><i class="material-icons">chevron_right</i></a></li>
+  </ul>
+</div>
+
+</div>
+
+{% endblock %}
