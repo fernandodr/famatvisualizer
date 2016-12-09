@@ -1,5 +1,5 @@
 import datetime
-import pandas as pd
+#import pandas as pd
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404, HttpResponse
