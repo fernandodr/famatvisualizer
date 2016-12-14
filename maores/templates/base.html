@@ -34,6 +34,7 @@
 input[type="search"] {
   height: 64px !important; /* or height of nav */
 }
+
 </style>
 
 
@@ -89,18 +90,13 @@ input[type="search"] {
         <li><a href="/competitions">Competitions</a></li>
         <li><a href="/schools">Schools</a></li>
       </ul>
+      {% block breadcrumbs %}
+      {% endblock %}
     </div>
   </nav>
 </div>
 {% endblock %}
 </header>
-
-<script> 
-$(document).ready(function(){
-  $('.navbar-fixed').css('height', $('.nav-extended').height());
-  $(".button-collapse").sideNav();
-})
-</script>
 
 
 {% block content %}
@@ -135,5 +131,11 @@ Here goes the content
   </div>
 </footer>
 
+<script> 
+$(document).ready(function(){
+  $(".button-collapse").sideNav();
+  $('.navbar-fixed').css('height', $('.nav-extended').height());
+})
+</script>
 </body>
 </html>

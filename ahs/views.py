@@ -42,6 +42,36 @@ def first_points(request, school_id, year):
 def first_points_default(request, school_id):
     return first_points(request, school_id, datetime.datetime.now().year)
 
+def get_class_of(school, year):
+
+    lst = Mathlete.objects.filter(testpaper__school=school)
+
+    for yr in range(year-3,year+1):
+        lst = lst.filter(testpaper__test__competition__date__year=yr)
+
+    lst = lst.distinct()
+    print len(lst)
+    return lst
+
+@login_required
+def hall_of_fame(request, school_id):
+
+    try:
+        school = School.objects.get(id_num=school_id)
+    except:
+        return Http404('No school with that id number exists.')
+
+    years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
+    years = years[:-3]
+    d = {}
+    for y in years:
+        d[y] = get_class_of(school, y)
+
+    return render(request, 'hall_of_fame.html', {
+        'years': years,
+        'd' : d
+        })
+
 @login_required
 def top_s_scores(request, school_id, year):
     if not request.user.email.endswith("@ahschool.com"):
