@@ -44,7 +44,7 @@ input[type="search"] {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-88162055-1', 'auto');
+  ga('create', 'UA-88162055-1', 'auto' {% if request.user.is_authenticated %}, { userId : "{{ request.user.username }}"} {% endif %});
   ga('send', 'pageview');
 
 </script>
