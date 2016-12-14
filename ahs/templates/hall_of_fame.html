@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ competition }} 
+{% endblock %}
+
+{% block navschools %}class="active"{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  {% for year, mathletes in d.items %}
+
+  <h2 class="light">{{ year }}</h2>
+
+  {% for mathlete in mathletes %}
+
+  <p> {{ mathlete }} </p>
+
+  {% endfor %}
+
+  {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^schools/([0-9]{4})/firstpoints/$', first_points_default),
     url(r'^schools/([0-9]{4})/firstpoints/([0-9]{4})/$', first_points),
     url(r'^schools/([0-9]{4})/top-s-scores/([0-9]{4})/$', top_s_scores),
+    url(r'^schools/([0-9]{4})/hall-of-fame/$', hall_of_fame),
     url(r'^search/', include('haystack.urls')),
     #url(r'^search/$', SearchView(), name='haystack_search'),
     url(r'^about.html', display_about),
