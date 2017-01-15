@@ -24,6 +24,10 @@
 <div class="container">
     <h2 class="light">{{ competition }} Sweepstakes </h2>
 
+    {% if competition.category == "States" %}
+      <p class="flow-text">Unfortunately, full Sweepstakes functionality for staticfilestes is not yet functional. Pardon our dust! </p>
+    {% endif %}
+
     <table class="bordered highlight">
     <thead>
       <tr>

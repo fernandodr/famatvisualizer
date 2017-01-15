@@ -1,12 +1,13 @@
 import datetime
-
 from itertools import chain
 import csv
 
 from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.db.models import Count
+from django.db.models import Count, Avg, Sum
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from el_pagination.views import AjaxListView
 
 from results.utils import *
 from results.models import *
@@ -15,10 +16,7 @@ from results.figs import *
 NUM_PAPERS_RENDER_IMMEDIATELY = 25
 
 def display_about(request):
-    return render(request, 'about.html', {})
-
-def ping_pong(request):
-    return HttpResponse('pong')
+    return render(request, 'about.html')
 
 def google_confirmation(request):
     return render(request, 'google.html', {})
@@ -29,13 +27,13 @@ def home_page(request):
 def view_test_detail_report(
         request, 
         year, 
-        month_abbr, 
-        category, 
-        division_abbr):
+        month, 
+        cat, 
+        division):
     year = int(year)
-    month = get_num_month(get_full_month(month_abbr))
-    category = category.title()
-    division = get_full_division(division_abbr)
+    month = get_num_month(get_full_month(month))
+    category = cat.title()
+    division = get_full_division(division)
 
     try:
         test = Test.objects.get(
@@ -50,13 +48,13 @@ def view_test_detail_report(
 def test_question_breakdown_csv(
         request, 
         year, 
-        month_abbr, 
-        category, 
-        division_abbr):
+        month, 
+        cat, 
+        division):
     year = int(year)
-    month = get_num_month(get_full_month(month_abbr))
-    category = category.title()
-    division = get_full_division(division_abbr)
+    month = get_num_month(get_full_month(month))
+    category = cat.title()
+    division = get_full_division(division)
 
     try:
         test = Test.objects.get(
@@ -87,12 +85,22 @@ def test_question_breakdown_csv(
 def view_mathletes(request):
     top = Mathlete.objects.annotate(num_tests=Count('testpaper')) \
         .filter(num_tests__gt=5) \
-        .order_by('-avg_t')[:20]
+        .order_by('-avg_t')
     return render(request, 'mathletes.html', {'top':top})
 
-def view_school(request, spec_id):
+class MathleteListView(AjaxListView):
+    context_object_name = "mathletes"
+    template_name = "mathletes.html"
+    page_template='mathletes_page.html'
+
+    def get_queryset(self):
+        return Mathlete.objects.annotate(num_tests=Count('testpaper')) \
+            .filter(num_tests__gt=5) \
+            .order_by('-avg_t')
+
+def view_school(request, school_id):
     try:
-        school = School.objects.get(id_num = spec_id)
+        school = School.objects.get(id_num = school_id)
     except:
         return Http404('School ID number does not exist')
 
@@ -106,7 +114,9 @@ def view_school(request, spec_id):
 
 def view_schools(request):
     schools = School.objects.order_by('name')
-    important_schools = School.objects.order_by('-num_mathletes')
+    important_schools = School.objects \
+        .annotate(rank=Sum('sweeps__total_t')) \
+        .order_by('-rank')
 
     return render(request, 'schools.html', {
         'schools': schools, 
@@ -233,12 +243,12 @@ def view_sweepstakes(request, year, month, cat):
         'divisions' : divisions,
         'results': results})
 
-def view_bowl(request, year, month_abbr, category, division_abbr):
+def view_bowl(request, year, month, cat, division):
 
     year = int(year)
-    month = get_num_month(get_full_month(month_abbr))
-    category = category.title()
-    division = get_full_division(division_abbr)
+    month = get_num_month(get_full_month(month))
+    category = cat.title()
+    division = get_full_division(division)
 
     try:
         competition = Competition.objects.get(
@@ -257,11 +267,11 @@ def view_bowl(request, year, month_abbr, category, division_abbr):
         'bowl': bowl,
         'teams': teams})
 
-def view_test_extra_rows(request, year, month_abbr, types, abbr):
+def view_test_extra_rows(request, year, month, cat, division):
     year = int(year)
-    month = get_full_month(month_abbr)
-    cat = types.title()
-    division = get_full_division(abbr)
+    month = get_full_month(month)
+    cat = cat.title()
+    division = get_full_division(division)
 
     try:
         competition = Competition.objects.get(date__year=year,
@@ -281,11 +291,11 @@ def view_test_extra_rows(request, year, month_abbr, types, abbr):
         {'testpapers':testpapers})  
 
 
-def view_test(request, year, month_abbr, types, abbr):
+def view_test(request, year, month, cat, division):
     year = int(year)
-    month = get_full_month(month_abbr)
-    cat = types.title()
-    division = get_full_division(abbr)
+    month = get_full_month(month)
+    cat = cat.title()
+    division = get_full_division(division)
 
     try:
         competition = Competition.objects.get(date__year=year,
@@ -306,38 +316,21 @@ def view_test(request, year, month_abbr, types, abbr):
         'test':test,
         'testpapers':testpapers})   
 
-
 def view_competitions(request):
-    competitions = Competition.objects.all().order_by('-date')
-
-
-    return render(request, 'competitions.html',
-        {'competitions': competitions})
-
-def view_competitions_tabbed(request):
     years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
     seasons = []
     for year in years:
         seasons.append((year, list(Competition.objects.filter(date__year=year).order_by('date'))))
 
 
-    return render(request, 'experimental_competitions.html',
+    return render(request, 'competitions.html',
                     {'seasons' : seasons, 'years' : years})
 
-
-def view_competitions_year(request, year):
-    year = int(year)
-    competitions = Competition.objects.filter(date__year = year)
-
-
-    return render(request, 'competitions.html',
-        {'competitions': competitions})
-
-def view_competition_report(request, year, month, types, id_school):
+def view_competition_report(request, year, month, cat, id_school):
     try:
         year = int(year)
         month = get_full_month(month)
-        cat = types.title()
+        cat = cat.title()
         id_school = int(id_school)
     except:
         raise Http404('Not a valid URL')

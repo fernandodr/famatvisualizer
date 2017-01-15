@@ -141,7 +141,7 @@ $(document).ready(function(){
       $('.sscore-item').toggle(this.checked)
     });
 
-    $.ajax({url: "{{test.get_absolute_url}}extra_rows", success: function(result) {
+    $.ajax({url: "{{test.get_absolute_url|safe}}extra_rows", success: function(result) {
       $('tbody').append(result);
       $('.table-selector').pushpin({
         top: 0,

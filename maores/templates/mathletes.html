@@ -2,8 +2,16 @@
 
 {% load staticfiles %}
 
+{% load el_pagination_tags %}
+
 {% block title %}
 Mathletes
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+
+<script src="{% static 'el-pagination/js/el-pagination.js' %}"></script>
 {% endblock %}
 
 {% block navmathletes %}class="active"{% endblock %}
@@ -25,34 +33,24 @@ Mathletes
     {% endfor %}
     </ul>
     </div>
-
     {% endif %}
 
     <h2> Top Scorers </h2>
 
-    <table class="bordered highlight">
-        <thead>
-        <tr>
-            <th> Name </th>
-            <th> School </th>
-            <th> Years </th>
-            <th> Average T </th>
-            <th> Num Tests </th>
-        </tr>
-        </thead>
-        <tbody>
-
-    {% for mathlete in top %}
-    <tr>
-        <td> <a href="{{ mathlete.get_absolute_url }}" class="teal-text">{{ mathlete }}</a> </td>
-        <td> {{ mathlete.school }} </td>
-        <td> {{ mathlete.get_years_active_str|safe }} </td>
-        <td> {{ mathlete.avg_t|floatformat:3 }} </td>
-        <td> {{ mathlete.num_tests }} </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+    <div class="endless_page_template">
+    {% include "mathletes_page.html" %}
+    </div>
 </div>
+
+
+</div>
+
+<script>
+$.endlessPaginate({
+    paginateOnScroll: true,
+    paginateOnScrollMargin: 400,
+    paginateOnScrollChunkSize: 5,
+});
+</script>
 
 {% endblock %}

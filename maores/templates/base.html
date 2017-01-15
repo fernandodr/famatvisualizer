@@ -8,6 +8,7 @@
 
 <link rel='shortcut icon' href="{% static 'results/img/logo.png'%}" type='image/x-icon'/ >
 
+{% block js %}
 <!-- JQuery -->
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type='text/javascript' src="{% static 'results/js/jquery.filtertable.min.js' %}"></script>
@@ -37,7 +38,6 @@ input[type="search"] {
 
 </style>
 
-
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -46,8 +46,9 @@ input[type="search"] {
 
   ga('create', 'UA-88162055-1', 'auto' {% if request.user.is_authenticated %}, { userId : "{{ request.user.username }}"} {% endif %});
   ga('send', 'pageview');
-
 </script>
+
+{% endblock %}
 </head>
 
 <body>

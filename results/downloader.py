@@ -24,6 +24,7 @@ def convert_answer_str(answer):
         formatted_answer += 'E'
     return formatted_answer
 
+# TODO: must implement for states
 def add_sweepstakes(competition):
     competition.sweeps_set.all().delete()
     schools = set([team.school for 
@@ -71,6 +72,7 @@ def import_detail_report(
         name, 
         category, 
         divs=None, 
+        topics=None,
         region=None,
         is_150_scale=False):
     """
@@ -96,6 +98,10 @@ def import_detail_report(
     divs : (list of str) or None
         A list of the names of the divisions at the competition.
         If None, will default to a master list of common divisions.
+    topics: (list of str) or None
+        A list of the names of the topic tests at the competition.
+        Note that this is only relevant for States competitions,
+        and otherwise this parameter should be None.
     region : int or None
         If you are downloading a regional competition, say so.
     is_150_scale : bool
@@ -109,6 +115,12 @@ def import_detail_report(
                      'Theta', 'Alpha', 'Calculus 1', 'Calculus 2']
     else:
         divisions = divs
+
+    if topics is not None:
+        test_ids = zip(divisions, [True]*len(divisions)) + \
+            zip(topics, [False]*len(topics))
+    else:
+        test_ids = zip(divisions, [True]*len(divisions))
     
     # fail loudly if this competition is already in the database    
     assert type(date) == datetime.date
@@ -118,23 +130,37 @@ def import_detail_report(
 
     print '\n%s' % comp_name
     
-    for division in divisions:
+    for division, is_main_test in test_ids:
         try:
+            if is_main_test and category is not 'States':
+                url_division = division
+            elif is_main_test and category is 'States':
+                url_division = division + ' Individual'
+            else:
+                url_division = division[1]
+
             url = ('http://famat.org/Downloadable/Results/' + 
-                   comp_name + "/" + division + "_Detail.html").replace(' ', '%20')
+                   comp_name + "/" + url_division + "_Detail.html").replace(' ', '%20')
             raw_page = urllib2.urlopen(url)
             soup = BeautifulSoup.BeautifulSoup(raw_page)
             
             url = ('http://famat.org/Downloadable/Results/' + 
-                   comp_name + "/" + division + "_Indv.html").replace(' ', '%20')
+                   comp_name + "/" + url_division + "_Indv.html").replace(' ', '%20')
             raw_page = urllib2.urlopen(url)
             other_soup = BeautifulSoup.BeautifulSoup(raw_page)
         except:
-            print '\t\t\t%s' % division
+            print '\t\t\t%s' % str(division)
             continue
             
-        test = Test(competition=competition, division=division)
-        test.save()
+        if is_main_test:
+            test = Test(competition=competition, division=division)
+            test.save()
+        else:
+            test = Test(
+                competition=competition, 
+                division=division[1], 
+                level=division[0])
+            test.save()
         
         questions = []
         answers = [convert_answer_str(a.text) for a in soup.findAll(attrs={"class":"theanswer"})]
@@ -212,6 +238,8 @@ def import_detail_report(
         print "%s indiv data retrieved (%i failures)" % (division, num_failures)
 
         try:
+            if not is_main_test:
+                continue
             url = ('http://famat.org/Downloadable/Results/' + 
                    comp_name + "/" + division + "_Bowl.html").replace(' ', '%20')
             raw_page = urllib2.urlopen(url)
@@ -293,6 +321,11 @@ def import_detail_report(
                     indivs = coarse_attempt
                     print "Failed in matching scores."
 
+            if category is "States":
+                indivs = test.testpaper_set \
+                    .filter(mathlete__mao_id__startswith=str(school_id)) \
+                    .order_by('-score')[:4]
+
             team = Team(
                 school=school, 
                 number=team_number,
@@ -341,6 +374,66 @@ def resolve_schools():
         resolve_school_by_name(name)
 
 if __name__ == "__main__":
+
+    # states
+    import_detail_report('State 2016',
+        date=datetime.date(2016, 4, 16),
+        name='States',
+        category='States',
+        topics=[
+            ('Theta', '1T - Theta Functions'),
+            ('Alpha', '1A - Analytic Geometry'),
+            ('Mu', '1C - Calculus Applications'),
+            ('Open', '1O - Statistics'),
+            ('Theta', '2T - Logs & Exponents'),
+            ('Alpha', '2A - Complex Numbers'),
+            ('Mu', '2C - Limits & Derivatives'),
+            ('Open', '2O - History Of Math'),
+            ('Theta', '1T - Theta Applications'),
+            ('Alpha', '1A - Trigonometry'),
+            ('Mu', '1C - Integration'),
+            ('Open', '1O - Gemini'),
+            ('Theta', '2T - Geometry'),
+            ('Alpha', '2A - Matrices & Vectors'),
+            ('Mu', '2C - BC Calculus'),
+            ('Theta', '1T - Quadrilaterals'),
+            ('Alpha', '1A - Alpha Equations & Inequalities'),
+            ('Mu', '1C - Sequences & Series'),
+            ('Theta', '2T - Theta Equations & Inequalities'),
+            ('Alpha', '2A - Alpha Applications'),
+            ('Mu', '2C - Area & Volume'),
+            ('Open', '2O - Probability'),
+        ])
+
+    import_detail_report('State 2015',
+        date=datetime.date(2015, 4, 18),
+        name='States',
+        category='States',
+        topics=[
+            ('Theta', 'Theta Applications'),
+            ('Alpha', 'Alpha Equations & Inequalities'),
+            ('Mu', 'Area & Volume'),
+            ('Open', 'Statistics'),
+            ('Theta', 'Theta Logs & Exponents'),
+            ('Alpha', 'Complex Numbers'),
+            ('Mu', 'Integration'),
+            ('Open', 'History of Math'),
+            ('Theta', 'Theta Functions'),
+            ('Alpha', 'Analytic Geometry'),
+            ('Mu', 'Limits & Derivatives'),
+            ('Open', 'Gemini'),
+            ('Theta', 'Geometry'),
+            ('Alpha', 'Matrices & Vectors'),
+            ('Mu', 'Sequences & Series'),
+            ('Theta', 'Circumference Perimeter Area & Volume'),
+            ('Alpha', 'Trigonometry'),
+            ('Mu', 'BC Calculus'),
+            ('Theta', 'Theta Equations & Inequalities'),
+            ('Alpha', 'Alpha Applications'),
+            ('Mu', 'Calculus Applications'),
+            ('Open', 'Probability')
+        ])
+
     # 2016 competitions -- without states
     import_detail_report('Palmetto Ridge Statewide March 2016',
         date=datetime.date(2016, 3, 19),

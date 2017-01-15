@@ -12,15 +12,10 @@
 
 <div class="container">
 
-  {% for year, mathletes in d.items %}
-
-  <h2 class="light">{{ year }}</h2>
 
   {% for mathlete in mathletes %}
 
-  <p> {{ mathlete }} </p>
-
-  {% endfor %}
+  <p> <a href="{{ mathlete.get_absolute_url }}" class="teal-text">{{ mathlete }}</a> {{ mathlete.last_year}} {{ mathlete.first_year }}</p>
 
   {% endfor %}
 
