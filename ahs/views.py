@@ -3,7 +3,9 @@ import datetime
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.db.models import Count
+from django.db import connection
+from django.db.models import Count, Max, Min, F
+from django.db.models.functions import ExtractYear
 from django.contrib.auth.decorators import login_required
 
 from results.models import *
@@ -39,9 +41,6 @@ def first_points(request, school_id, year):
         'papers': papers, 
         'mathletes': mathletes})
 
-def first_points_default(request, school_id):
-    return first_points(request, school_id, datetime.datetime.now().year)
-
 def get_class_of(school, year):
 
     lst = Mathlete.objects.filter(testpaper__school=school)
@@ -61,15 +60,22 @@ def hall_of_fame(request, school_id):
     except:
         return Http404('No school with that id number exists.')
 
-    years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
-    years = years[:-3]
-    d = {}
-    for y in years:
-        d[y] = get_class_of(school, y)
+    # years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
+    # years = years[:-3]
+    # d = {}
+    # for y in years:
+    #     d[y] = get_class_of(school, y)
 
+    mathletes = school.mathlete_set() \
+        .annotate(num_yrs=Max('testpaper__test__competition__date__year')) \
+
+    for q in connection.queries:
+        print q.get('sql', '')
+        print
+
+    
     return render(request, 'hall_of_fame.html', {
-        'years': years,
-        'd' : d
+        'mathletes': mathletes
         })
 
 @login_required

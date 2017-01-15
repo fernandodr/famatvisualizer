@@ -15,7 +15,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -43,6 +42,8 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_extensions',
+    'el_pagination',
     'results',
     'ahs',
     'haystack'
@@ -116,7 +117,7 @@ if True:
             'PORT': '5432',
         }
     }
-    DEBUG = True
+    DEBUG = False
 else:
     DATABASES = {
         'default': {
@@ -152,3 +153,9 @@ AUTHENTICATION_BACKENDS = (
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 STATIC_URL = '/static/'
+
+# Shell plus
+
+SHELL_PLUS_PRE_IMPORTS = (
+    ('results.downloader', '*'),
+)

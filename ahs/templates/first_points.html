@@ -76,11 +76,11 @@
 {% endif %}
 
   <ul class="pagination center-align">
-    <li class="waves-effect"><a href="/schools/{{school.id_num}}/firstpoints/{{year|add:'-1'}}"><i class="material-icons">chevron_left</i></a></li>
+    <li class="waves-effect"><a href="/schools/{{school.id_num}}/first-points/{{year|add:'-1'}}"><i class="material-icons">chevron_left</i></a></li>
     {% for y in years %}
-    <li {% if y == year %}class="active teal waves-effect"{% else %}class="waves-effect"{% endif %}><a href="/schools/{{school.id_num}}/firstpoints/{{y}}">{{ y }}</a></li>
+    <li {% if y == year %}class="active teal waves-effect"{% else %}class="waves-effect"{% endif %}><a href="/schools/{{school.id_num}}/first-points/{{y}}">{{ y }}</a></li>
     {% endfor %}
-    <li class="waves-effect"><a href="/schools/{{school.id_num}}/firstpoints/{{year|add:'1'}}"><i class="material-icons">chevron_right</i></a></li>
+    <li class="waves-effect"><a href="/schools/{{school.id_num}}/first-points/{{year|add:'1'}}"><i class="material-icons">chevron_right</i></a></li>
   </ul>
 </div>
 

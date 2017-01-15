@@ -9,22 +9,57 @@ Competitions
 {% block navcompetitions %}class="active"{% endblock %}
 
 {% block content %}
+<div class="container">
 
-<h1> Competitions </h1>
+<div class="row">
+  <div class="col l9 m9 s12">
+    <h1 class="light hide-on-small-only"> Competitions </h1>
+    <h3 class="light hide-on-med-and-up"> Competitions </h3>
+    <div class="divider"></div>
 
-{% for comp in competitions %}
+    {% for year, competitions in seasons %}
+    <div id="{{year}}" class="section scrollspy">
+        <h2 class="hide-on-small-only thin"> {{ year }} </h2>
+        <h4 class="hide-on-med-and-up"> {{ year }} </h2>
 
-<div class="well">
-<h2> <a href="{{ comp.get_absolute_url }}">{{ comp }}</a></h2>
+    <ul class="collapsible popout" data-collapsible="accordion">
+      {% for comp in competitions %}
+        {% include "competition_pop.html" %}
+      {% endfor %}
+    </ul>
+    </div>
+    {% endfor %}
+  </div>
 
-<ul>
-{% for test in comp.test_set.all %}
-<li> <a href="{{ test.get_absolute_url }}">{{ test.division }} Individual</a> </li>
-{% endfor %}
-</ul>
+  <div class="col hide-on-small-only m3 l3">
+    <div class="toc-wrapper">
+      <div style="height: 1px;">
+        <ul class="section table-of-contents">
+          {% for year in years %}
+            <li><a href="#{{year}}">{{year}} Competitions</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>
 
-{% endfor %}
-
+<script>
+$(document).ready(function(){
+    $('.toc-wrapper').pushpin({
+      top: 0,
+      bottom: 10000,
+      offset: 60
+    });
+    $('.scrollspy').scrollSpy();
+    $('.clickcard').hover(function(){
+      $(this).addClass('grey lighten-2');
+    },
+    function() {
+      $(this).removeClass('grey lighten-4');
+    })
+  });
+</script>
 {% endblock %}

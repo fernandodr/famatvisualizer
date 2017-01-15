@@ -1,8 +1,14 @@
+
+
+import numpy as np
+import re
+
 from django.db import models
-from results.utils import *
 from django.utils.functional import cached_property
 from django.contrib.auth.models import User
-import numpy as np
+
+
+from results.utils import *
 
 class Mathlete(models.Model):
     first_name = models.CharField(max_length = 30)
@@ -86,6 +92,9 @@ class School(models.Model):
         except:
             return None
 
+    def mathlete_set(self):
+        return Mathlete.objects.filter(testpaper__school=self)
+
     def _num_mathletes(self):
         tps = self.testpaper_set.all()
         mathletes = set([tp.mathlete for tp in tps])
@@ -114,8 +123,17 @@ class Competition(models.Model):
     category = models.CharField(max_length = 30)
     
     def get_absolute_url(self):
-        return '/competitions/%d/%s/%s/' % (self.date.year, 
-            get_month_abbr(get_name_month(int(self.date.month))), self.category.lower())
+        if self.category != 'States':
+            return '/competitions/%d/%s/%s/' % (self.date.year, 
+                get_month_abbr(get_name_month(int(self.date.month))), self.category.lower())
+        else:
+            return '/competitions/%i/states/' % self.date.year
+
+    def topictest_set(self):
+        return self.test_set.exclude(level__exact="").order_by('level')
+
+    def indivtest_set(self):
+        return self.test_set.filter(level__exact="")
     
     def __unicode__(self):
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
@@ -123,11 +141,13 @@ class Competition(models.Model):
         if self.category in ['Regional', 'Invite']:
             return str(self.date.year) + ' ' + months[self.date.month-1] + ' ' + self.category
         else:
-            return str(self.date.year) + self.name
+            return str(self.date.year) + ' ' + self.name
         
 class Test(models.Model):
     competition = models.ForeignKey(Competition)
     division = models.CharField(max_length = 30)
+    level = models.CharField(max_length = 30, default="")
+    is_topic = models.BooleanField
     average = models.FloatField(blank=True, null=True)
     std = models.FloatField(blank=True, null=True)
     placing = models.FloatField(blank=True, null=True)
@@ -156,10 +176,17 @@ class Test(models.Model):
             return self.testpaper_set.order_by('-score')[24].score
     
     def get_absolute_url(self):
-        return '/competitions/%d/%s/%s/%s/' % (self.competition.date.year, 
-            get_month_abbr(get_name_month(int(self.competition.date.month))), 
-            self.competition.category.lower(), get_division_abbr(self.division))
+        return self.competition.get_absolute_url() + '%s/' % get_division_abbr(self.division)
     
+    def pretty_division(self):
+        if self.level == "":
+            return self.division
+        else:
+            try:
+                return re.match('.*[-] (.*)', self.division).group(1)
+            except:
+                return self.division
+
     def __unicode__(self):
         division_abbr = {'Calculus': 'Calc', 'Precalculus': 'Precal', 'Statistics': 'Stats',
                         'Algebra 2': 'Alg 2', 'Geometry': 'Geo'}
@@ -170,9 +197,6 @@ class Test(models.Model):
         self.std = self._get_std()
         self.placing = self._get_placing()
         super(Test, self).save(*args, **kwargs)
-
-class TopicTest(Test):
-    topic = models.CharField(max_length=30)
     
 class Question(models.Model):
     test = models.ForeignKey(Test)

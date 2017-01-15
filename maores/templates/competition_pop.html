@@ -1,0 +1,85 @@
+<li>
+  <div class="collapsible-header">{{ comp }}</div>
+  <div class="collapsible-body">
+    {% if comp.category != "States" %}
+        {% if comp.bowltest_set.all %}
+          <div class="container center-align">
+            <p class="flow-text"> Check out the <a href="{{comp.get_absolute_url}}sweepstakes.html" class="teal-text">Sweepstakes</a>.</p>
+          </div>
+          <div class="divider"></div>
+        {% endif %}
+      <div class="row">
+        <div class="col s12 m4 l4 center-align">
+          <i class="large teal-text material-icons">person</i>
+          <h5 class="teal-text">Indivs</h5>
+          <div class="collection">
+          {% for test in comp.test_set.all %}
+            <a href="{{ test.get_absolute_url }}" target="_blank" class="collection-item black-text">{{ test.division }}</a>
+          {% endfor %}
+          </div>
+        </div>
+        <div class="col s12 m4 l4  center-align">
+          <i class="large teal-text material-icons">people</i>
+          <h5 class="teal-text">Teams</h5>
+          {% if comp.bowltest_set.all %}
+          <div class="collection">
+            {% for bowl in comp.bowltest_set.all %}
+              <a href="{{bowl.get_absolute_url}}" target="_blank" class="collection-item black-text">{{ bowl.division }}</a>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p> Unfortunately, it looks like we had trouble parsing the team results. </p>
+          {% endif %}
+        </div>
+        <div class="col s12 m4 l4 center-align">
+          <i class="large teal-text material-icons">pie_chart</i>
+          <h5 class="teal-text">Detail Reports</h5>
+          <div class="collection">
+            {% for test in comp.test_set.all %}
+              <a href="{{test.get_absolute_url}}detail" target="_blank" class="collection-item black-text">{{ test.division }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="container center-align">
+      <p class="flow-text"> Check out the list of <a href="{{ comp.get_absolute_url }}" class="teal-text" target="_blank">tests</a> or the <a href="{{ comp.get_absolute_url }}sweepstakes.html" class="teal-text" target="_blank">Sweepstakes</a>.</p>
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        {% for test in comp.indivtest_set.all %}
+          <div class="col s12 m4 l4 center-align">
+            <h5 class="teal-text">{{ test.division }}</h5>
+            <div class="row">
+            <div class="col s4 push-s2 center-align clickcard">
+            <a href="{{ test.get_absolute_url }}"><i class="medium teal-text material-icons">person</i></a>
+            </div>
+            <div class="col s5 push-s2 center-align clickcard">
+            <a href="{{ test.get_absolute_url }}bowl"><i class="medium teal-text material-icons">people</i></a>
+            </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="divider"></div>
+      <div class="row">
+        {% for test in comp.topictest_set.all %}
+          {% ifchanged test.level %}
+            {% if not forloop.first %}
+              </div>
+              </div>
+            {% endif %}
+            <div class="col s12 m3 l3 center-align">
+            <h5 class="teal-text"> {{ test.level }} </h5>
+            <div class="collection">
+          {% endifchanged %}
+          <a href="{{ test.get_absolute_url }}" class="collection-item black-text center-align truncate" target="_blank"> <span>{{ test.pretty_division }}</span></a>
+          {% if forloop.last %}
+            </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</li>
