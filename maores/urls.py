@@ -63,6 +63,8 @@ urlpatterns = [
     url(r'^google1b28fba45037c690.html$', google_confirmation),
 
     url(r'^mathletes/$', MathleteListView.as_view()),
+    url(r'^mathletes/compare/$', compare_mathletes),
+    url(r'^mathlete-autocomplete/$', MathleteAutocomplete.as_view(), name='mathlete-autocomplete'),
     url(r'^mathlete/(?P<id>[0-9]+)/', include(mathlete_views)),
 
     url(r'^competitions/$', view_competitions),

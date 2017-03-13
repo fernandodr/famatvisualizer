@@ -1,17 +1,20 @@
 import datetime
 from itertools import chain
 import csv
+from scipy.stats import ttest_ind
 
 from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.db.models import Count, Avg, Sum
+from django.db.models import Count, Avg, Sum, Q
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from el_pagination.views import AjaxListView
+from dal import autocomplete
 
 from results.utils import *
 from results.models import *
 from results.figs import *
+from results.forms import *
 
 NUM_PAPERS_RENDER_IMMEDIATELY = 25
 
@@ -375,3 +378,67 @@ def return_static_file(request, fname):
         return HttpResponse(f.read())
     except:
          raise Http404("File " + os.path.join(os.getcwd(), fname) + " does not exist.")
+
+class MathleteAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        mathletes = Mathlete.objects.all().order_by('avg_place')
+
+        if self.q:
+            q = self.q.replace(',', '')
+            q = q.replace('.', '')
+            words = q.split()
+            if len(words) == 1:
+                mathletes = mathletes.filter(Q(first_name__istartswith=words[0]) | Q(last_name__istartswith=words[0]))
+            else:
+                mathletes = mathletes.filter(Q(first_name__istartswith=words[0]) | Q(first_name__istartswith=words[1])) \
+                    .filter(Q(last_name__istartswith=words[0]) | Q(last_name__istartswith=words[1]))
+
+        return mathletes
+
+
+def compare_mathletes(request):
+    if 'first' in request.GET and 'second' in request.GET:
+        try:
+            first = Mathlete.objects.get(pk=int(request.GET['first']))
+            second = Mathlete.objects.get(pk=int(request.GET['second']))
+        except:
+            return HttpResponseRedirect('/mathletes/compare') 
+
+        first_ts = [x.t_score for x in first.testpaper_set.all() if x.t_score is not None]
+        second_ts = [x.t_score for x in second.testpaper_set.all() if x.t_score is not None]
+
+        t, prob = ttest_ind(first_ts, second_ts, equal_var=False)
+
+        ttest = {'t': t, 'prob': prob,}
+
+        tests_both_took = Test.objects.filter(testpaper__mathlete=first) \
+            .filter(testpaper__mathlete=second) \
+            .order_by('-competition__date')
+
+
+        head_to_head = [(t, t.testpaper_set.get(mathlete=first),t.testpaper_set.get(mathlete=second))
+         for t in tests_both_took]
+
+        wins, losses, ties = 0, 0, 0
+        for t, t1, t2 in head_to_head:
+            if t1.score > t2.score:
+                wins += 1
+            elif t1.score == t2.score:
+                ties += 1
+            else:
+                losses += 1
+
+        return render(request, 
+            'compare_mathletes_report.html',
+            {'first': first, 
+                'second': second,
+                'ttest': ttest,
+                'head_to_head': head_to_head,
+                'wins': wins,
+                'ties': ties,
+                'losses': losses})
+        # TODO; make report!
+
+    else:
+        form = CompareMathletesForm()
+        return render(request, 'compare_mathletes.html', {'form': form})

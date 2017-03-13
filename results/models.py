@@ -32,6 +32,9 @@ class Mathlete(models.Model):
     def _get_avg_place(self):
         return np.average([x.place for x in self.testpaper_set.all() if x.t_score is not None])
 
+    def _get_std_t_score(self):
+        return np.std([x.t_score for x in self.testpaper_set.all() if x.t_score is not None])
+    
     def _get_school(self):
         return self.testpaper_set.all().order_by('-test__competition__date')[0].school
     
@@ -70,6 +73,7 @@ class Mathlete(models.Model):
     description = property(_get_description)
     school = property(_get_school)
     concatname = property(_get_concatname)
+    std_t = property(_get_std_t_score)
 
     def extra_save(self, *args, **kwargs):
         self.avg_t = self._get_avg_t_score(*args, **kwargs)
