@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ first.first_name }} vs. {{ second.first_name }}
+{% endblock %}
+
+{% block navmathletes %}class="active"{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col s12 m4 center-align">
+         <h2 class="light"> <a href="{{ first.get_absolute_url}}" class="black-text">{{ first.first_name }} {{ first.last_name }}</a> </h2>
+        </div>
+        <div class="col s12 m4"> </div>
+        <div class="col s12 m4 center-align">
+        <h2 class="light"> <a href="{{ second.get_absolute_url }}" class="black-text">{{ second.first_name }} {{second.last_name }}</a> </h2>
+        </div>
+    </div>
+   
+
+    <div class="section">
+        <h4> The Numbers </h4>
+        <div class="divider"></div>
+
+        <div class="row valign-wrapper">
+            <div class="col s12 m4 center-align">
+            <h1 {% if first.avg_t > second.avg_t %} class="light"{% else %}class="thin"{% endif %}>{{ first.avg_t|floatformat:4 }}</h1>
+            </div>
+            <div class="col s12 m4 center-align ">
+            <h5> Average T-Score </h5>
+            </div>
+            <div class="col s12 m4 center-align">
+            <h1 {% if first.avg_t < second.avg_t %} class="light"{% else %}class="thin"{% endif %}>{{ second.avg_t|floatformat:4 }}</h1>
+            </div>
+        </div>
+
+        <div class="row valign-wrapper">
+            <div class="col s12 m4 center-align">
+            <h1 {% if first.avg_place > second.avg_place %} class="thin" {% else %} class="light"{% endif %}>{{ first.avg_place|floatformat:0 }}</h1>
+            </div>
+            <div class="col s12 m4 center-align ">
+            <h5> Average Place </h5>
+            </div>
+            <div class="col s12 m4 center-align">
+            <h1 {% if first.avg_place > second.avg_place %} class="light" {% else %} class="thin"{% endif %}>{{ second.avg_place|floatformat:0 }}</h1>
+            </div>
+        </div>
+
+        <div class="row valign-wrapper">
+            <div class="col s12 m4 center-align">
+            <h1 {% if first.testpaper_set.all|length > second.testpaper_set.all|length %} class="light" {% else %} class="thin"{% endif %}>{{ first.testpaper_set.all|length }}</h1>
+            </div>
+            <div class="col s12 m4 center-align ">
+            <h5> Tests Taken </h5>
+            </div>
+            <div class="col s12 m4 center-align">
+            <h1 {% if first.testpaper_set.all|length > second.testpaper_set.all|length %} class="thin" {% else %} class="light"{% endif %}>{{ second.testpaper_set.all|length }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+    <h4> Hypothesis Testing </h4>
+        <div class="divider"></div>
+        <p class="flow-text"> We can run a two-tailed two-sample t-test for difference of means on the T-Scores of each mathlete. {% if ttest.prob > 0.05 %} It looks like there is no statistically significant difference between their scores at the 0.05 significance level. {% elif first.avg_t > second.avg_t %} It looks like {{ first.first_name }}'s T-Scores are statistically significantly higher on average than {{ second.first_name }}'s T-Scores at the 0.05 significance level. {% else %} It looks like {{ second.first_name }}'s T-Scores are statistically significantly higher on average than {{ first.first_name }}'s T-Scores at the 0.05 significance level. {% endif %}</p>
+
+        <div class="row">
+          <div class="col l6 m6 s12 center-align">
+            <h1 class='thin'> {{ ttest.prob|stringformat:".2e" }} </h1>
+            <h5 class='light'> P-Value</h5>
+          </div>
+          <div class="col l6 m6 s12 center-align">
+            <h1 class="thin"> {{ ttest.t|floatformat:3 }} </h1>
+            <h5 class='light'> Test Statistic </h5>
+          </div>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h4> Head-To-Head </h4>
+        <div class="divider"></div>
+        <p class="flow-text"> It looks like there are {{ head_to_head|length }} tests that both of them took. </p>
+
+        <div class="row blue-grey lighten-5">
+          <div class="col l4 m4 s12 center-align">
+            <h1 class='thin'> {{ wins }}  </h1>
+            <h5 class='light'> {{ first.first_name }}'s Wins</h5>
+          </div>
+          <div class="col l4 m4 s12 center-align">
+            <h1 class="thin"> {{ ties }} </h1>
+            <h5 class='light'> Ties </h5>
+          </div>
+          <div class="col l4 m4 s12 center-align">
+            <h1 class="thin"> {{ losses }} </h1>
+            <h5 class='light'> {{ second.first_name }}'s Wins </h5>
+          </div>
+        </div>
+
+        {% for test, first_tp, second_tp in head_to_head %}
+
+        <div class="row valign-wrapper">
+            <div class="col s12 m4 center-align">
+            <h1 {% if first_tp.score >= second_tp.score %} class="light"{% else %}class="thin"{% endif %}>{{ first_tp.score }}</h1>
+            </div>
+            <div class="col s12 m4 center-align ">
+            <h5> {{ test }}  </h5>
+            </div>
+            <div class="col s12 m4 center-align">
+            <h1 {% if first_tp.score > second_tp.score %} class="thin"{% else %}class="light"{% endif %}>{{ second_tp.score }}</h1>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+

@@ -4,6 +4,7 @@ DateTime==4.1.1
 dj-database-url==0.4.1
 Django==1.10.3
 django-allauth==0.28.0
+django-autocomplete-light==3.2.1
 django-el-pagination==3.0.1
 django-extensions==1.7.5
 django-haystack==2.5.1
@@ -17,6 +18,7 @@ pytz==2016.7
 requests==2.11.1
 requests-oauthlib==0.7.0
 six==1.10.0
+scipy==0.16.1
 tqdm==4.4.3
 whoosh==2.7.4
 zope.interface==4.3.2

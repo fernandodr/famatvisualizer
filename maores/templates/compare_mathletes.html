@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+Compare Mathletes 
+{% endblock %}
+
+{% block navmathletes %}class="active"{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h2 class="light"> Compare Mathletes </h2>
+
+    <p class="flow-text"> Use this tool to directly compare the historical performance of two mathletes, whether they are in the same year, or have never competed directly against each other. </p>
+
+<form method="get">
+<div class="row">
+{% for field in form %}
+    <div class="col m6">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
+<div class="center-align"> <button type="submit" class="btn teal">Generate Report!</button> </div>
+</form>
+
+<h3> Report Contents </h3>
+
+<p class="flow-text"> The report will generate a couple of things, among them:
+
+<ul class="browser-default flow-text">
+<li> Headline statistics on their performances. </li>
+<li> A statistical analysis comparing whether one mathlete is on average better than the other. </li>
+<li> A list of tests taken by the two mathletes, along with each of their scores and who has won the most. </li>
+
+
+</ul>
+</div>
+
+{{ form.media }}
+
+{% endblock %}
+
+
+
