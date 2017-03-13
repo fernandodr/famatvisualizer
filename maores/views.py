@@ -18,9 +18,21 @@ from results.forms import *
 
 NUM_PAPERS_RENDER_IMMEDIATELY = 25
 
+def _chk2_asarray(a, b, axis):
+    if axis is None:
+        a = np.ravel(a)
+        b = np.ravel(b)
+        outaxis = 0
+    else:
+        a = np.asarray(a)
+        b = np.asarray(b)
+        outaxis = axis
+    return a, b, outaxis
+
 def _ttest_finish(df,t):
     """Common code between all 3 t-test functions."""
-    prob = distributions.t.sf(np.abs(t), df) * 2  # use np.abs to get upper tail
+    s = np.random.standard_t(df, size=100000)
+    prob = 2.0*np.sum(s > np.abs(t)) / len(s)  # use np.abs to get upper tail
     if t.ndim == 0:
         t = t[()]
 
