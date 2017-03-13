@@ -1,7 +1,7 @@
 import datetime
 from itertools import chain
 import csv
-from scipy.stats import ttest_ind
+import numpy as np
 
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count, Avg, Sum, Q
@@ -17,6 +17,41 @@ from results.figs import *
 from results.forms import *
 
 NUM_PAPERS_RENDER_IMMEDIATELY = 25
+
+def _ttest_finish(df,t):
+    """Common code between all 3 t-test functions."""
+    prob = distributions.t.sf(np.abs(t), df) * 2  # use np.abs to get upper tail
+    if t.ndim == 0:
+        t = t[()]
+
+    return t, prob
+
+def ttest_ind(a, b, axis=0, equal_var=True):
+    a, b, axis = _chk2_asarray(a, b, axis)
+    v1 = np.var(a, axis, ddof=1)
+    v2 = np.var(b, axis, ddof=1)
+    n1 = a.shape[axis]
+    n2 = b.shape[axis]
+
+    if (equal_var):
+        df = n1 + n2 - 2
+        svar = ((n1 - 1) * v1 + (n2 - 1) * v2) / float(df)
+        denom = np.sqrt(svar * (1.0 / n1 + 1.0 / n2))
+    else:
+        vn1 = v1 / n1
+        vn2 = v2 / n2
+        df = ((vn1 + vn2)**2) / ((vn1**2) / (n1 - 1) + (vn2**2) / (n2 - 1))
+
+        # If df is undefined, variances are zero (assumes n1 > 0 & n2 > 0).
+        # Hence it doesn't matter what df is as long as it's not NaN.
+        df = np.where(np.isnan(df), 1, df)
+        denom = np.sqrt(vn1 + vn2)
+
+    d = np.mean(a, axis) - np.mean(b, axis)
+    t = np.divide(d, denom)
+    t, prob = _ttest_finish(df, t)
+
+    return t, prob
 
 def display_about(request):
     return render(request, 'about.html')

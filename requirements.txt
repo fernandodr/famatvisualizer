@@ -17,7 +17,6 @@ pytz==2016.7
 requests==2.11.1
 requests-oauthlib==0.7.0
 six==1.10.0
-scipy==0.16.1
 tqdm==4.4.3
 whoosh==2.7.4
 zope.interface==4.3.2
