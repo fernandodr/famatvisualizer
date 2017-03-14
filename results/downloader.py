@@ -434,7 +434,35 @@ if __name__ == "__main__":
             ('Open', 'Probability')
         ])
 
+    #2017 competitions -- without states
+
+    import_detail_report('Combined03042017',
+        date=datetime.date(2017, 3, 4),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('Palm Harbor Invitational February 2017',
+        date-datetime.date(2017, 2, 18),
+        name='Palm Harbor',
+        category='Invite')
+
+    import_detail_report('Combined02032017',
+        date=datetime.date(2017, 2, 4),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined01202017',
+        date=datetime.date(2017, 1, 21),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Chiles Invitational January 2017',
+        date=datetime.date(2017, 1, 14),
+        name='Chiles',
+        category='Invite')
+
     # 2016 competitions -- without states
+
     import_detail_report('Palmetto Ridge Statewide March 2016',
         date=datetime.date(2016, 3, 19),
         name='Palmetto Ridge',
@@ -599,11 +627,135 @@ if __name__ == "__main__":
         name='Vero Beach',
         category='Invite')
 
+    # 2011 competitions -- without states
 
+    import_detail_report('Hagerty Delegate Competition',
+        date=datetime.date(2011, 12, 3),
+        name='Hagerty',
+        category='Invite')
 
+    import_detail_report('Eastside Statewide Mail-in March 2011',
+        date=datetime.date(2011, 3, 26),
+        name='Eastside',
+        category='Invite')
 
+    import_detail_report('Combined03112011',
+        date=datetime.date(2011, 3, 12),
+        name='March Regional',
+        category='Regional')
 
+    import_detail_report('Seminole Statewide',
+        date=datetime.date(2011, 2, 26),
+        name='Seminole',
+        category='Invite')
 
+    import_detail_report('Combined02112011',
+        date=datetime.date(2011, 2, 12),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined01272011',
+        date=datetime.date(2011, 1, 29),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Palm harbor University Invitational Jan 2011',
+        date=datetime.date(2011, 1, 15),
+        name='Palm Harbor',
+        category='Invite')
+
+    # 2010 competitions -- without states
+
+    ###they split up March Invite into two competitions??
+
+    import_detail_report('Combined Regional Results - 3-13-2010',
+        date=datetime.date(2010, 3, 13),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('Tiger Statewide Feb 27 2010',
+        date=datetime.date(2010, 2, 27),
+        name='Tiger',
+        category='Invite')
+
+    import_detail_report('Combined Regional Results - 2-13-2010',
+        date=datetime.date(2010, 2, 13),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined Regional Results - 1-30-2010',
+        date=datetime.date(2010, 1, 30),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Vero Beach Invitational 2010',
+        date=datetime.date(2010, 1, 16),
+        name='Vero Beach',
+        category='Invite')
+
+    # 2009 competitions -- without states
+
+    import_detail_report('UF Blue Key Final  3-28-2009',
+        date=datetime.date(2009, 3, 28),
+        name='UF',
+        category='Invite')
+
+    import_detail_report('Combined Regional Results - 3-14-2009',
+        date=datetime.date(2009, 3, 14),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('Ft Myers Invitational Feb 2009',
+        date=datetime.date(2009, 2, 28),
+        name='Ft Myers',
+        category='Invite')
+
+    import_detail_report('Combined Regional Results - 2-14-2009',
+        date=datetime.date(2009, 2, 14),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Combined Regional Results - 1-31-2009',
+        date=datetime.date(2009, 1, 31),
+        name='Jan Regional',
+        category='Regional')
+
+    import_detail_report('Vero Beach Invitational January 2009',
+        date=datetime.date(2009, 1, 17),
+        name='Vero Beach',
+        category='Invite')
+
+    # 2008 competitions -- without states
+
+    import_detail_report('FBK Invitational 2008',
+        date=datetime.date(2008, 3, 22),
+        name='FBK',
+        category='Invite')
+
+    import_detail_report('Combined Regional Results - 3-8-2008',
+        date=datetime.date(2008, 3, 8),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('Florida Invitational at Middleton   February 23  2008',
+        date=datetime.date(2008, 2, 23),
+        name='Middleton',
+        category='Invite') 
+
+    import_detail_report('Combined Regional Results - 2-9-2008',
+        date=datetime.date(2008, 2, 9),
+        name='Feb Regional',
+        category='Regional')
+
+    import_detail_report('Ft Myers Invitational January 2008',
+        date=datetime.date(2008, 1, 26),
+        name='Ft Myers',
+        category='Invite')
+
+    import_detail_report('Combined Regional Results - 1-12-2008',
+        date=datetime.date(2008, 1, 12),
+        name='Jan Regional',
+        category='Regional')
 
 
 
