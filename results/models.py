@@ -18,7 +18,9 @@ class Mathlete(models.Model):
     avg_place = models.FloatField(blank=True, null=True)
     
     def __unicode__(self):
-        return self.last_name + ', ' + self.first_name
+        return self.last_name + ', ' \
+        + self.first_name + ' (' + \
+        self.get_years_active_str_selector() + ')'
     
     def _get_concatname(self):
         return self.last_name + self.first_name
@@ -60,6 +62,9 @@ class Mathlete(models.Model):
 
         strs = [form(x) for x in preform]
         return ', '.join(strs)
+
+    def get_years_active_str_selector(self):
+        return self.get_years_active_str().replace('&mdash;', '-')
 
     def _get_full_name(self):
         return self.first_name + " " + self.last_name
