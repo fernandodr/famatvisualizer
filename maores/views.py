@@ -92,7 +92,7 @@ def view_test_detail_report(
             competition__category=category, 
             division = division)
     except:
-        return Http404('Not a valid competition')
+        raise Http404('Not a valid competition')
     return render(request, 'question_chart.html', {'test': test})
 
 def test_question_breakdown_csv(
@@ -113,7 +113,7 @@ def test_question_breakdown_csv(
             competition__category=category, 
             division = division)
     except:
-        return Http404('Not a valid competition')
+        raise Http404('Not a valid competition')
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="question_breakdown.csv"'
@@ -150,9 +150,9 @@ class MathleteListView(AjaxListView):
 
 def view_school(request, school_id):
     try:
-        school = School.objects.get(id_num = school_id)
+        school = School.objects.filter(id_num = school_id)[0]
     except:
-        return Http404('School ID number does not exist')
+        raise Http404('School ID number does not exist')
 
     mathletes = Mathlete.objects.annotate(num_tests=Count('testpaper')) \
         .filter(mao_id__startswith=str(school.id_num)) \
@@ -190,7 +190,7 @@ def view_mathlete_from_id(request, id):
     try:
         mathlete = Mathlete.objects.get(pk=int(id))
     except:
-        return Http404('No such mathlete exists.')
+        raise Http404('No such mathlete exists.')
     fig1 = scores_over_time(mathlete)
     fig2 = handling_difficulty(mathlete)
     fig3 = histogram_of_scores(mathlete)
@@ -224,7 +224,7 @@ def mathlete_scores_csv(request, id):
     try:
         mathlete = Mathlete.objects.get(pk=id)
     except:
-        return Http404("No such mathlete exists.")
+        raise Http404("No such mathlete exists.")
 
     s = 'competition,T-Score'
     for paper in mathlete.testpaper_set.order_by('test__competition__date'):
@@ -307,7 +307,7 @@ def view_bowl(request, year, month, cat, division):
             category=category)
         bowl = competition.bowltest_set.get(division=division)
     except:
-        return Http404('Not a valid competition')
+        raise Http404('Not a valid competition')
 
     teams = bowl.team_set.all().order_by('place')
 
