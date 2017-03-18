@@ -1,5 +1,4 @@
 import datetime
-#import pandas as pd
 from collections import defaultdict
 
 from django.shortcuts import render
