@@ -373,6 +373,17 @@ def resolve_schools():
     for name in tqdm([s.name for s in School.objects.all()]):
         resolve_school_by_name(name)
 
+def post_import_cleanup():
+    for q in Question.objects.all():
+        q.save()
+
+    for mathlete in Mathlete.objects.all():
+        mathlete.extra_save()
+
+    for school in School.objects.all():
+        school.extra_save()
+
+
 if __name__ == "__main__":
 
     # states
@@ -442,7 +453,7 @@ if __name__ == "__main__":
         category='Regional')
 
     import_detail_report('Palm Harbor Invitational February 2017',
-        date-datetime.date(2017, 2, 18),
+        date=datetime.date(2017, 2, 18),
         name='Palm Harbor',
         category='Invite')
 
@@ -756,12 +767,3 @@ if __name__ == "__main__":
         date=datetime.date(2008, 1, 12),
         name='Jan Regional',
         category='Regional')
-
-
-
-
-
-
-
-
-

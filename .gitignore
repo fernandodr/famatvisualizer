@@ -5,6 +5,10 @@ maores/whoosh_index/*
 venv/*
 *.DS_Store
 
+# Research files
+*.ipynb
+research/*
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
