@@ -349,8 +349,9 @@ def resolve_school_by_name(name):
     if len(schools) > 1:
         'Resolving %s' % name
         ids = set([s.id_num for s in schools if s.id_num is not None])
+        ids = sorted(list(ids))
         if len(ids) > 0:
-            one_id =  list(ids)[0]
+            one_id =  ids[0]
             new_s = School(name=name, id_num=one_id)
         else:
             new_s = School(name=name)
