@@ -5,6 +5,7 @@ import numpy as np
 
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.db.models import Count, Avg, Sum, Q
+from django.db.models.functions import Coalesce
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -165,7 +166,7 @@ def view_school(request, school_id):
 def view_schools(request):
     schools = School.objects.order_by('name')
     important_schools = School.objects \
-        .annotate(rank=Sum('sweeps__total_t')) \
+        .annotate(rank=Coalesce(Sum('sweeps__total_t'), 0)) \
         .order_by('-rank')
 
     return render(request, 'schools.html', {
