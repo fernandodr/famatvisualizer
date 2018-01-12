@@ -374,13 +374,16 @@ def resolve_schools():
         resolve_school_by_name(name)
 
 def post_import_cleanup():
-    for q in Question.objects.all():
+    print "Updating questions."
+    for q in tqdm(Question.objects.all()):
         q.save()
 
-    for mathlete in Mathlete.objects.all():
+    print "Updating mathletes"
+    for mathlete in tqdm(Mathlete.objects.all()):
         mathlete.extra_save()
 
-    for school in School.objects.all():
+    print "Updating schools"
+    for school in tqdm(School.objects.all()):
         school.extra_save()
 
 
