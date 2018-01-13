@@ -449,6 +449,12 @@ if __name__ == "__main__":
             ('Open', 'Probability')
         ])
 
+    # 2018 competitions -- without states
+    import_detail_report('Buchholz Statewide 2018',
+        date=datetime.date(2018, 1, 13,),
+        name='Buchholz',
+        category='Invite')
+
     #2017 competitions -- without states
 
     import_detail_report('Combined03042017',
