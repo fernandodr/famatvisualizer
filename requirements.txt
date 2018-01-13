@@ -20,4 +20,4 @@ six==1.10.0
 tqdm==4.4.3
 whoosh==2.7.4
 zope.interface==4.3.2
-psycopg2==2.6.2
+psycopg2==2.7.3.2

@@ -6,6 +6,10 @@
 
 <title>{% block title %}{% endblock %}</title>
 
+{% block metablock %}
+
+{% endblock %}
+
 <link rel='shortcut icon' href="{% static 'results/img/logo.png'%}" type='image/x-icon'/ >
 
 {% block js %}
@@ -122,15 +126,26 @@ Here goes the content
     <div class="row">
       <div class="col l4 m4 s12">
         <h5 class="white-text">Spot a Mistake?</h5>
-        <p class="grey-text text-lighten-4">Unfortunately, data published on <a href="http://famat.org/" class="pink-text text-lighten-3">famat.org</a> is not perfect. Since we mirror that data, all the hiccups carry over. However, if you spot a discrepancy in a result, a typo, or something you think isn't the way it should be, please let us know about it <a href="/report" class="pink-text text-lighten-3">here</a>.</p>
+        <p class="grey-text text-lighten-4">Unfortunately, data published on <a
+        href="http://famat.org/" class="pink-text text-lighten-3">famat.org</a>
+        is not perfect. Since we mirror that data, all the hiccups carry over.
+        However, if you spot a discrepancy in a result, a typo, or something you
+        think isn't the way it should be, please let us know about it <a
+        href="/suggest" class="pink-text text-lighten-3">here</a>.</p>
       </div>
       <div class="col l4 m4 s12">
         <h5 class="white-text">Have an Idea?</h5>
-        <p class="grey-text text-lighten-4">We hope you've found this website useful and the data well-presented. We're always looking to improve, so <a class="pink-text text-lighten-3" href="/ideas">let us know</a> if you have any ideas for charts, figures, statistics, or anything else that could be a helpful addition to this website.</p>
+        <p class="grey-text text-lighten-4">We hope you've found this website
+        useful and the data well-presented. We're always looking to improve, so
+        <a class="pink-text text-lighten-3" href="/suggest">let us know</a> if
+        you have any ideas for charts, figures, statistics, or anything else
+        that could be a helpful addition to this website.</p>
       </div>
       <div class="col l4 m4 s12">
         <h5 class="white-text">Want Raw Data?</h5>
-        <p class="grey-text text-lighten-4">In order to present this website, we compiled FAMAT results into a curated database. If this sounds helpful to something you're interested in doing, feel free to get in touch.</p>
+        <p class="grey-text text-lighten-4">In order to present this website, we
+        compiled FAMAT results into a curated database. If this sounds helpful
+        to something you're interested in doing, feel free to get in touch.</p>
       </div>
     </div>
     {% endblock %}

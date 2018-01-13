@@ -490,3 +490,18 @@ def compare_mathletes(request):
     else:
         form = CompareMathletesForm()
         return render(request, 'compare_mathletes.html', {'form': form})
+
+
+def submit_user_request(request):
+    if request.method == 'POST':
+        form = UserRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/suggest/thanks')
+    else:
+        form = UserRequestForm()
+    
+    return render(request, 'user_request.html', {'form': form})
+
+def user_request_thanks(request):
+    return render(request, 'user_request_thanks.html', {})
