@@ -22,6 +22,9 @@ class QuestionAnswerAdmin(admin.ModelAdmin):
 class MathleteImpressionAdmin(admin.ModelAdmin):
     list_display = ('mathlete', 'user', 'datetime')
 
+class UserRequestAdmin(admin.ModelAdmin):
+    list_display = ('text', 'datetime')
+
 admin.site.register(Mathlete, MathleteAdmin)
 admin.site.register(School)
 admin.site.register(Competition, CompetitionAdmin)
@@ -31,3 +34,4 @@ admin.site.register(TestPaper, TestPaperAdmin)
 admin.site.register(QuestionAnswer, QuestionAnswerAdmin)
 admin.site.register(Team)
 admin.site.register(MathleteImpression, MathleteImpressionAdmin)
+admin.site.register(UserRequest, UserRequestAdmin)

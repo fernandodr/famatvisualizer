@@ -430,4 +430,13 @@ class MathleteImpression(models.Model):
     user = models.ForeignKey(User)
     datetime = models.DateTimeField(auto_now_add=True)
 
-    
+class UserRequest(models.Model):
+    text = models.TextField()
+    datetime = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        if len(self.text) > 30:
+            return self.text[:30] + '...'
+        else:
+            return self.text
+

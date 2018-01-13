@@ -1,5 +1,6 @@
 
 from django import forms
+from django.forms import ModelForm, Textarea
 
 from dal import autocomplete
 
@@ -21,3 +22,15 @@ class CompareMathletesForm(forms.Form):
                 'data-minimum-input-length': 3,
                 'style': 'width: 50%'})
     )
+
+class UserRequestForm(ModelForm):
+    class Meta:
+        model = UserRequest
+        fields = ['text']
+        widgets = {
+            'text' : Textarea(attrs={'class': 'materialize-textarea'})
+        }
+
+        labels = {
+            'text': 'Suggestion text.'
+        }

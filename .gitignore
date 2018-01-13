@@ -4,6 +4,7 @@ www/static
 maores/whoosh_index/*
 venv/*
 *.DS_Store
+*.swp
 
 # Research files
 *.ipynb

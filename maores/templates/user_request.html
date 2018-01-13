@@ -1,0 +1,59 @@
+
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+User Suggestion
+{% endblock %}
+
+{% block metablock %}
+<meta name="Description" content="Submit a suggestion to correct a mistake, suggest an improvement, or propose a new feature.">
+{% endblock %}
+
+{% block navhome %}class="active"{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<h3 class="light"> User Suggestion </h3>
+
+
+<p class="flow-text"> We're excited to continue perfecting and augmenting the
+website. As such, your feedback and suggestions are invaluable! In order to help
+your suggestion be as helpful as possible, please take a second to read our do's
+and don'ts.</p>
+
+<div class="row grey lighten-3">
+  <div class="col s12 m6">
+    <h4> Do's </h4>
+    <ul class="browser-default flow-text">
+      <li>Do describe the suggestion in as much detail
+      as possible. If it references a particular page or type of page, include
+      an example link. </li>
+      <li>Do leave your contact information if you wish
+      to be contacted with a follow-up to your suggestion. </li>
+    </ul>
+  </div>
+  <div class="col s12 m6">
+    <h4> Don'ts </h4>
+    <ul class="browser-default flow-text">
+      <li> Don't spam the suggestions page with multiple entries for the same
+      request.</li>
+      <li> Don't be concerned if it takes some time to respond to or implement
+      your suggestion. Developing changes can be a time-consuming process.</li>
+    </ul>
+  </div>
+</div>
+
+<form action='/suggest/' method='post'>
+    {% csrf_token %}
+    <div class="input-field col s12">
+    {{ form }}
+    </div>
+    <input type="submit" value="Submit" />
+</form>
+
+
+</div>
+
+{% endblock %}
