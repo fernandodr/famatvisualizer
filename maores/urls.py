@@ -55,6 +55,10 @@ competition_views = [
     url(r'^(?P<division>[A-Za-z0-9&\%\- ]+)/', include(test_views))
 ]
 
+insight_views = [
+    url(r'^guessing-adeptly/$', view_guessing_adeptly),
+]
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', home_page),
@@ -80,6 +84,8 @@ urlpatterns = [
 
     url(r'^schools/$', view_schools),
     url(r'^schools/(?P<school_id>[0-9]{4})/', include(school_views)),
+
+    url(r'^insights/', include(insight_views)),
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^accounts/profile/$', view_profile),
