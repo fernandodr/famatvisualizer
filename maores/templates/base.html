@@ -101,16 +101,16 @@ main {
           <li class="hide-on-small-and-down"><a href="/accounts/google/login/?process=login">Login</a></li>
         {% endif %}
       </ul>
-      <ul class="side-nav" id="mobile">
-        <li><a href="/mathletes">Mathletes</a></li>
-        <li><a href="/competitions">Competitions</a></li>
-        <li><a href="/schools">Schools</a></li>
-      </ul>
       {% block breadcrumbs %}
       {% endblock %}
     </div>
   </nav>
 </div>
+      <ul class="side-nav" id="mobile">
+        <li><a href="/mathletes">Mathletes</a></li>
+        <li><a href="/competitions">Competitions</a></li>
+        <li><a href="/schools">Schools</a></li>
+      </ul>
 {% endblock %}
 </header>
 
@@ -160,7 +160,7 @@ Here goes the content
 
 <script> 
 $(document).ready(function(){
-  $(".button-collapse").sideNav();
+  $(".button-collapse").sideNav({});
   $('.navbar-fixed').css('height', $('.nav-extended').height());
 })
 </script>
