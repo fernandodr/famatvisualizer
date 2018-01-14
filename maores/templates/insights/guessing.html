@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+Guessing Adeptly
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<div class="container">
+  <h2 class="light"> Guessing Adeptly</h2>
+
+  <p class="flow-text"> Ideally, you'd answer every question right and never
+  have to guess. But what happens when you have no idea what the right answer
+  might be? One option is to leave it blank and guarantee no loss of
+  points.<sup><a href="#footnote1">1</a></sup> However, you could attempt to
+  guess.</p>
+
+  <p class="flow-text"> Suppose that you guess by picking an answer out of a hat
+  uniformly at random. This means that you have a one-in-five chance of getting
+  the answer right.<sup><a href="#footnote2">2</a></sup> In expectation, you get
+  zero points. Can you systematically do better than this even while knowing
+  nothing about the question, though?</p>
+
+  <p class="flow-text"> This is as much a thought experiment as it is something
+  that can be attempted. If you're viewing this on a computer, you'll see below
+  what resembles a scantron. It's been programmed with the correct answers of a
+  random historical test in the FAMAT Visualizer database. If you're feeling
+  adventurous, take your guessing skills for a spin before reading on.</p>
+
+</div>
+</div>
+
+<div class="row blue-grey lighten-5 hide-on-small-only">
+<div class="container">
+<form id="fake-test">
+<div class="row">
+  <div class="col l4 m6 s12">
+    {% for q_num in q_range1 %}
+    <p class="center-align">
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}a" />
+      <label for="q{{ q_num }}a">A</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}b" />
+      <label for="q{{ q_num }}b">B</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}c" />
+      <label for="q{{ q_num }}c">C</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}d" />
+      <label for="q{{ q_num }}d">D</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}e" />
+      <label for="q{{ q_num }}e">E</label>
+    </p>
+    {% endfor %}
+  </div>
+  <div class="col l4 m6 s12">
+    {% for q_num in q_range2 %}
+    <p class="center-align">
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}a" />
+      <label for="q{{ q_num }}a">A</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}b" />
+      <label for="q{{ q_num }}b">B</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}c" />
+      <label for="q{{ q_num }}c">C</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}d" />
+      <label for="q{{ q_num }}d">D</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}e" />
+      <label for="q{{ q_num }}e">E</label>
+    </p>
+    {% endfor %}
+  </div>
+  <div class="col l4 m6 s12">
+    {% for q_num in q_range3 %}
+    <p class="center-align">
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}a" />
+      <label for="q{{ q_num }}a">A</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}b" />
+      <label for="q{{ q_num }}b">B</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}c" />
+      <label for="q{{ q_num }}c">C</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}d" />
+      <label for="q{{ q_num }}d">D</label>
+      <input name="q{{ q_num }}" type="radio" id="q{{ q_num }}e" />
+      <label for="q{{ q_num }}e">E</label>
+    </p>
+    {% endfor %}
+  </div>
+</div>
+</form>
+</div>
+</div>
+
+<script>
+function gradePaper() {
+    var answer;
+    var answers = {{ answers|safe}};
+    var score = 0;
+    var numBlank = 0;
+    for (i = 1; i < 31 ;i++) {
+      answer = $('input[name=q' + i + ']:checked').next().text();
+      if (answer == "") {
+        numBlank += 1;
+      } else if (answers[i-1].indexOf(answer[0]) != -1) {
+        score += 4;
+      } else {
+        score -= 1;
+      }
+    }
+
+    var tScore = 50 + 10*(score - {{ test.average }}) / {{ test.std }};
+
+    var outputStr = "You were taking the {{ test.competition }} {{ test.division }} Indiv. "
+    outputStr += "You left " + numBlank + " questions blank, and your " + (30 - numBlank) + " guesses resulted in a score of " + score + ". ";
+    outputStr += "On this test, that equates to a t-score of " + tScore.toFixed(2) + ". ";
+    if (tScore > 50) {
+      outputStr += "You've somehow managed to get above average! ";
+    } else if (score > 0){
+      outputStr += "While your score probably won't be winning you any awards, you've managed to score above the expected value of random, uniform guessing. Congrats!";
+    } else if (numBlank == 30) {
+      outputStr += "It's not awfully interesting to leave everything blank, though. Why don't you try to guess some answers and re-grade your test?";
+    } else {
+      outputStr += "Unfortunately, your guessing didn't pay off. While you could have gotten a 0 by leaving everything blank, read on for guessing strategies.";
+    }
+    document.getElementById("resultsP").innerHTML = outputStr;
+}
+</script>
+
+<div class="container">
+<div class="container">
+
+  <a class="waves-effect waves-light btn hide-on-small-only"
+  onclick="gradePaper()">Grade paper</a>
+
+  <p id="resultsP" class="flow-text"></p>
+
+  <p class="flow-text"> Many myths surround blind-shot-in-the-dark guessing. A
+  common adage is to always guess "C." Others recommend avoiding the letter of
+  the previous answer.  Yet a third school of thought encourages counting up the
+  number of each letter that are correct answers in the rest of the test and
+  picking the least-represented one. </p>
+
+  <p class="flow-text"> In the following sections, we'll look at the data to
+  identify the worthwhile strategies. In the end, we conclude with a summary of
+  our findings and an assessment of how valuable guessing intelligently can be.
+  </p>
+
+  <h3> Should you always guess "C"?</h3>
+
+  <p class="flow-text"> While we won't conclusively answer this question just
+  yet, we can start by exploring whether it has any merit. To do this, we
+  collect data on over 300 FAMAT tests administered between 2011 and 2017. This
+  amounts to over 8,000 questions that only have one correct answer. Of these,
+  we can plot a breakdown by correct answer,</p>
+
+  <img border="0"
+  src="{% static 'graphs/answer-distribution.png' %}"
+  width="100%" />
+
+  <p class="flow-text"> From this, we can glean a couple stylized facts. Most
+  apparent is the fact that "E" is grossly under-represented among correct
+  answers with just under 10%. "B" and "C" are the most represented with 23.8%
+  and 24.1% (a statistically insignificant difference). "A" falls somewhere in
+  between at 20.9%.</p>
+
+  <p class="flow-text"> Following a strategy of only guessing "C"
+  would&mdash;assuming that this historical data is representative&mdash;lead to
+  an expected value of just over one-fifth of a point. Distinctly better than
+  the 0 guessing uniformly at random gets you!</p>
+
+  <h3> Answer hot-streaks</h3> 
+
+  <p class="flow-text"> What if we know the answer to the previous question was
+  "C." Should we still guess "C"? Or does this somehow change the probabilities.
+  There's a compelling case to be made that test-writers will actively avoid
+  streaks of questions with the same answer.<sup><a
+  href="#footnote3">3</a></sup> To test this suspicion, we can calculate the
+  distribution of correct answers for all questions that follow a question whose
+  answer was "C," or any other letter.  More informatively, we can find the
+  difference between this probability and the unconditional probability we found
+  above.</p>
+
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs z-depth-2">
+        <li class="tab col s2"><a href="#atab">A</a></li>
+        <li class="tab col s2"><a class="active" href="#btab">B</a></li>
+        <li class="tab col s2"><a href="#ctab">C</a></li>
+        <li class="tab col s2"><a href="#dtab">D</a></li>
+        <li class="tab col s2"><a href="#etab">E</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <br />
+  <div class="row">
+    <div id="atab" class="col s12"><img border="0" src="{% static 'graphs/answer-distribution-A.png' %}" width="100%" /></div>
+    <div id="btab" class="col s12"><img border="0" src="{% static 'graphs/answer-distribution-B.png' %}" width="100%" /></div>
+    <div id="ctab" class="col s12"><img border="0" src="{% static 'graphs/answer-distribution-C.png' %}" width="100%" /></div>
+    <div id="dtab" class="col s12"><img border="0" src="{% static 'graphs/answer-distribution-D.png' %}" width="100%" /></div>
+    <div id="etab" class="col s12"><img border="0" src="{% static 'graphs/answer-distribution-E.png' %}" width="100%" /></div>
+  </div>
+
+  <p class="flow-text"> This shows us that guessing a repeat answer can reduce
+  our probability of a correct guess by around 5%. Given this new information,
+  we amend our guessing strategy. It is not optimal to always guess "C," but
+  rather to guess "C" only if the previous answer was not "C," and otherwise
+  guess either "B" or "D" (statistically equally good).</p>
+
+  <h3>Regression to the mean</h3>
+
+  <p class="flow-text"> Sometimes, you might hear someone say that they guessed
+  an "A" because there weren't enough "A"s among the answers they had gotten. Is
+  there any wisdom to this? In order to find out, we plot the distribution of
+  the number "A"s (or any other letter) in a test and compare it to a binomial
+  distribution.</p>
+
+  <img border="0" src="{% static 'graphs/tests-num-C.png' %}" width="100%" />
+
+  <p class="flow-text"> We find that tests exhibit disproportionately little
+  variance. This suggests that test-writers are indeed more likely to make an
+  answer "C" if they haven't written in enough "C"s in the rest of the test. Of
+  course, this doesn't preclude some tests from being outliers. For instance,
+  the 2011 Feb Invite Algebra 1 Indiv test had a whopping 14 answers that were
+  "A." This effect is also weaker than the previous two and depends on getting
+  the other questions right. Because of this, we only advocate using this as a
+  tie-break.</p>
+
+  <h3>So, should I guess?</h3>
+
+  <p class="flow-text"> Overwhelmingly, yes! Guessing intelligently can add
+  points in expectation even when not knowing anything about the question or its
+  answers. Eliminating one of the answer choices only makes the odds better.</p>
+
+  <p class="flow-text"> Take for instance the strategy that requires no
+  knowledge of any question: guessing only "C." Upwards of 90% of the time, this
+  strategy does better than leaving everything blank, and on average this
+  strategy scores just over 10 points on a test.</p>
+
+  <h3> Well, are people doing this?</h3>
+
+  <p class="flow-text"> There's some evidence that some competitors have already
+  internalized this advice.</p>
+
+  <img border="0" src="{% static 'graphs/number-left-blank.png' %}" width="100%" />
+
+  <p class="flow-text"> Nevertheless, just under 90% of competitors still leave
+  one or more questions blank. Considering how valuable guessing can be even
+  while knowing nothing about the question, an awful lot of competitors are
+  potentially leaving points on the table.</p>
+
+  <h3> Footnotes </h3>
+
+  <p class="flow-text"><a id="footnote1"></a> <sup>1</sup> This assumes standard
+  FAMAT scoring of +4 for a correct answer, -1 for an incorrect answer, and 0
+  for a blank. The point tradeoff is the same for Nationals scoring (+5 for
+  correct, +1 for blank, and 0 for incorrect), however.</p>
+
+  <p class="flow-text"><a id="footnote2"></a> <sup>2</sup> This presupposes that
+  the question will only have one correct answer. Empirically, this is the case
+  for approximately 95% of questions. The rest are either thrown out or have
+  various accepted answers because of disputes. For the purposes of this
+  analysis, we restrict ourselves only to questions with one correct answer.</p>
+
+  <p class="flow-text"><a id="footnote3"></a> <sup>3</sup> In general, humans
+  identify streaks, even those that appear randomly, as a pattern.  For an
+  interesting read, see <a
+  href="https://labs.spotify.com/2014/02/28/how-to-shuffle-songs/"
+  class="teal-text">Spotify's story</a> on dealing with complaints about their
+  shuffle feature not being random.</p>
+  
+</div>
+</div>
+
+{% endblock %}

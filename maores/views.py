@@ -505,3 +505,20 @@ def submit_user_request(request):
 
 def user_request_thanks(request):
     return render(request, 'user_request_thanks.html', {})
+
+def view_guessing_adeptly(request):
+    q_range1 = range(1,11)
+    q_range2 = range(11,21)
+    q_range3 = range(21,31)
+
+    test = Test.objects.order_by('?').first()
+
+    answers = list(test.question_set.order_by('number').values('answer'))
+    answers = [str(x['answer']) for x in answers]
+
+    return render(request, 'insights/guessing.html', {
+        'q_range1': q_range1,
+        'q_range2': q_range2,
+        'q_range3': q_range3,
+        'test': test,
+        'answers': answers})
