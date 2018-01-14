@@ -16,12 +16,12 @@ Guessing Adeptly
 <p class="flow-text"> Ideally, you'd answer every question right and never
   have to guess. But what happens when you have no idea what the right answer
   might be? One option is to leave it blank and guarantee no loss of
-  points.<sup><a href="#footnote1">1</a></sup> However, you could attempt to
+  points.<sup><a href="#footnote1" class="teal-text">1</a></sup> However, you could attempt to
   guess.</p> 
 
   <a id="footnote2text"></a><p class="flow-text"> Suppose that you guess by picking an answer out of a hat
   uniformly at random. This means that you have a one-in-five chance of getting
-  the answer right.<sup><a href="#footnote2">2</a></sup> In expectation, you get
+  the answer right.<sup><a href="#footnote2" class="teal-text">2</a></sup> In expectation, you get
   zero points. Can you systematically do better than this even while knowing
   nothing about the question, though?</p>
 
@@ -174,7 +174,7 @@ function gradePaper() {
   "C." Should we still guess "C"? Or does this somehow change the probabilities.
   There's a compelling case to be made that test-writers will actively avoid
   streaks of questions with the same answer.<sup><a
-  href="#footnote3">3</a></sup> To test this suspicion, we can calculate the
+  href="#footnote3" class="teal-text">3</a></sup> To test this suspicion, we can calculate the
   distribution of correct answers for all questions that follow a question whose
   answer was "C," or any other letter. </p>
 
@@ -234,6 +234,8 @@ function gradePaper() {
   knowledge of any question: guessing only "C." Upwards of 90% of the time, this
   strategy does better than leaving everything blank, and on average this
   strategy scores just over 10 points on a test.</p>
+
+  <img border="0" src="{% static 'graphs/guessing-C.png' %}" width="100%" />
 
   <h3> Well, are people doing this?</h3>
 
