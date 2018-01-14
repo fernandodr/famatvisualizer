@@ -12,13 +12,14 @@ Guessing Adeptly
 <div class="container">
   <h2 class="light"> Guessing Adeptly</h2>
 
-  <p class="flow-text"> Ideally, you'd answer every question right and never
+  <a id="footnote1text"></a>
+<p class="flow-text"> Ideally, you'd answer every question right and never
   have to guess. But what happens when you have no idea what the right answer
   might be? One option is to leave it blank and guarantee no loss of
   points.<sup><a href="#footnote1">1</a></sup> However, you could attempt to
-  guess.</p>
+  guess.</p> 
 
-  <p class="flow-text"> Suppose that you guess by picking an answer out of a hat
+  <a id="footnote2text"></a><p class="flow-text"> Suppose that you guess by picking an answer out of a hat
   uniformly at random. This means that you have a one-in-five chance of getting
   the answer right.<sup><a href="#footnote2">2</a></sup> In expectation, you get
   zero points. Can you systematically do better than this even while knowing
@@ -169,15 +170,13 @@ function gradePaper() {
 
   <h3> Answer hot-streaks</h3> 
 
-  <p class="flow-text"> What if we know the answer to the previous question was
+  <a id="footnote3text"></a><p class="flow-text"> What if we know the answer to the previous question was
   "C." Should we still guess "C"? Or does this somehow change the probabilities.
   There's a compelling case to be made that test-writers will actively avoid
   streaks of questions with the same answer.<sup><a
   href="#footnote3">3</a></sup> To test this suspicion, we can calculate the
   distribution of correct answers for all questions that follow a question whose
-  answer was "C," or any other letter.  More informatively, we can find the
-  difference between this probability and the unconditional probability we found
-  above.</p>
+  answer was "C," or any other letter. </p>
 
   <div class="row">
     <div class="col s12">
@@ -250,18 +249,21 @@ function gradePaper() {
 
   <h3> Footnotes </h3>
 
-  <p class="flow-text"><a id="footnote1"></a> <sup>1</sup> This assumes standard
+  <p class="flow-text"><a id="footnote1"></a> <sup><a
+  href="#footnote1text">1</a></sup> This assumes standard
   FAMAT scoring of +4 for a correct answer, -1 for an incorrect answer, and 0
   for a blank. The point tradeoff is the same for Nationals scoring (+5 for
   correct, +1 for blank, and 0 for incorrect), however.</p>
 
-  <p class="flow-text"><a id="footnote2"></a> <sup>2</sup> This presupposes that
+  <p class="flow-text"><a id="footnote2"></a> <sup><a
+  href="#footnote2text">2</a></sup> This presupposes that
   the question will only have one correct answer. Empirically, this is the case
   for approximately 95% of questions. The rest are either thrown out or have
   various accepted answers because of disputes. For the purposes of this
   analysis, we restrict ourselves only to questions with one correct answer.</p>
 
-  <p class="flow-text"><a id="footnote3"></a> <sup>3</sup> In general, humans
+  <p class="flow-text"><a id="footnote3"></a> <sup><a
+  href="#footnote3text">3</a></sup> In general, humans
   identify streaks, even those that appear randomly, as a pattern.  For an
   interesting read, see <a
   href="https://labs.spotify.com/2014/02/28/how-to-shuffle-songs/"
