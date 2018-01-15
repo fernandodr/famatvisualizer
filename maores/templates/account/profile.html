@@ -37,8 +37,23 @@ Profile
       {% for mathlete in mathletes %}
       <div class="col l6 m6 s12">
         <a href="{{mathlete.get_absolute_url}}"><div class="card-panel">
-          <h5> {{ mathlete }} </h5>
+          <span class="teal-text">
+          <h5> {{ mathlete }} ({{mathlete.get_years_active_str|safe}})</h5>
           {{ mathlete.school }} 
+          <div class="row">
+            <div class="col l4 m4 s12 center-align">
+              <h1 class='thin'> {{ mathlete.avg_t }} </h1>
+              <h5 class='light'> Average T-Score</h5>
+            </div>
+            <div class="col l4 m4 s12 center-align">
+              <h1 class="thin"> {{ mathlete.testpaper_set.all|length }}</h1>
+              <h5 class='light'> Indivs Taken </h5>
+            </div>
+            <div class="col l4 m4 s12 center-align">
+            <h1 class="thin"> {{ mathlete.avg_place }} </h1>
+            <h5 class="light"> Average Place </h5>
+            </div>
+          </div>
         </div></a>
       </div>
       {% endfor %}
