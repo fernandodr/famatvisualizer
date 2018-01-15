@@ -37,7 +37,7 @@ Profile
       {% for mathlete in mathletes %}
       <div class="col l6 m6 s12">
         <a href="{{mathlete.get_absolute_url}}"><div class="card-panel">
-          <h5> {{ mathlete }} ({{mathlete.get_years_active_str|safe}})</h5>
+          <h5> {{ mathlete }} </h5>
           {{ mathlete.school }} 
         </div></a>
       </div>
