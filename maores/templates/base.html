@@ -84,6 +84,7 @@ main {
         <li {% block navmathletes %}{% endblock %}><a href="/mathletes">Mathletes</a></li>
         <li {% block navcompetitions %}{% endblock %}><a href="/competitions">Competitions</a></li>
         <li {% block navschools %}{% endblock %}><a href="/schools">Schools</a></li>
+        <li {% block navinsights %}{% endblock %}><a href="/insights">Insights</a></li>
         <li> 
           <form method="get" action="/search/">
             <div class="input-field">
@@ -106,11 +107,13 @@ main {
     </div>
   </nav>
 </div>
-      <ul class="side-nav" id="mobile">
-        <li><a href="/mathletes">Mathletes</a></li>
-        <li><a href="/competitions">Competitions</a></li>
-        <li><a href="/schools">Schools</a></li>
-      </ul>
+<ul class="side-nav" id="mobile">
+  <li><a href="/">Home</a></li>
+  <li><a href="/mathletes">Mathletes</a></li>
+  <li><a href="/competitions">Competitions</a></li>
+  <li><a href="/schools">Schools</a></li>
+  <li><a href="/insights">Insights</a></li>
+</ul>
 {% endblock %}
 </header>
 

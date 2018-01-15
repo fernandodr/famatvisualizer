@@ -56,6 +56,7 @@ competition_views = [
 ]
 
 insight_views = [
+    url(r'^$', view_insights),
     url(r'^guessing-adeptly/$', view_guessing_adeptly),
 ]
 
