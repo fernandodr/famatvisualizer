@@ -506,6 +506,9 @@ def submit_user_request(request):
 def user_request_thanks(request):
     return render(request, 'user_request_thanks.html', {})
 
+def view_insights(request):
+    return render(request, 'insights.html', {})
+
 def view_guessing_adeptly(request):
     q_range1 = range(1,11)
     q_range2 = range(11,21)
