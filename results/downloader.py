@@ -455,6 +455,11 @@ if __name__ == "__main__":
         name='Buchholz',
         category='Invite')
 
+    import_detail_report('Combined01202018',
+        date=datetime.date(2018,1,20),
+        name='Jan Regional',
+        category='Regional')
+
     #2017 competitions -- without states
 
     import_detail_report('Combined03042017',
