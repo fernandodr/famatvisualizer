@@ -6,24 +6,26 @@
 Guessing Adeptly
 {% endblock %}
 
+{% block navinsights %}class="active"{% endblock %}
+
 {% block content %}
 
 <div class="container">
 <div class="container">
   <h2 class="light"> Guessing Adeptly</h2>
 
-  <a id="footnote1text"></a>
-<p class="flow-text"> Ideally, you'd answer every question right and never
-  have to guess. But what happens when you have no idea what the right answer
-  might be? One option is to leave it blank and guarantee no loss of
-  points.<sup><a href="#footnote1" class="teal-text">1</a></sup> However, you could attempt to
-  guess.</p> 
+  <a id="footnote1text"></a> <p class="flow-text"> Ideally, you'd answer every
+  question right and never have to guess. But what happens when you have no idea
+  what the right answer might be? One option is to leave it blank and guarantee
+  no loss of points.<sup><a href="#footnote1" class="teal-text">1</a></sup>
+  However, you could attempt to guess.</p> 
 
-  <a id="footnote2text"></a><p class="flow-text"> Suppose that you guess by picking an answer out of a hat
-  uniformly at random. This means that you have a one-in-five chance of getting
-  the answer right.<sup><a href="#footnote2" class="teal-text">2</a></sup> In expectation, you get
-  zero points. Can you systematically do better than this even while knowing
-  nothing about the question, though?</p>
+  <a id="footnote2text"></a><p class="flow-text"> Suppose that you guess by
+  picking an answer out of a hat uniformly at random. This means that you have a
+  one-in-five chance of getting the answer right.<sup><a href="#footnote2"
+  class="teal-text">2</a></sup> In expectation, you get zero points. Can you
+  systematically do better than this even while knowing nothing about the
+  question, though?</p>
 
   <p class="flow-text"> This is as much a thought experiment as it is something
   that can be attempted. If you're viewing this on a computer, you'll see below
@@ -252,20 +254,20 @@ function gradePaper() {
   <h3> Footnotes </h3>
 
   <p class="flow-text"><a id="footnote1"></a> <sup><a
-  href="#footnote1text">1</a></sup> This assumes standard
+  href="#footnote1text" class="teal-text">1</a></sup> This assumes standard
   FAMAT scoring of +4 for a correct answer, -1 for an incorrect answer, and 0
   for a blank. The point tradeoff is the same for Nationals scoring (+5 for
   correct, +1 for blank, and 0 for incorrect), however.</p>
 
   <p class="flow-text"><a id="footnote2"></a> <sup><a
-  href="#footnote2text">2</a></sup> This presupposes that
+  href="#footnote2text" class="teal-text">2</a></sup> This presupposes that
   the question will only have one correct answer. Empirically, this is the case
   for approximately 95% of questions. The rest are either thrown out or have
   various accepted answers because of disputes. For the purposes of this
   analysis, we restrict ourselves only to questions with one correct answer.</p>
 
   <p class="flow-text"><a id="footnote3"></a> <sup><a
-  href="#footnote3text">3</a></sup> In general, humans
+  href="#footnote3text" class="teal-text">3</a></sup> In general, humans
   identify streaks, even those that appear randomly, as a pattern.  For an
   interesting read, see <a
   href="https://labs.spotify.com/2014/02/28/how-to-shuffle-songs/"

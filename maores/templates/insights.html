@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+Insights
+{% endblock %}
+
+{% block navinsights %}class="active"{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="light hide-on-small-only"> Insights </h1>
+  <h3 class="light hide-on-med-and-up"> Insights </h3>
+  <div class="divider"></div>
+
+<a href="guessing-adeptly">
+<div class="row waves-effect clickcard valign-wrapper">
+<div class="col m2 hide-on-small-only">
+<h1 class="light teal-text grey lighten-2 center-align circle" id="guess-val">A</h1>
+</div>
+<div class="col m10 s12">
+<h3 class="black-text"> Guessing Adeptly </h3>
+<p class="flow-text grey-text"> When you don't know the first thing about a question, do you guess at random or leave it blank? What if I told you neither of these is optimal. This article looks at the data to establish back-tested guessing strategies.</p>
+</div>
+</div>
+</a>
+<div class="divider"></div>
+</div>
+
+<script>
+
+function changeLetter() {
+  answers = ["A", "B", "C", "D", "E"];
+  newLetter = answers[Math.floor(Math.random() * answers.length)];
+  $('#guess-val').text(newLetter)
+}
+
+$(document).ready(function(){
+  for (i = 1; i < 20; i++) {
+    setTimeout(changeLetter, 100*i);
+  }
+
+  $('.clickcard').hover(function(){
+      $(this).addClass('grey lighten-4');
+  },
+  function() {
+      $(this).removeClass('grey lighten-4');
+  })
+});
+</script>
+{% endblock %}
