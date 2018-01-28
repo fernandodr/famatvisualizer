@@ -66,7 +66,7 @@
     <div class="section">
     <h4> Hypothesis Testing </h4>
         <div class="divider"></div>
-        <p class="flow-text"> We can run a two-tailed two-sample t-test for difference of means on the T-Scores of each mathlete. {% if ttest.prob > 0.05 %} It looks like there is no statistically significant difference between their scores at the 0.05 significance level. {% elif first.avg_t > second.avg_t %} It looks like {{ first.first_name }}'s T-Scores are statistically significantly higher on average than {{ second.first_name }}'s T-Scores at the 0.05 significance level. {% else %} It looks like {{ second.first_name }}'s T-Scores are statistically significantly higher on average than {{ first.first_name }}'s T-Scores at the 0.05 significance level. {% endif %}</p>
+        <p class="flow-text"> We can run a two-tailed two-sample t-test for difference of means on the T-Scores of each mathlete. {% if ttest.prob > 0.05 %} It looks like there is no statistically significant difference between their scores at the 0.05 significance level. {% elif first.avg_t > second.avg_t %} It looks like {{ first.first_name }} {{first.last_name }}'s T-Scores are statistically significantly higher on average than {{ second.first_name }} {{second.last_name }}'s T-Scores at the 0.05 significance level. {% else %} It looks like {{ second.first_name }} {{second.last_name }}'s T-Scores are statistically significantly higher on average than {{ first.first_name }} {{first.last_name }}'s T-Scores at the 0.05 significance level. {% endif %}</p>
 
         <div class="row">
           <div class="col l6 m6 s12 center-align">
@@ -89,7 +89,7 @@
         <div class="row blue-grey lighten-5">
           <div class="col l4 m4 s12 center-align">
             <h1 class='thin'> {{ wins }}  </h1>
-            <h5 class='light'> {{ first.first_name }}'s Wins</h5>
+            <h5 class='light'> {{ first.first_name }} {{first.last_name }}'s Wins</h5>
           </div>
           <div class="col l4 m4 s12 center-align">
             <h1 class="thin"> {{ ties }} </h1>
@@ -97,7 +97,7 @@
           </div>
           <div class="col l4 m4 s12 center-align">
             <h1 class="thin"> {{ losses }} </h1>
-            <h5 class='light'> {{ second.first_name }}'s Wins </h5>
+            <h5 class='light'> {{ second.first_name }} {{second.last_name }}'s Wins </h5>
           </div>
         </div>
 
