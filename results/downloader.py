@@ -450,15 +450,25 @@ if __name__ == "__main__":
         ])
 
     # 2018 competitions -- without states
-    import_detail_report('Buchholz Statewide 2018',
-        date=datetime.date(2018, 1, 13,),
-        name='Buchholz',
-        category='Invite')
+    import_detail_report('Sickles Statewide February 2018',
+    	date=datetime.date(2018, 2, 17),
+    	name='Sickles',
+    	category='Invite')
+
+    import_detail_report('Combined02022018',
+    	date=datetime.date(2018, 2, 3),
+    	name='Feb Regional',
+    	category='Regional')
 
     import_detail_report('Combined01202018',
         date=datetime.date(2018,1,20),
         name='Jan Regional',
         category='Regional')
+
+    import_detail_report('Buchholz Statewide 2018',
+        date=datetime.date(2018, 1, 13,),
+        name='Buchholz',
+        category='Invite')
 
     #2017 competitions -- without states
 
