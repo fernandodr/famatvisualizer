@@ -37,7 +37,8 @@ school_views = [
     url(r'^first-points/(?P<year>[0-9]{4})/$', first_points),
     url(r'^first-points/$', first_points, {
         'year': PRESENT_YEAR}),
-    url(r'^hall-of-fame/$', hall_of_fame)
+    url(r'^hall-of-fame/$', hall_of_fame),
+    url(r'^sweeps.csv$', school_sweeps_csv)
 ]
 
 test_views = [

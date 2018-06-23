@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+{% load humanize %}
 
 {% block title %}
  {{ school }} 
@@ -14,7 +15,41 @@
     <h2 class="light"> {{ school }} </h2>
     <div class="divider"></div>
 
-    <h3> Mathletes </h3>
+    <h3> Performance over time </h3>
+
+    <div id="ranksovertime"></div>
+
+    <h3> Division Performances </h3>
+
+    <table class="striped">
+        <thead>
+        <tr>
+            <th> Competition </th>
+            <th> Rank </th>
+            <th> Geo </th>
+            <th> Alg II </th>
+            <th> Precalc </th>
+            <th> Stats </th>
+            <th> Calc </th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for sweep in sweeps %}
+        <tr>
+        <td> <a href="{{ sweep.competition.get_sweeps_url }}" class="teal-text">{{ sweep.competition }}</a> </td>
+        <td> {{ sweep.rank|ordinal }} </td>
+        <td> {{ sweep.geo.place|ordinal }} </td>
+        <td> {{ sweep.algii.place|ordinal }} </td>
+        <td> {{ sweep.precalc.place|ordinal }} </td>
+        <td> {{ sweep.stats.place|ordinal }} </td>
+        <td> {{ sweep.calc.place|ordinal }} </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+
+    <h3> Top 5 Mathletes </h3>
 
     <table class="bordered highlight">
         <thead>
@@ -37,6 +72,50 @@
     {% endfor %}
     </tbody>
     </table>
+
 </div>
+
+<script>
+var chart = c3.generate({
+  bindto: "#ranksovertime",
+  data: {
+    url: "sweeps.csv",
+    type: "line",
+    x: 'Competition',
+    hide: 'TotalT',
+    axes: {
+      Rank: 'y',
+      TotalT: 'y2',
+    }
+  },
+  size: {
+    height: 500
+  },
+  color: {
+    pattern: ['#009688', '#E53935']
+  },
+  axis: {
+    x: {
+      type: "category",
+      tick: {
+        rotate: 75,
+        multiline: false,
+      }
+    },
+    y: {
+      text: "Rank",
+      position: "outer-middle",
+      inverted: true,
+      label: 'Rank',
+      min: 1,
+      padding: {bottom: 5},
+    },
+    y2: {
+      show: true,
+      label: "Total T-Score"
+    }
+  }
+})
+</script>
 
 {% endblock %}

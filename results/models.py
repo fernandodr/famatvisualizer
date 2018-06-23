@@ -138,6 +138,9 @@ class Competition(models.Model):
         else:
             return '/competitions/%i/states/' % self.date.year
 
+    def get_sweeps_url(self):
+        return self.get_absolute_url() + 'sweepstakes.html'
+
     def topictest_set(self):
         return self.test_set.exclude(level__exact="").order_by('level')
 
@@ -415,6 +418,37 @@ class Sweeps(models.Model):
     competition = models.ForeignKey(Competition)
     rank = models.IntegerField()
     total_t = models.FloatField()
+
+    @property
+    def geo(self):
+        return Team.objects.filter(test__competition=self.competition, 
+            test__division='Geometry',
+            school=self.school).order_by('place').first()
+
+    @property
+    def algii(self):
+        return Team.objects.filter(test__competition=self.competition, 
+            test__division='Algebra 2',
+            school=self.school).order_by('place').first()
+
+    @property
+    def precalc(self):
+        return Team.objects.filter(test__competition=self.competition, 
+            test__division='Precalculus',
+            school=self.school).order_by('place').first()
+
+    @property
+    def stats(self):
+        return Team.objects.filter(test__competition=self.competition, 
+            test__division='Statistics',
+            school=self.school).order_by('place').first()
+
+    @property
+    def calc(self):
+        return Team.objects.filter(test__competition=self.competition, 
+            test__division='Calculus',
+            school=self.school).order_by('place').first()
+
 
     def __unicode__(self):
         return '%s: %s (%ist place)' % (

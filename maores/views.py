@@ -149,6 +149,28 @@ class MathleteListView(AjaxListView):
             .filter(num_tests__gt=5) \
             .order_by('-avg_t')
 
+def school_sweeps_csv(request, school_id):
+    try:
+        school = School.objects.filter(id_num = school_id)[0]
+    except:
+        raise Http404('School ID number does not exist')
+
+    sweeps = Sweeps.objects.filter(school=school) \
+        .order_by('competition__date')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="sweeps.csv"' 
+
+    writer = csv.writer(response)
+    writer.writerow(['Competition', 'Rank', 'TotalT'])
+    for sweep in sweeps:
+        writer.writerow([
+            sweep.competition,
+            sweep.rank,
+            '%.4f' % sweep.total_t])
+
+    return response
+
 def view_school(request, school_id):
     try:
         school = School.objects.filter(id_num = school_id)[0]
@@ -157,10 +179,14 @@ def view_school(request, school_id):
 
     mathletes = Mathlete.objects.annotate(num_tests=Count('testpaper')) \
         .filter(mao_id__startswith=str(school.id_num)) \
-        .order_by('-avg_t')
+        .order_by('-avg_t')[:5]
+
+    sweeps = Sweeps.objects.filter(school=school) \
+        .order_by('-competition__date')
 
     return render(request, 'school.html', {
         'school': school, 
+        'sweeps': sweeps,
         'mathletes':mathletes})
 
 def view_schools(request):
