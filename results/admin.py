@@ -8,7 +8,8 @@ class CompetitionAdmin(admin.ModelAdmin):
     list_display = ('name', 'date', 'category')
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('competition', 'division')
+    list_display = ('competition', 'division', 'test_tdid', 'answers_tdid', 
+                    'solns_tdid')
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('test', 'number', 'answer', 'num_correct', 'num_blank', 'num_wrong')
