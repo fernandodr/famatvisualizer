@@ -366,6 +366,10 @@ def resolve_school_by_name(name):
             team.school = new_s
             team.save()
 
+        for sweep in Sweeps.objects.filter(school__in=schools):
+            sweep.school = new_s
+            sweep.save()
+
         for school in schools:
             school.delete()
         print 'Successfully resolved.'

@@ -163,6 +163,9 @@ class Test(models.Model):
     average = models.FloatField(blank=True, null=True)
     std = models.FloatField(blank=True, null=True)
     placing = models.FloatField(blank=True, null=True)
+    test_tdid = models.IntegerField(blank=True, null=True)
+    answers_tdid = models.IntegerField(blank=True, null=True)
+    solns_tdid = models.IntegerField(blank=True, null=True)
     
     def _get_average(self):
         scores = [paper.score for paper in self.testpaper_set.all()]
