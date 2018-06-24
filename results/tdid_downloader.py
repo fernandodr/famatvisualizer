@@ -7,7 +7,8 @@ from results.models import *
 
 def construct_args_from_test(test):
     div_overrides = {
-        'Algebra 2' : 'Algebra II'
+        'Algebra 2' : 'Algebra II',
+        'Algebra 1' : 'Algebra I',
     }
     
     
