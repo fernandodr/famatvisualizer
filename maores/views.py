@@ -19,6 +19,8 @@ from results.forms import *
 
 NUM_PAPERS_RENDER_IMMEDIATELY = 25
 
+FAMAT_FILE_URL = 'http://famat.org/PublicPages/TestArchive.aspx?TDID='
+
 def _chk2_asarray(a, b, axis):
     if axis is None:
         a = np.ravel(a)
@@ -386,12 +388,11 @@ def view_test(request, year, month, cat, division):
     else:
         testpapers = test.testpaper_set.all()
 
-
-
     return render(request, 'test.html',
         {'competition':competition,
         'test':test,
-        'testpapers':testpapers})   
+        'testpapers':testpapers,
+        'famat_file_url' : FAMAT_FILE_URL})   
 
 def view_competitions(request):
     years = sorted(list(set([c.date.year for c in Competition.objects.all()])), reverse=True)
