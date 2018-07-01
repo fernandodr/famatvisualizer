@@ -28,7 +28,12 @@
   <div class="col s12 m12 l11">
   <!-- <div class="container"> -->
     <h3 class="light"> {{ competition }} {{ test.division }} Indiv</h3>
+        <a class="waves-effect waves-light btn-flat {% if not test.test_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.test_tdid }}"><i class="material-icons left">file_download</i>Test</a>
+        <a class="waves-effect waves-light btn-flat {% if not test.answers_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.answers_tdid }}"><i class="material-icons left">file_download</i>Answers</a>
+        <a class="waves-effect waves-light btn-flat {% if not test.solns_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.solns_tdid }}"><i class="material-icons left">file_download</i>Solutions</a>
+
     <div class="row">
+
       <div class="input-field col s12 m8 l6">
           <input id="searchtable" type="text">
           <label for="searchtable">Filter by name or school</label>

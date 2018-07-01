@@ -158,7 +158,7 @@ class Competition(models.Model):
 class Test(models.Model):
     competition = models.ForeignKey(Competition)
     division = models.CharField(max_length = 30)
-    level = models.CharField(max_length = 30, default="")
+    level = models.CharField(max_length = 30, default="", blank=True)
     is_topic = models.BooleanField
     average = models.FloatField(blank=True, null=True)
     std = models.FloatField(blank=True, null=True)
