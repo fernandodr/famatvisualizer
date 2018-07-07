@@ -6,6 +6,10 @@
 {{ mathlete.first_name }} {{ mathlete.last_name }}
 {% endblock %}
 
+{% block metablock %}
+<meta name="Description" content="{{mathlete.description}}">
+{% endblock %}
+
 {% block navmathletes %}class="active"{% endblock %}
 
 {% block content %}

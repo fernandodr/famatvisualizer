@@ -25,6 +25,21 @@ Mathletes
 
     <p class="flow-text">If you're looking for the mathlete comparer tool, click <a href="compare" class="teal-text">here</a>.</p>
 
+    <!-- <form method="get">
+    <div class="row">
+    {% for field in form %}
+        <div class="col m6">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+    <div class="center-align"> <button type="submit" class="btn teal">Find mathlete</div>
+    </form> -->
+
     {% if has_mathletes %}
 
     <div class="well">
@@ -54,5 +69,7 @@ $.endlessPaginate({
     paginateOnScrollChunkSize: 5,
 });
 </script>
+
+{{ form.media }}
 
 {% endblock %}
