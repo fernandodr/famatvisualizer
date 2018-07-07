@@ -6,6 +6,15 @@ from dal import autocomplete
 
 from models import *
 
+class SelectMathleteForm(forms.Form):
+    first = forms.ModelChoiceField(
+        queryset=Mathlete.objects.all(),
+        widget=autocomplete.ModelSelect2(url='mathlete-autocomplete',
+            attrs={'data-placeholder': "First mathlete's name...",
+            'data-minimum-input-length': 3,
+            'style': 'width: 50%'})
+    )
+
 class CompareMathletesForm(forms.Form):
     first = forms.ModelChoiceField(
         queryset=Mathlete.objects.all(),
@@ -34,3 +43,5 @@ class UserRequestForm(ModelForm):
         labels = {
             'text': 'Suggestion text.'
         }
+
+

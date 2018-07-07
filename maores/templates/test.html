@@ -6,6 +6,16 @@
 {{ competition }} ({{ test.division }})
 {% endblock %}
 
+{% block googleads %}
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-7441651304681274",
+    enable_page_level_ads: true
+  });
+</script>
+{% endblock %}
+
 {% block navbar %}
 <div class="navbar-fixed">
   <nav>
@@ -28,9 +38,10 @@
   <div class="col s12 m12 l11">
   <!-- <div class="container"> -->
     <h3 class="light"> {{ competition }} {{ test.division }} Indiv</h3>
-        <a class="waves-effect waves-light btn-flat {% if not test.test_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.test_tdid }}"><i class="material-icons left">file_download</i>Test</a>
-        <a class="waves-effect waves-light btn-flat {% if not test.answers_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.answers_tdid }}"><i class="material-icons left">file_download</i>Answers</a>
-        <a class="waves-effect waves-light btn-flat {% if not test.solns_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.solns_tdid }}"><i class="material-icons left">file_download</i>Solutions</a>
+
+      <a class="waves-effect waves-light btn-flat {% if not test.test_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.test_tdid }}"><i class="material-icons left">file_download</i>Test</a>
+      <a class="waves-effect waves-light btn-flat {% if not test.answers_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.answers_tdid }}"><i class="material-icons left">file_download</i>Answers</a>
+      <a class="waves-effect waves-light btn-flat {% if not test.solns_tdid %}disabled{% endif %}" href="{{ famat_file_url }}{{ test.solns_tdid }}"><i class="material-icons left">file_download</i>Solutions</a>
 
     <div class="row">
 

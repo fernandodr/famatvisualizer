@@ -139,7 +139,9 @@ def view_mathletes(request):
     top = Mathlete.objects.annotate(num_tests=Count('testpaper')) \
         .filter(num_tests__gt=5) \
         .order_by('-avg_t')
-    return render(request, 'mathletes.html', {'top':top})
+
+    return render(request, 'mathletes.html',
+        {'top':top})
 
 class MathleteListView(AjaxListView):
     context_object_name = "mathletes"
