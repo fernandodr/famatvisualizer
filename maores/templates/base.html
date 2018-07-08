@@ -2,6 +2,16 @@
 <html lang="en">
 <head>
 
+{% block googleads %}
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-7441651304681274",
+    enable_page_level_ads: true
+  });
+</script>
+{% endblock %}
+
 {% load staticfiles %}
 
 <title>{% block title %}{% endblock %}</title>
@@ -64,6 +74,7 @@ main {
 </script>
 
 {% endblock %}
+
 </head>
 
 <body>
