@@ -75,7 +75,11 @@ def google_confirmation(request):
     return render(request, 'google.html', {})
     
 def home_page(request):
-    return render(request, 'index.html', {})
+    last_competition = Competition.objects.order_by('-date').first()
+    days_since = (datetime.date.today() - last_competition.date).days
+    return render(request, 'index.html', {
+        'last_competition': last_competition,
+        'days_since': days_since})
 
 def view_test_detail_report(
         request, 
