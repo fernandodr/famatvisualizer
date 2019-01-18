@@ -1,5 +1,5 @@
-<li>
-  <div class="collapsible-header">{{ comp }}</div>
+<li {% if is_active %} class="active" {% endif %}>
+  <div class="collapsible-header {% if is_active %} active {% endif %}">{{ comp }}</div>
   <div class="collapsible-body">
     {% if comp.category != "States" %}
         {% if comp.bowltest_set.all %}
