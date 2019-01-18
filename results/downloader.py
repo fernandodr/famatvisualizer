@@ -351,7 +351,7 @@ def resolve_school_by_name(name):
         ids = set([s.id_num for s in schools if s.id_num is not None])
         ids = sorted(list(ids))
         if len(ids) > 0:
-            one_id =  ids[0]
+            one_id = ids[0]
             new_s = School(name=name, id_num=one_id)
         else:
             new_s = School(name=name)
@@ -452,6 +452,13 @@ if __name__ == "__main__":
             ('Mu', 'Calculus Applications'),
             ('Open', 'Probability')
         ])
+
+    # 2019 competitions -- without states
+
+    import_detail_report('Eastside Invitational January 2019',
+        date=datetime.date(2019, 1, 12),
+        name='Eastside',
+        category='Invite')
 
     # 2018 competitions -- without states
     import_detail_report('Sickles Statewide February 2018',
