@@ -25,7 +25,14 @@
 <div class="container">
     <h2 class="light"> {{ competition }} </h2>
 
-    <p class="flow-text">See the Sweepstakes results <a href="{{competition.get_absolute_url}}sweepstakes.html" class="teal-text">here</a>.
+    <ul class="collapsible popout" data-collapsible="accordion">
+    {% with comp=competition is_active=True %}
+    {% include "competition_pop.html" %}
+    {% endwith %}
+    </ul>
+
+
+    <h3> Indiv Difficulties </h3>
 
     <table class="bordered highlight">
         <thead>
