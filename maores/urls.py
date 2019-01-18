@@ -24,9 +24,18 @@ from haystack.generic_views import SearchView
 
 PRESENT_YEAR = str(datetime.datetime.today().year)
 
+# views having to do with a single mathlete
 mathlete_views = [
     url(r'^$', view_mathlete_from_id),
     url(r'^competition_scores.csv$', mathlete_scores_csv)
+]
+
+# views having to do with many mathletes
+mathletes_views = [
+    url(r'^$', MathleteListView.as_view()),
+    url(r'^compare/$', compare_mathletes),
+    url(r'^multiple$', multiple_mathletes),
+
 ]
 
 school_views = [
@@ -70,12 +79,11 @@ urlpatterns = [
     url(r'^suggest/thanks/$', user_request_thanks),
     url(r'^google1b28fba45037c690.html$', google_confirmation),
 
-    url(r'^mathletes/$', MathleteListView.as_view()),
-    url(r'^mathletes/compare/$', compare_mathletes),
+    url(r'^mathletes/', include(mathletes_views)),
+    url(r'^mathlete/(?P<id>[0-9]+)/', include(mathlete_views)),
     url(r'^mathlete-autocomplete/$', 
         MathleteAutocomplete.as_view(), 
         name='mathlete-autocomplete'),
-    url(r'^mathlete/(?P<id>[0-9]+)/', include(mathlete_views)),
 
     url(r'^competitions/$', view_competitions),
     url(r'^competitions/(?P<year>[0-9]+)/states/', 

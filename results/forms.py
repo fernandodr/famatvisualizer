@@ -7,12 +7,12 @@ from dal import autocomplete
 from models import *
 
 class SelectMathleteForm(forms.Form):
-    first = forms.ModelChoiceField(
+    mathlete = forms.ModelMultipleChoiceField(
         queryset=Mathlete.objects.all(),
-        widget=autocomplete.ModelSelect2(url='mathlete-autocomplete',
-            attrs={'data-placeholder': "First mathlete's name...",
+        widget=autocomplete.ModelSelect2Multiple(url='mathlete-autocomplete',
+            attrs={'data-placeholder': "Mathletes' names...",
             'data-minimum-input-length': 3,
-            'style': 'width: 50%'})
+            'style': 'width: 80%'})
     )
 
 class CompareMathletesForm(forms.Form):

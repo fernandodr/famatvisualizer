@@ -135,14 +135,6 @@ def test_question_breakdown_csv(
     return response
 
 
-def view_mathletes(request):
-    top = Mathlete.objects.annotate(num_tests=Count('testpaper')) \
-        .filter(num_tests__gt=5) \
-        .order_by('-avg_t')
-
-    return render(request, 'mathletes.html',
-        {'top':top})
-
 class MathleteListView(AjaxListView):
     context_object_name = "mathletes"
     template_name = "mathletes.html"
@@ -152,6 +144,20 @@ class MathleteListView(AjaxListView):
         return Mathlete.objects.annotate(num_tests=Count('testpaper')) \
             .filter(num_tests__gt=5) \
             .order_by('-avg_t')
+
+    def get_context_data(self, **kwargs):
+        context = super(MathleteListView, self).get_context_data(**kwargs)
+        context['form'] = SelectMathleteForm()
+        return context
+
+def multiple_mathletes(request):
+    mathlete_lst = request.GET.getlist('mathlete')
+    if len(mathlete_lst) == 0:
+        return HttpResponseRedirect('/mathletes')
+    elif len(mathlete_lst) == 1:
+        return HttpResponseRedirect('/mathlete/%s' % mathlete_lst[0])
+    else:
+        return render(request, 'multiple-mathletes.html')
 
 def school_sweeps_csv(request, school_id):
     try:
