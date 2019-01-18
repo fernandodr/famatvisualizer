@@ -18,6 +18,13 @@ FAMAT Visualizer
 <h1 class="light"> FAMAT Visualizer </h1>
 <div class="divider"></div>
 
+{% if days_since < 7 %}
+<div class="section">
+  <div class="chip">The {{ last_competition }} results from last week have been
+  uploaded!  Check out the <a class="pink-text text-lighten-3" href="{{ last_competition.get_sweeps_url }}">Sweepstakes</a> or the <a class="pink-text text-lighten-3" href="{{ last_competition.get_absolute_url }}">full results</a>.</div>
+</div>
+{% endif %}
+
 <div class="section">
 <div class="row">
     <a href="/competitions"><div class="col l4 m4 s12 center-align waves-effect clickcard">
