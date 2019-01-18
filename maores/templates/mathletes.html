@@ -23,22 +23,29 @@ Mathletes
 
     <div class="divider"></div>
 
-    <p class="flow-text">If you're looking for the mathlete comparer tool, click <a href="compare" class="teal-text">here</a>.</p>
+    <p class="flow-text">If you're looking for the mathlete comparer tool,
+    click <a href="compare" class="teal-text">here</a>.</p>
 
-    <!-- <form method="get">
+    <p class="flow-text">Look up a mathlete here and see his/her data
+    (functionality for selecting more than one mathlete is currently under
+    construction),</p>
+    
+    <form method="get" action="/mathletes/multiple">
     <div class="row">
     {% for field in form %}
-        <div class="col m6">
-            {{ field.errors }}
-            {{ field.label_tag }} {{ field }}
-            {% if field.help_text %}
-            <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %}
-        </div>
+      <div class="col s8">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+      </div>
     {% endfor %}
+    <div class="col m4">
+      <div class="center-align"> <button type="submit" class="btn teal">See mathlete report</div>
     </div>
-    <div class="center-align"> <button type="submit" class="btn teal">Find mathlete</div>
-    </form> -->
+    </div>
+    </form>
 
     {% if has_mathletes %}
 
