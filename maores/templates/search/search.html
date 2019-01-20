@@ -7,6 +7,11 @@
 {% block content %}
 <div class="container">
     <h2>Search</h2>
+    
+    <p> This is the website's generic search feature. if you're looking for a
+    specific <em>mathlete</em>, you may prefer to find them directly through
+    the <a class="teal-text" href="/mathletes">Mathletes</a> page which has an
+    autocomplete widget just for that purpose.</p>
 
     <form method="get" action=".">
         <table>
@@ -14,7 +19,7 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <input type="submit" value="Search">
+                    <input type="submit" value="search">
                 </td>
             </tr>
         </table>
@@ -26,19 +31,19 @@
                         <h5> <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h5>
                         <p> {{ result.object.description|safe }} </p> <br />
                 {% empty %}
-                    <p>No results found.</p>
+                    <p>no results found.</p>
                 {% endfor %}
             </div>
 
             {% if page.has_previous or page.has_next %}
                 <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; previous{% if page.has_previous %}</a>{% endif %}
                     |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}next &raquo;{% if page.has_next %}</a>{% endif %}
                 </div>
             {% endif %}
         {% else %}
-            {# Show some example queries to run, maybe query syntax, something else? #}
+            {# show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
     </form>
 </div>
