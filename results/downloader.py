@@ -455,6 +455,11 @@ if __name__ == "__main__":
 
     # 2019 competitions -- without states
 
+    import_detail_report('Combined01192019',
+        date=datetime.date(2019, 1, 19),
+        name='Jan Regional',
+        category='Regional')
+
     import_detail_report('Eastside Invitational January 2019',
         date=datetime.date(2019, 1, 12),
         name='Eastside',
