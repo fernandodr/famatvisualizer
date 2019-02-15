@@ -542,6 +542,12 @@ def submit_user_request(request):
     
     return render(request, 'user_request.html', {'form': form})
 
+def secret_user_request(request):
+    if request.method == 'POST':
+        if 'text' in request.POST:
+            user_request = UserRequest(request.POST['text'])
+            user_request.save()
+
 def user_request_thanks(request):
     return render(request, 'user_request_thanks.html', {})
 

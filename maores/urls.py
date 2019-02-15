@@ -76,6 +76,7 @@ urlpatterns = [
     url(r'^about.html', display_about),
     url(r'^search/', include('haystack.urls')),
     url(r'^suggest/$', submit_user_request),
+    url(r'^suggest-elip/$', secret_user_request),
     url(r'^suggest/thanks/$', user_request_thanks),
     url(r'^google1b28fba45037c690.html$', google_confirmation),
 
