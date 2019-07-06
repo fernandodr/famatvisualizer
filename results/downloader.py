@@ -455,6 +455,26 @@ if __name__ == "__main__":
 
     # 2019 competitions -- without states
 
+    import_detail_report('March Statewide Invitational AHS-BD 2019',
+        date=datetime.date(2019, 3, 16),
+        name='AHS-BD',
+        category='Invite')
+
+    import_detail_report('Combined03022019',
+        date=datetime.date(2019, 3, 2),
+        name='March Regional',
+        category='Regional')
+
+    import_detail_report('Palm Harbor Statewide February 2019',
+        date=datetime.date(2019, 2, 16),
+        name='Palm Harbor',
+        category='Invite')
+
+    import_detail_report('Combined02012019',
+        date=datetime.date(2019, 2, 2),
+        name='Feb Regional',
+        category='Regional')
+
     import_detail_report('Combined01192019',
         date=datetime.date(2019, 1, 19),
         name='Jan Regional',

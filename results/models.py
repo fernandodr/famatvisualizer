@@ -251,7 +251,6 @@ class TestPaper(models.Model):
         return str(self.mathlete)
 
     def _get_score(self):
-        #return np.sum([qa.points for qa in QuestionAnswer.objects.filter(paper=self)])
         return np.sum([qa.points for qa in self.questionanswer_set.all()])
     
     def _first_wrong(self):
