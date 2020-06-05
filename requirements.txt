@@ -2,7 +2,7 @@ BeautifulSoup==3.2.1
 cycler==0.10.0
 DateTime==4.1.1
 dj-database-url==0.4.1
-Django==1.10.3
+Django==1.11.29
 django-allauth==0.28.0
 django-autocomplete-light==3.2.1
 django-el-pagination==3.0.1
